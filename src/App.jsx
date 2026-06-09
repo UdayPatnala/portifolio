@@ -28,7 +28,6 @@ import { Typewriter } from 'react-simple-typewriter';
 import ParticleBackground from './components/ParticleBackground';
 import CustomCursor from './components/CustomCursor';
 import ProjectCard from './components/ProjectCard';
-import DataScienceVisualizer from './components/DataScienceVisualizer';
 
 // --- CUSTOM SVG BRAND ICONS ---
 
@@ -254,7 +253,7 @@ const EDUCATION_DATA = [
     degree: "B.Tech in Computer Science Engineering (Data Science)",
     institution: "Raghu Institute of Technology, Andhra Pradesh",
     period: "2022 - 2026",
-    grade: "CGPA: 7.5",
+    grade: "CGPA: 7.70",
     color: "border-emerald-500"
   },
   {
@@ -278,6 +277,47 @@ const CERTIFICATIONS = [
   { title: "AWS Cloud Foundations Training Badge", provider: "Amazon Web Services (AWS)" },
   { title: "Software Testing Master Class", provider: "Udemy Professional Certificate" }
 ];
+
+const Scrolling3DImages = () => {
+  const images = [
+    '/music_mirror_real.png',
+    '/nebula_real.png',
+    '/javapath_real.png'
+  ];
+
+  return (
+    <div className="flex flex-col gap-10 w-full max-w-sm mx-auto relative" style={{ perspective: 1200 }}>
+      {/* Subtle ambient back-glow for volumetric depth */}
+      <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/10 via-transparent to-cyan-500/10 blur-[80px] -z-10" />
+      
+      {images.map((img, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, rotateX: 45, y: 80, scale: 0.9, z: -100 }}
+          whileInView={{ opacity: 1, rotateX: 0, y: 0, scale: 1, z: 0 }}
+          viewport={{ once: false, margin: "-100px" }}
+          transition={{ duration: 0.8, delay: i * 0.15, type: "spring", bounce: 0.4 }}
+          whileHover={{ scale: 1.05, rotateY: i % 2 === 0 ? 12 : -12, rotateX: 5, z: 80 }}
+          className="relative rounded-2xl overflow-hidden border border-emerald-500/20 bg-slate-900 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] hover:shadow-[0_40px_80px_-20px_rgba(16,185,129,0.4)] transition-all duration-500 group"
+          style={{ transformStyle: 'preserve-3d' }}
+        >
+          {/* Inner glass reflection gradient for depth */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none" />
+          
+          <img 
+             src={img} 
+             alt={`Showcase ${i}`} 
+             className="w-full h-40 object-cover object-top filter contrast-[1.15] brightness-90 group-hover:brightness-110 transition-all duration-500" 
+             style={{ transform: "translateZ(20px)" }}
+          />
+          
+          {/* Bottom vignette shade for realistic recessed lighting */}
+          <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-slate-950/90 to-transparent pointer-events-none z-10" style={{ transform: "translateZ(25px)" }} />
+        </motion.div>
+      ))}
+    </div>
+  );
+};
 
 // --- MAIN PORTFOLIO COMPONENT ---
 
@@ -409,39 +449,42 @@ const App = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) return;
 
     setFormStatus('submitting');
 
-    setTimeout(() => {
-      const newMsg = {
-        ...formData,
-        id: Date.now(),
-        date: new Date().toISOString()
-      };
-      
-      let existingMsgs = [];
-      try {
-        existingMsgs = JSON.parse(localStorage.getItem('portfolio_messages') || '[]');
-      } catch (e) {}
-      
-      existingMsgs.push(newMsg);
-      
-      try {
-        localStorage.setItem('portfolio_messages', JSON.stringify(existingMsgs));
-      } catch (e) {
-        console.warn("Telemetry storage failed:", e);
+    try {
+      const response = await fetch("https://formsubmit.co/ajax/udaypatnala5@gmail.com", {
+        method: "POST",
+        headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            subject: formData.subject || "New Message from Portfolio",
+            message: formData.message,
+            _captcha: "false" // Disable captcha for seamless AJAX submission
+        })
+      });
+
+      if (response.ok) {
+        setFormStatus('success');
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        setFormStatus('error');
       }
+    } catch (error) {
+      console.error("Form submission error:", error);
+      setFormStatus('error');
+    }
 
-      setFormStatus('success');
-      setFormData({ name: '', email: '', subject: '', message: '' });
-
-      setTimeout(() => {
-        setFormStatus('idle');
-      }, 5000);
-    }, 1500);
+    setTimeout(() => {
+      setFormStatus('idle');
+    }, 5000);
   };
 
   const scrollToSection = (id) => {
@@ -875,17 +918,9 @@ const App = () => {
               ))}
             </div>
 
-            {/* Right: 3D Loss Landscape Visualizer (Span 4) */}
+            {/* Right: 3D Stacked Scrolling Images (Span 4) */}
             <div className="lg:col-span-4 flex flex-col justify-center">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-                className="h-full"
-              >
-                <DataScienceVisualizer isDarkMode={isDarkMode} />
-              </motion.div>
+              <Scrolling3DImages />
             </div>
 
           </div>
@@ -1252,7 +1287,7 @@ const App = () => {
                         className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-mono text-xs py-2 px-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl"
                       >
                         <CheckCircle size={14} />
-                        <span>Data transmitted & stored in LocalStorage successfully!</span>
+                        <span>Message successfully sent to Uday Kumar!</span>
                       </motion.div>
                     )}
                   </AnimatePresence>

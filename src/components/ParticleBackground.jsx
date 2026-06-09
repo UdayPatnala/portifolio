@@ -19,41 +19,6 @@ const ParticleBackground = ({ isDarkMode }) => {
       initParticles();
     };
 
-    // 3D wireframe shapes datasets
-    const octahedronModel = {
-      vertices: [
-        { x: 0, y: -65, z: 0 },
-        { x: 0, y: 65, z: 0 },
-        { x: -55, y: 0, z: -55 },
-        { x: 55, y: 0, z: -55 },
-        { x: 55, y: 0, z: 55 },
-        { x: -55, y: 0, z: 55 }
-      ],
-      edges: [
-        [0, 2], [0, 3], [0, 4], [0, 5],
-        [1, 2], [1, 3], [1, 4], [1, 5],
-        [2, 3], [3, 4], [4, 5], [5, 2]
-      ]
-    };
-
-    const cubeModel = {
-      vertices: [
-        { x: -40, y: -40, z: -40 },
-        { x: 40, y: -40, z: -40 },
-        { x: 40, y: 40, z: -40 },
-        { x: -40, y: 40, z: -40 },
-        { x: -40, y: -40, z: 40 },
-        { x: 40, y: -40, z: 40 },
-        { x: 40, y: 40, z: 40 },
-        { x: -40, y: 40, z: 40 }
-      ],
-      edges: [
-        [0, 1], [1, 2], [2, 3], [3, 0], // back
-        [4, 5], [5, 6], [6, 7], [7, 4], // front
-        [0, 4], [1, 5], [2, 6], [3, 7]  // connectors
-      ]
-    };
-
     class Particle {
       constructor(x, y) {
         this.x = x;
@@ -158,50 +123,6 @@ const ParticleBackground = ({ isDarkMode }) => {
       }
     };
 
-    const draw3DObject = (model, cx, cy, rotX, rotY, parallax, darkTheme) => {
-      const projected = [];
-      const fov = 350;
-
-      model.vertices.forEach(v => {
-        // Rotate coordinate geometry
-        let x1 = v.x * Math.cos(rotY) - v.z * Math.sin(rotY);
-        let z1 = v.x * Math.sin(rotY) + v.z * Math.cos(rotY);
-
-        let y2 = v.y * Math.cos(rotX) - z1 * Math.sin(rotX);
-        let z2 = v.y * Math.sin(rotX) + z1 * Math.cos(rotX);
-
-        const zoom = fov / (fov + z2);
-        // Apply smooth cursor parallax pulls
-        const px = (x1 - parallax.x * 0.1) * zoom + cx;
-        const py = (y2 - parallax.y * 0.1) * zoom + cy;
-
-        projected.push({ x: px, y: py });
-      });
-
-      // Draw edges
-      ctx.beginPath();
-      model.edges.forEach(edge => {
-        const p1 = projected[edge[0]];
-        const p2 = projected[edge[1]];
-        ctx.moveTo(p1.x, p1.y);
-        ctx.lineTo(p2.x, p2.y);
-      });
-      ctx.strokeStyle = darkTheme ? 'rgba(16, 185, 129, 0.14)' : 'rgba(16, 120, 80, 0.18)';
-      ctx.lineWidth = 0.85;
-      ctx.stroke();
-
-      // Draw tiny node vertices
-      projected.forEach(p => {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, 2.2, 0, Math.PI * 2);
-        ctx.fillStyle = darkTheme ? 'rgba(0, 245, 212, 0.35)' : 'rgba(6, 100, 180, 0.35)';
-        ctx.fill();
-      });
-    };
-
-    let angleX = 0;
-    let angleY = 0;
-
     const animate = () => {
       // Dynamic background base color
       ctx.fillStyle = isDarkMode ? '#03060a' : '#f8fafc';
@@ -214,16 +135,6 @@ const ParticleBackground = ({ isDarkMode }) => {
       } else {
         smoothMouse.x += (0 - smoothMouse.x) * 0.07;
         smoothMouse.y += (0 - smoothMouse.y) * 0.07;
-      }
-
-      // Draw 3D wireframe objects that tilt and rotate
-      angleX += 0.003;
-      angleY += 0.005;
-
-      const isMobile = window.innerWidth < 768;
-      if (!isMobile) {
-        draw3DObject(octahedronModel, canvas.width * 0.84, canvas.height * 0.28, angleX, angleY, smoothMouse, isDarkMode);
-        draw3DObject(cubeModel, canvas.width * 0.15, canvas.height * 0.74, -angleX * 0.8, -angleY * 0.8, smoothMouse, isDarkMode);
       }
 
       // Particles loop
