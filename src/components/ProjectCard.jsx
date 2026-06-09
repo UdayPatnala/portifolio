@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { ExternalLink, Cpu, Database, Layout } from 'lucide-react';
 
@@ -24,6 +24,7 @@ const ProjectCard = ({ project, isDarkMode }) => {
   const { title, description, tags, category, highlights, github, live, type, image } = project;
   
   const cardRef = useRef(null);
+  const [imgError, setImgError] = useState(false);
   const x = useMotionValue(0.5);
   const y = useMotionValue(0.5);
 
@@ -130,7 +131,7 @@ const ProjectCard = ({ project, isDarkMode }) => {
 
       <div className="z-10" style={{ transform: 'translateZ(15px)', transformStyle: 'preserve-3d' }}>
         {/* Project Screenshot */}
-        {image && (
+        {image && !imgError && (
           <div 
             style={{ transform: 'translateZ(30px)' }}
             className="relative w-full h-44 mb-4 overflow-hidden rounded-xl border border-black/10 dark:border-white/5 bg-slate-950/20 shadow-md"
@@ -138,9 +139,32 @@ const ProjectCard = ({ project, isDarkMode }) => {
             <img 
               src={image} 
               alt={`${title} Interface`}
+              onError={() => setImgError(true)}
               className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 to-transparent pointer-events-none" />
+          </div>
+        )}
+
+        {/* Placeholder when image is unavailable */}
+        {(!image || imgError) && (
+          <div
+            style={{ transform: 'translateZ(30px)' }}
+            className={`relative w-full h-44 mb-4 overflow-hidden rounded-xl border flex items-center justify-center ${
+              isDarkMode ? 'border-white/5 bg-white/[0.02]' : 'border-emerald-500/10 bg-slate-100'
+            }`}
+          >
+            <div className="text-center space-y-2 pointer-events-none">
+              <div className={`w-10 h-10 mx-auto rounded-xl flex items-center justify-center ${
+                type === 'ml' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-cyan-500/10 text-cyan-500'
+              }`}>
+                {getCategoryIcon()}
+              </div>
+              <p className="text-[10px] font-mono text-gray-500 tracking-widest uppercase">// {type === 'ml' ? 'ML Model' : 'Web App'}</p>
+            </div>
+            <div className={`absolute inset-0 bg-gradient-to-br opacity-30 ${
+              type === 'ml' ? 'from-emerald-900/20 to-transparent' : 'from-cyan-900/20 to-transparent'
+            } pointer-events-none`} />
           </div>
         )}
 

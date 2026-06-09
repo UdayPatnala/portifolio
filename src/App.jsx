@@ -980,15 +980,15 @@ const App = () => {
         style={{ perspective: 1200 }}
       >
         {/* Main profile pic as blurred hero background watermark */}
-        <div
+        <img
           aria-hidden="true"
-          className="absolute inset-0 -z-10 pointer-events-none"
+          src="/profile.jpg"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover object-top pointer-events-none select-none"
           style={{
-            backgroundImage: `url('profile.jpg')`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center top',
-            opacity: 0.045,
-            filter: 'blur(60px) saturate(0.6)',
+            zIndex: -1,
+            opacity: 0.08,
+            filter: 'blur(55px) saturate(0.5) brightness(0.7)',
           }}
         />
         <div className="grid lg:grid-cols-12 gap-12 items-center w-full z-10">
@@ -1087,7 +1087,7 @@ const App = () => {
               }`}
             >
               {[
-                { icon: <Github size={20} />, href: "https://github.com" },
+                { icon: <Github size={20} />, href: "https://github.com/UdayPatnala" },
                 { icon: <Linkedin size={20} />, href: "https://linkedin.com/in/patnala-uday-kumar" },
                 { icon: <Mail size={20} />, href: "mailto:udaypatnala5@gmail.com" },
                 { icon: <Phone size={20} />, href: "tel:+919703660750" }
@@ -1169,10 +1169,11 @@ const App = () => {
             >
               {/* Office profile pic — static portrait with 3D tilt */}
               <img 
-                src="profile-office.jpg"
+                src="/profile-office.jpg"
                 alt="Patnala Uday Kumar — Office Portrait"
-                className="absolute w-full h-full object-cover object-top filter grayscale contrast-115 brightness-95 group-hover:grayscale-0 group-hover:contrast-100 group-hover:brightness-100 transition-all duration-700 select-none pointer-events-none"
+                className="absolute w-full h-full object-cover filter grayscale contrast-115 brightness-95 group-hover:grayscale-0 group-hover:contrast-100 group-hover:brightness-100 transition-all duration-700 select-none pointer-events-none"
                 style={{
+                  objectPosition: 'center 15%',
                   maskImage: 'radial-gradient(circle, rgba(0,0,0,1) 45%, rgba(0,0,0,0.1) 85%, rgba(0,0,0,0) 100%)',
                   WebkitMaskImage: 'radial-gradient(circle, rgba(0,0,0,1) 45%, rgba(0,0,0,0.1) 85%, rgba(0,0,0,0) 100%)'
                 }}
@@ -1525,21 +1526,22 @@ const App = () => {
             <div className="lg:col-span-5 space-y-8">
               {/* Suit/Professional photo card in contact sidebar */}
               <motion.div
-                className="group relative rounded-2xl overflow-hidden border border-emerald-500/10 shadow-xl mb-2"
-                style={{ maxHeight: 200 }}
-                animate={{ y: [0, -6, 0] }}
+                className="group relative rounded-2xl overflow-hidden border border-emerald-500/20 shadow-2xl mb-2"
+                animate={{ y: [0, -7, 0] }}
                 transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
                 whileHover={{ scale: 1.03 }}
               >
                 <img
-                  src="profile-suit.jpg"
+                  src="/profile-suit.jpg"
                   alt="Patnala Uday Kumar — Professional"
-                  className="w-full h-48 object-cover object-top filter grayscale group-hover:grayscale-0 transition-all duration-700 select-none"
+                  className="w-full h-56 object-cover filter grayscale group-hover:grayscale-0 transition-all duration-700 select-none"
+                  style={{ objectPosition: 'center 20%' }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-                <span className={`absolute bottom-3 left-4 text-[10px] font-mono font-bold tracking-widest ${
-                  isDarkMode ? 'text-emerald-400' : 'text-emerald-300'
-                }`}>// PATNALA UDAY KUMAR</span>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent pointer-events-none" />
+                <div className="absolute bottom-0 left-0 right-0 px-4 py-3">
+                  <span className="text-[10px] font-mono font-bold tracking-widest text-emerald-400">// PATNALA UDAY KUMAR</span>
+                  <p className="text-[9px] text-white/50 font-mono mt-0.5">Associate Software Engineer</p>
+                </div>
               </motion.div>
 
               <h3 className={`text-2xl font-bold font-mono transition-colors duration-300 ${
