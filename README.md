@@ -1,53 +1,73 @@
 # 🌌 Premium Data Science & Full-Stack Portfolio
 
 <div align="center">
-  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
-  <img src="https://img.shields.io/badge/Tailwind_CSS_v4-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind v4" />
-  <img src="https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white" alt="Framer Motion" />
-  <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
-  <img src="https://img.shields.io/badge/License-MIT-emerald?style=for-the-badge" alt="License" />
+  <!-- Inline Glowing SVG Logo -->
+  <svg width="120" height="120" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="readme-u-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#10b981" />
+        <stop offset="100%" stop-color="#06b6d4" />
+      </linearGradient>
+      <linearGradient id="readme-k-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#8b5cf6" />
+        <stop offset="100%" stop-color="#ec4899" />
+      </linearGradient>
+    </defs>
+    <circle cx="50" cy="50" r="42" stroke="#10b981" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.3" />
+    <path d="M 28 25 L 28 58 A 12 12 0 0 0 52 58 L 52 25" stroke="url(#readme-u-grad)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M 52 43 L 72 23 M 52 43 L 72 63" stroke="url(#readme-k-grad)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+  </svg>
+  
+  <h1>Patnala Uday Kumar</h1>
+  <p><b>Associate Software Engineer & Data Science Specialist</b></p>
+
+  <p align="center">
+    <img src="https://img.shields.io/badge/React_19-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
+    <img src="https://img.shields.io/badge/Tailwind_CSS_v4-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind v4" />
+    <img src="https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white" alt="Framer Motion" />
+    <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
+    <img src="https://img.shields.io/badge/License-MIT-emerald?style=for-the-badge" alt="License" />
+  </p>
+  
+  <p>
+    A premium, highly-interactive, dual-theme developer portfolio custom-crafted for recruiters and corporate hiring managers. Built with <b>React</b>, <b>Tailwind CSS v4</b>, and <b>Framer Motion</b>.
+  </p>
 </div>
 
-<p align="center">
-  A premium, highly-interactive, dual-theme developer portfolio custom-crafted for <b>Patnala Uday Kumar</b>. Built with <b>React</b>, <b>Tailwind CSS v4</b>, and <b>Framer Motion</b>, it showcases computer science expertise with a focus on Data Science, ML pipelines, and Full-Stack Systems.
-</p>
+---
+
+## ⚡ Interactive Features & Animation Details
+
+This website features advanced visual interactions designed to impress engineering teams:
+
+*   **Self-Drawing Brand Logo:** A custom geometric **UK** logo that draws its vector lines dynamically upon load using Framer Motion SVG path interpolation.
+*   **Active Section Scroll Spy:** An IntersectionObserver monitors which section is currently active and animates a gradient accent bar sliding smoothly across navigation menu buttons.
+*   **3D Layered Parallax Profile:** Moving the mouse tilts the hero profile assembly:
+    *   *Back:* Ambient glow radial layer `translateZ(-40px)`.
+    *   *Mid-Back:* Spinning orbit ring `translateZ(10px)`.
+    *   *Mid-Front:* Counter-spinning dashed orbit ring `translateZ(30px)`.
+    *   *Front:* Radial-gradient masked portrait photo `translateZ(50px)`.
+*   **3D Viewport Unfold Scroll:** Outer section envelopes are mounted inside 3D perspective scroll triggers that unfold from the page as the visitor scrolls down.
+*   **Glowing Trailer Cursor:** Custom-morphic diamond trails that snap, rotate, and expand into target crosshairs when hovering over buttons, inverting colors of text beneath.
+*   **Micro-Interactive Project Tags:** Individual technology stack badges dynamically scale and light up in category-specific neon colors (emerald, cyan) when hovered.
+*   **3D SGD Loss landscape:** Interactive visualizer representing a mathematical gradient loss field. Click and drag to rotate the field in 3D canvas coordinates.
 
 ---
 
-## ⚡ Key Highlights & Visual Flair
+## 📂 Featured Capstones (Recruiter-First Curation)
 
-This portfolio is not just a static page—it is designed to showcase engineering capabilities through interactive, math-oriented visualizations:
+The portfolio showcases Uday's highest quality full-stack & data science Capstones:
 
-*   **Ambient Particle Canvas:** A canvas-based node network drifting and connecting dynamically, reacting to cursor proximity (simulating neural networks or data clusters).
-*   **Antigravity Custom Cursor:** A custom cursor trail utilizing spring physics:
-    *   *Inner Precise Dot:* Emerald green target selector.
-    *   *Outer X-Ray Circle:* Powered by CSS `mix-blend-difference` to invert the colors of all text, buttons, and headings underneath it. It morphs into a rounded-corner badge on interactive targets.
-*   **Parallax 3D Profile Frame:** An interactive tilt card containing portrait options, featuring real-time mouse-tracking tilt angles and light glares.
-*   **3D Stochastic Gradient Descent Optimizer:** An interactive 3D loss landscape simulating gradient descent optimization. Users can click and drag to rotate the landscape in 3D space.
-*   **Dual UI Blueprint Theme:**
-    *   *Dark Mode (Terminal):* Obsidian background with glowing emerald green, mint teal, and amber mathematical matrix cues.
-    *   *Light Mode (Blueprint):* Crisp slate-50 background styled as a green engineering graph paper grid.
-
----
-
-## 📂 Project Showcase (Vercel Integrations)
-
-The capstone archives display real, local workspaces backed by active Vercel deployments, complete with embedded interface screenshots:
-
-| Project | Description | Stack | Live Preview |
+| Capstone | Core Architecture | Tech Stack | Live Demo |
 | :--- | :--- | :--- | :--- |
-| **Music Mirror** | Real-time facial expression music player | React, FastAPI, face-api.js, Python | [Explore](https://music-mirror.vercel.app) |
-| **Nebula Cinematic Gallery** | AI memory album with local folder ingest | React, Express, Firebase, Gemini API, Dexie.js | [Explore](https://nebula-nmo.vercel.app) |
-| **JavaPath Pro** | Corporate ticket sandbox learning platform | React, Node.js, SQLite, Gemini API | [Explore](https://javapath-pro.vercel.app) |
-| **Spedex Fintech** | Spend index and payment velocity dashboard | Spring Boot, React Native, Expo, Kotlin | [Explore](https://spe-dex.vercel.app) |
-| **SkyFlow Weather** | Stream ingestion & structured logging pipeline | Python, Pandas, Streamlit, Open-Meteo | [Explore](https://uday-skyflow.vercel.app) |
-| **Churn Prediction** | Model pipeline probability estimator | Scikit-learn, FastAPI, Streamlit, Joblib | [Explore](https://churn-prediction-system.vercel.app) |
-| **TaskMaster Pro** | Passcode-secured workflow workspace | React, Radix UI, Framer Motion, Docker | [Explore](https://uday-taskmaster-pro.vercel.app) |
-| **JobFlow Copilot** | Compliant resume keywords adaptor | HTML5, Vanilla JS, Gemini API, PowerShell | [Explore](https://uday-jobflow-copilot.vercel.app) |
+| **Music Mirror** | Real-time computer vision mood recognition musicrecommendation engine. | React, FastAPI, face-api.js, Python, Webcam API | [Explore Live](https://music-mirror.vercel.app) |
+| **Nebula Gallery** | AI-assisted memory album with local folder ingest, indexing, and duplicate filters. | React, Node.js, Firebase, Gemini API, Dexie.js, GSAP | [Explore Live](https://nebula-nmo.vercel.app) |
+| **JavaPath Pro** | Full-stack Java concepts sandbox learning platform with an adaptive AI mentor. | React, Vite, Node.js, Express, SQLite, Gemini API | [Explore Live](https://javapath-pro.vercel.app) |
+| **Spedex Fintech** | Spend index and payment velocity aggregation dashboard. | Spring Boot, React Native, Expo, Kotlin, JWT | [Explore Live](https://spe-dex.vercel.app) |
 
 ---
 
-## 🛠️ Architecture & Tech Stack
+## 🛠️ System Architecture
 
 ```mermaid
 graph TD
@@ -55,26 +75,25 @@ graph TD
     B --> C[App.jsx]
     C --> D[ParticleBackground.jsx]
     C --> E[CustomCursor.jsx]
-    C --> F[Hero3DCard.jsx]
+    C --> F[Logo.jsx Component]
     C --> G[DataScienceVisualizer.jsx]
     C --> H[ProjectCard.jsx]
-    C --> I[Telemetry Form]
+    C --> I[Telemetry Nodes Form]
 ```
 
-- **Core Framework:** React 19 (Vite)
-- **Styling Engine:** Tailwind CSS v4.0 (combining modern utility tokens and custom glassmorphism filters)
-- **Animation Engine:** Framer Motion (for smooth 3D tilting, layout transitions, and scroll animations)
-- **Database (Client-side):** LocalStorage for telemetry form submissions and theme preference caching.
+- **Runtime Environment:** React 19 (Vite)
+- **Styling Paradigm:** Tailwind CSS v4.0 (Custom HSL theme tokens, glassmorphism card components, and floating glow filters)
+- **Physics & Transforms:** Framer Motion spring controls & canvas pixel matrices
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Local Deployment
 
 ### Prerequisites
 
 Ensure you have **Node.js 20** or newer installed.
 
-### Installation
+### Installation & Run
 
 1.  **Clone the Repository:**
     ```bash
@@ -87,20 +106,20 @@ Ensure you have **Node.js 20** or newer installed.
     npm install
     ```
 
-3.  **Run Development Server:**
+3.  **Boot Local Development Server:**
     ```bash
     npm run dev
     ```
     Open `http://localhost:5173` in your browser.
 
-4.  **Build Production Bundle:**
+4.  **Produce Production Assets:**
     ```bash
     npm run build
     ```
-    The optimized assets will be outputted to the `dist/` directory.
+    The compiled bundle will compile to the `dist/` directory.
 
 ---
 
 <div align="center">
-  <sub>Built with ❤️ by Patnala Uday Kumar</sub>
+  <sub>Designed & Developed with ❤️ by Patnala Uday Kumar</sub>
 </div>

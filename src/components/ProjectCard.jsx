@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { ExternalLink, Cpu, Database, Layout } from 'lucide-react';
 
 const Github = ({ size = 18, className = "" }) => (
@@ -22,6 +22,35 @@ const Github = ({ size = 18, className = "" }) => (
 
 const ProjectCard = ({ project, isDarkMode }) => {
   const { title, description, tags, category, highlights, github, live, type, image } = project;
+  
+  const cardRef = useRef(null);
+  const x = useMotionValue(0.5);
+  const y = useMotionValue(0.5);
+
+  // Smooth springs for high-fidelity interactive tilt
+  const rotateX = useSpring(useTransform(y, [0, 1], [10, -10]), { stiffness: 220, damping: 22 });
+  const rotateY = useSpring(useTransform(x, [0, 1], [-10, 10]), { stiffness: 220, damping: 22 });
+
+  // Pixel coordinates tracking inside the card for background spotlight glow
+  const glowX = useMotionValue(0);
+  const glowY = useMotionValue(0);
+
+  const handleMouseMove = (e) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const mouseX = (e.clientX - rect.left) / rect.width;
+    const mouseY = (e.clientY - rect.top) / rect.height;
+    
+    x.set(mouseX);
+    y.set(mouseY);
+    glowX.set(e.clientX - rect.left);
+    glowY.set(e.clientY - rect.top);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0.5);
+    y.set(0.5);
+  };
 
   // Icon mapping depending on type
   const getCategoryIcon = () => {
@@ -66,25 +95,46 @@ const ProjectCard = ({ project, isDarkMode }) => {
 
   return (
     <motion.div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       initial={{ opacity: 0, y: 35, rotateX: 10 }}
       whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
       viewport={{ once: true, margin: '-40px' }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      whileHover={{ 
-        y: -10, 
-        rotateX: 3, 
-        rotateY: -3, 
-        z: 15 
+      whileHover={{ y: -6, z: 15 }}
+      style={{ 
+        rotateX, 
+        rotateY, 
+        transformStyle: 'preserve-3d', 
+        perspective: 1000 
       }}
-      style={{ transformStyle: 'preserve-3d', perspective: 1000 }}
-      className={`group flex flex-col justify-between p-6 rounded-2xl glass-panel border transition-all duration-300 ${
+      className={`group flex flex-col justify-between p-6 rounded-2xl glass-panel border transition-all duration-300 relative overflow-hidden ${
         isDarkMode ? 'border-white/5' : 'border-emerald-500/10'
       } ${getHoverBorderColor()}`}
     >
-      <div style={{ transform: 'translateZ(10px)' }}>
+      {/* Dynamic Cursor Spotlight Glow background */}
+      <motion.div
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl z-0"
+        style={{
+          background: useTransform(
+            [glowX, glowY],
+            ([gx, gy]) => `radial-gradient(280px circle at ${gx}px ${gy}px, ${
+              type === 'ml' 
+                ? 'rgba(16,185,129,0.06)' 
+                : 'rgba(6,182,212,0.06)'
+            }, transparent 80%)`
+          )
+        }}
+      />
+
+      <div className="z-10" style={{ transform: 'translateZ(15px)', transformStyle: 'preserve-3d' }}>
         {/* Project Screenshot */}
         {image && (
-          <div className="relative w-full h-44 mb-4 overflow-hidden rounded-xl border border-black/10 dark:border-white/5 bg-slate-950/20">
+          <div 
+            style={{ transform: 'translateZ(30px)' }}
+            className="relative w-full h-44 mb-4 overflow-hidden rounded-xl border border-black/10 dark:border-white/5 bg-slate-950/20 shadow-md"
+          >
             <img 
               src={image} 
               alt={`${title} Interface`}
@@ -95,33 +145,39 @@ const ProjectCard = ({ project, isDarkMode }) => {
         )}
 
         {/* Top Header */}
-        <div className="flex justify-between items-center mb-4">
+        <div style={{ transform: 'translateZ(20px)' }} className="flex justify-between items-center mb-4">
           <span className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-mono border rounded-full ${getBadgeColor()}`}>
             {getCategoryIcon()}
             {category}
           </span>
           <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest">
-            {type === 'ml' ? 'DATA SCIENCE' : type === 'web' ? 'FULL STACK' : 'SYSTEMS'}
+            {type === 'ml' ? 'DATA SCIENCE' : 'FULL STACK'}
           </span>
         </div>
 
         {/* Title */}
-        <h3 className={`text-xl font-bold mb-2 transition-colors duration-300 ${
-          isDarkMode ? 'text-white' : 'text-slate-900'
-        }`}>
+        <h3 
+          style={{ transform: 'translateZ(25px)' }}
+          className={`text-xl font-bold mb-2 transition-colors duration-300 ${
+            isDarkMode ? 'text-white' : 'text-slate-900'
+          }`}
+        >
           {title}
         </h3>
 
         {/* Description */}
-        <p className={`text-sm leading-relaxed mb-4 transition-colors duration-300 ${
-          isDarkMode ? 'text-gray-400' : 'text-slate-600'
-        }`}>
+        <p 
+          style={{ transform: 'translateZ(18px)' }}
+          className={`text-sm leading-relaxed mb-4 transition-colors duration-300 ${
+            isDarkMode ? 'text-gray-400' : 'text-slate-650'
+          }`}
+        >
           {description}
         </p>
 
         {/* Technical Highlights */}
         {highlights && highlights.length > 0 && (
-          <ul className="space-y-1.5 mb-6">
+          <ul style={{ transform: 'translateZ(12px)' }} className="space-y-1.5 mb-6">
             {highlights.map((h, i) => (
               <li key={i} className="flex items-start text-xs text-gray-450">
                 <span className="text-emerald-500 mr-2 mt-0.5">•</span>
@@ -132,20 +188,26 @@ const ProjectCard = ({ project, isDarkMode }) => {
         )}
       </div>
 
-      <div style={{ transform: 'translateZ(5px)' }}>
+      <div className="z-10" style={{ transform: 'translateZ(10px)' }}>
         {/* Tech Tags */}
         <div className="flex flex-wrap gap-1.5 mb-5">
           {tags.map((tag) => (
-            <span
+            <motion.span
               key={tag}
-              className={`text-[10px] font-mono px-2 py-0.5 border rounded transition-colors duration-300 ${
+              whileHover={{ 
+                scale: 1.05, 
+                y: -1, 
+                borderColor: type === 'ml' ? 'rgba(16, 185, 129, 0.4)' : 'rgba(6, 182, 212, 0.4)',
+                backgroundColor: type === 'ml' ? 'rgba(16, 185, 129, 0.08)' : 'rgba(6, 182, 212, 0.08)'
+              }}
+              className={`text-[10px] font-mono px-2 py-0.5 border rounded transition-all duration-200 ${
                 isDarkMode 
                   ? 'bg-[#08121e] border-white/5 text-gray-300' 
                   : 'bg-emerald-500/5 border-emerald-500/10 text-slate-700'
               }`}
             >
               {tag}
-            </span>
+            </motion.span>
           ))}
         </div>
 
@@ -174,10 +236,10 @@ const ProjectCard = ({ project, isDarkMode }) => {
               href={live}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-1 text-xs font-bold text-emerald-500 hover:text-emerald-600 transition-colors"
+              className="inline-flex items-center gap-1 text-xs font-bold text-emerald-500 hover:text-emerald-600 transition-colors group/btn"
             >
               Explore Vercel
-              <ExternalLink size={12} />
+              <ExternalLink size={12} className="transition-transform duration-300 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
             </a>
           ) : (
             <span className={`text-[10px] font-mono ${isDarkMode ? 'text-gray-650' : 'text-slate-400'}`}>In Development</span>

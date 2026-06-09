@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useSpring, useMotionValue, useTransform } from 'framer-motion';
 import { 
   Mail, 
   Phone, 
@@ -67,6 +67,59 @@ const Linkedin = ({ size = 20, className = "" }) => (
     <rect width="4" height="12" x="2" y="9" />
     <circle cx="4" cy="4" r="2" />
   </svg>
+);
+
+// --- CUSTOM SVG LOGO COMPONENT ---
+
+const Logo = ({ size = 28, className = "", isDarkMode = true }) => (
+  <motion.svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="0 0 100 100" 
+    fill="none"
+    width={size}
+    height={size}
+    className={className}
+    whileHover={{ scale: 1.1, rotate: 8 }}
+    transition={{ type: "spring", stiffness: 400, damping: 12 }}
+  >
+    <defs>
+      <linearGradient id="logo-u-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#10b981" />
+        <stop offset="100%" stop-color="#06b6d4" />
+      </linearGradient>
+      <linearGradient id="logo-k-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#8b5cf6" />
+        <stop offset="100%" stop-color="#ec4899" />
+      </linearGradient>
+    </defs>
+    
+    {/* Inner dashed ring */}
+    <circle cx="50" cy="50" r="42" stroke="currentColor" strokeWidth="1.5" strokeDasharray="4 2" className="opacity-25" />
+    
+    {/* U-Path */}
+    <motion.path 
+      d="M 28 25 L 28 58 A 12 12 0 0 0 52 58 L 52 25" 
+      stroke="url(#logo-u-grad)" 
+      strokeWidth="8" 
+      strokeLinecap="round" 
+      strokeLinejoin="round"
+      initial={{ pathLength: 0 }}
+      animate={{ pathLength: 1 }}
+      transition={{ duration: 1.2, ease: "easeInOut" }}
+    />
+          
+    {/* K-Diagonals */}
+    <motion.path 
+      d="M 52 43 L 72 23 M 52 43 L 72 63" 
+      stroke="url(#logo-k-grad)" 
+      strokeWidth="8" 
+      strokeLinecap="round" 
+      strokeLinejoin="round"
+      initial={{ pathLength: 0 }}
+      animate={{ pathLength: 1 }}
+      transition={{ duration: 1.2, ease: "easeInOut", delay: 0.25 }}
+    />
+  </motion.svg>
 );
 
 // --- DATASET DEFINITIONS ---
@@ -254,9 +307,57 @@ const App = () => {
   // Scroll to Top float button visibility
   const [showScrollTop, setShowScrollTop] = useState(false);
 
+  // Active section for sliding nav underline indicator
+  const [activeSection, setActiveSection] = useState('hero');
+
   // Contact form submission state
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
   const [formStatus, setFormStatus] = useState('idle');
+
+  // Parallax mouse movements for the profile visual
+  const heroX = useMotionValue(0.5);
+  const heroY = useMotionValue(0.5);
+  
+  const heroRotateX = useSpring(useTransform(heroY, [0, 1], [12, -12]), { stiffness: 150, damping: 22 });
+  const heroRotateY = useSpring(useTransform(heroX, [0, 1], [-12, 12]), { stiffness: 150, damping: 22 });
+
+  const handleHeroMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const xVal = (e.clientX - rect.left) / rect.width;
+    const yVal = (e.clientY - rect.top) / rect.height;
+    heroX.set(xVal);
+    heroY.set(yVal);
+  };
+
+  const handleHeroMouseLeave = () => {
+    heroX.set(0.5);
+    heroY.set(0.5);
+  };
+
+  // Scroll spy IntersectionObserver for Navbar active states
+  useEffect(() => {
+    const sections = ['hero', 'arsenal', 'portfolio', 'academic', 'connect'];
+    const observers = sections.map((secId) => {
+      const el = document.getElementById(secId);
+      if (!el) return null;
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setActiveSection(secId);
+          }
+        },
+        { threshold: 0.2, rootMargin: "-80px 0px -80px 0px" }
+      );
+      observer.observe(el);
+      return { observer, el };
+    });
+
+    return () => {
+      observers.forEach((obs) => {
+        if (obs) obs.observer.unobserve(obs.el);
+      });
+    };
+  }, []);
 
   // Synchronize layout theme body class
   useEffect(() => {
@@ -370,39 +471,64 @@ const App = () => {
         <div className="max-w-7xl mx-auto h-full px-6 flex items-center justify-between">
           <div 
             onClick={() => scrollToSection('hero')} 
-            className="flex items-center gap-1.5 cursor-pointer font-bold tracking-widest text-lg font-mono text-emerald-500 group"
+            className="flex items-center gap-2 cursor-pointer font-bold tracking-widest text-lg font-mono text-emerald-500 group"
           >
-            <span className={isDarkMode ? 'text-white group-hover:text-emerald-400 transition-colors' : 'text-slate-900 group-hover:text-emerald-600 transition-colors'}>UDAY</span>
-            <span className="text-emerald-500 group-hover:text-cyan-400 transition-colors">.DS</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <Logo size={28} className={isDarkMode ? 'text-emerald-400' : 'text-emerald-600'} isDarkMode={isDarkMode} />
+            <div className="flex flex-col leading-none">
+              <span className={`text-sm tracking-wider font-extrabold ${isDarkMode ? 'text-white group-hover:text-emerald-400 transition-colors' : 'text-slate-900 group-hover:text-emerald-600 transition-colors'}`}>UDAY</span>
+              <span className="text-[10px] text-emerald-500 font-bold tracking-widest group-hover:text-cyan-400 transition-colors">.DS</span>
+            </div>
           </div>
 
           {/* Desktop Nav Links */}
-          <nav className="hidden lg:flex items-center gap-6 text-sm font-mono text-gray-400">
-            {['Arsenal', 'Portfolio', 'Academic', 'Connect'].map((section) => (
-              <button
-                key={section}
-                onClick={() => scrollToSection(section.toLowerCase())}
-                className={`transition-colors relative py-1 group cursor-none ${
-                  isDarkMode ? 'text-gray-400 hover:text-emerald-400' : 'text-slate-600 hover:text-emerald-600'
-                }`}
-              >
-                {section}
-                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-emerald-500 transition-all duration-300 group-hover:w-full" />
-              </button>
-            ))}
+          <nav className="hidden lg:flex items-center gap-6 text-sm font-mono">
+            {['Arsenal', 'Portfolio', 'Academic', 'Connect'].map((section) => {
+              const secId = section.toLowerCase();
+              const isActive = activeSection === secId;
+              return (
+                <button
+                  key={section}
+                  onClick={() => scrollToSection(secId)}
+                  className={`transition-all duration-200 relative py-1 px-1.5 group cursor-none font-semibold ${
+                    isActive 
+                      ? (isDarkMode ? 'text-emerald-400 font-bold' : 'text-emerald-600 font-bold')
+                      : (isDarkMode ? 'text-gray-400 hover:text-emerald-300' : 'text-slate-600 hover:text-emerald-555')
+                  }`}
+                >
+                  {section}
+                  {isActive && (
+                    <motion.span 
+                      layoutId="activeNavIndicator" 
+                      className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-full"
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                </button>
+              );
+            })}
 
             {/* Light/Dark Toggle Icon Button */}
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
-              className={`p-2 rounded-lg border transition-all duration-300 cursor-none ${
+              className={`p-2 rounded-lg border transition-all duration-300 cursor-none overflow-hidden ${
                 isDarkMode 
                   ? 'bg-white/5 border-white/5 text-emerald-400 hover:bg-white/10 hover:border-emerald-500/30' 
                   : 'bg-slate-100 border-slate-200 text-emerald-700 hover:bg-slate-200 hover:border-emerald-500/30'
               }`}
               title={isDarkMode ? "Switch to Light Blueprint" : "Switch to Dark Terminal"}
             >
-              {isDarkMode ? <Sun size={16} /> : <Moon size={16} />}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={isDarkMode ? "dark" : "light"}
+                  initial={{ rotate: -90, opacity: 0, scale: 0.8 }}
+                  animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                  exit={{ rotate: 90, opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.2 }}
+                  className="flex items-center justify-center"
+                >
+                  {isDarkMode ? <Sun size={16} /> : <Moon size={16} />}
+                </motion.div>
+              </AnimatePresence>
             </button>
 
             <button 
@@ -471,7 +597,10 @@ const App = () => {
       {/* --- HERO SECTION --- */}
       <section 
         id="hero" 
+        onMouseMove={handleHeroMouseMove}
+        onMouseLeave={handleHeroMouseLeave}
         className="relative min-h-screen flex flex-col justify-center items-center pt-24 pb-16 px-6 overflow-hidden max-w-7xl mx-auto"
+        style={{ perspective: 1200 }}
       >
         <div className="grid lg:grid-cols-12 gap-12 items-center w-full z-10">
           
@@ -574,11 +703,14 @@ const App = () => {
                 { icon: <Mail size={20} />, href: "mailto:udaypatnala5@gmail.com" },
                 { icon: <Phone size={20} />, href: "tel:+919703660750" }
               ].map((social, i) => (
-                <a 
+                <motion.a 
                   key={i}
                   href={social.href} 
                   target={social.href.startsWith('http') ? "_blank" : undefined}
                   rel={social.href.startsWith('http') ? "noreferrer" : undefined}
+                  whileHover={{ scale: 1.08, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 15 }}
                   className={`p-3 border rounded-xl transition-all duration-300 cursor-none ${
                     isDarkMode 
                       ? 'bg-white/5 border-white/5 text-gray-400 hover:text-emerald-400 hover:border-emerald-500/30 hover:bg-emerald-500/5' 
@@ -586,28 +718,59 @@ const App = () => {
                   }`}
                 >
                   {social.icon}
-                </a>
+                </motion.a>
               ))}
             </motion.div>
           </div>
 
-          {/* Right Profile Photo with Radial Mask */}
-          <div className="lg:col-span-5 relative flex items-center justify-center h-[400px] md:h-[500px]">
+          {/* Right Profile Photo with Radial Mask (layered 3D depth) */}
+          <motion.div 
+            style={{ 
+              rotateX: heroRotateX, 
+              rotateY: heroRotateY, 
+              transformStyle: "preserve-3d" 
+            }}
+            className="lg:col-span-5 relative flex items-center justify-center h-[400px] md:h-[500px]"
+          >
             {/* Soft glowing ambient circle behind the portrait */}
-            <div className="absolute w-72 h-72 md:w-80 md:h-80 bg-gradient-to-tr from-emerald-500/20 to-cyan-500/20 rounded-full blur-[80px] pointer-events-none animate-pulse" />
+            <div 
+              style={{ transform: 'translateZ(-40px)' }}
+              className="absolute w-72 h-72 md:w-80 md:h-80 bg-gradient-to-tr from-emerald-500/20 to-cyan-500/20 rounded-full blur-[80px] pointer-events-none animate-pulse" 
+            />
             
-            {/* Spinning decorative orbit ring */}
+            {/* Outer Spinning decorative orbit ring at Z-depth 10 */}
             <motion.div 
+              style={{ 
+                transform: 'translateZ(10px)', 
+                transformStyle: "preserve-3d" 
+              }}
               animate={{ rotate: 360 }} 
               transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
               className="absolute w-80 h-80 md:w-96 md:h-96 border border-emerald-500/10 dark:border-emerald-500/5 rounded-full pointer-events-none flex items-center justify-center"
             >
               <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/40 absolute -top-1" />
-              <div className="w-1 h-1 rounded-full bg-cyan-500/40 absolute -bottom-0.5" />
+              <div className="w-1.5 h-1.5 rounded-full bg-cyan-500/40 absolute -bottom-0.5" />
             </motion.div>
 
-            {/* Profile image with circular fade gradient mask */}
+            {/* Inner Counter-Spinning decorative orbit ring at Z-depth 30 */}
+            <motion.div 
+              style={{ 
+                transform: 'translateZ(30px)', 
+                transformStyle: "preserve-3d" 
+              }}
+              animate={{ rotate: -360 }} 
+              transition={{ duration: 32, repeat: Infinity, ease: "linear" }}
+              className="absolute w-76 h-76 md:w-90 md:h-90 border border-dashed border-cyan-500/10 dark:border-cyan-500/5 rounded-full pointer-events-none flex items-center justify-center"
+            >
+              <div className="w-1.5 h-1.5 rounded-full bg-cyan-400/30 absolute -left-0.5" />
+              <div className="w-1.5 h-1.5 rounded-full bg-purple-500/30 absolute -right-0.5" />
+            </motion.div>
+ 
+            {/* Profile image with circular fade gradient mask at Z-depth 50 */}
             <motion.div
+              style={{ 
+                transform: 'translateZ(50px)' 
+              }}
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1.2, ease: "easeOut" }}
@@ -623,152 +786,180 @@ const App = () => {
                 }}
               />
             </motion.div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* --- SKILLS SECTION (High Interaction + 3D loss surface) --- */}
-      <section id="arsenal" className="py-24 px-6 max-w-7xl mx-auto">
-        <div className="mb-16 text-center lg:text-left">
-          <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">// TECHNICAL COMPETENCE</span>
-          <h2 className={`text-3xl sm:text-5xl font-extrabold transition-colors duration-300 ${
-            isDarkMode ? 'text-white' : 'text-slate-900'
-          }`}>Technical Arsenal</h2>
-          <div className="h-[2px] w-20 bg-gradient-to-r from-emerald-500 to-cyan-500 mt-4 mx-auto lg:mx-0" />
-        </div>
-
-        {/* Skill card layout with 3D canvas projection */}
-        <div className="grid lg:grid-cols-12 gap-8 items-stretch">
-          
-          {/* Left: Skills Categories (Span 8) */}
-          <div className="lg:col-span-8 grid md:grid-cols-2 gap-6">
-            {SKILLS_DATA.map((cat, idx) => (
-              <motion.div
-                key={cat.category}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: idx * 0.08 }}
-                whileHover={{ 
-                  y: -6, 
-                  borderColor: cat.color,
-                  boxShadow: `0 0 30px ${cat.color.replace('0.4', '0.08')}` 
-                }}
-                className={`p-6 rounded-2xl glass-panel border transition-all duration-300 ${
-                  isDarkMode ? 'border-white/5' : 'border-emerald-500/10'
-                }`}
-              >
-                <div className="flex items-center gap-3 mb-6">
-                  <div className={`p-2.5 rounded-xl border transition-colors duration-300 ${
-                    isDarkMode ? 'bg-white/5 border-white/5' : 'bg-slate-100 border-slate-200'
-                  }`}>
-                    {cat.icon}
-                  </div>
-                  <h3 className={`text-lg font-bold font-mono transition-colors duration-300 ${
-                    isDarkMode ? 'text-white' : 'text-slate-800'
-                  }`}>{cat.category}</h3>
-                </div>
-
-                <div className="space-y-4">
-                  {cat.items.map((skill) => (
-                    <div key={skill.name} className="flex flex-col">
-                      <div className="flex justify-between items-center text-sm mb-1.5">
-                        <span className={`font-medium transition-colors duration-300 ${
-                          isDarkMode ? 'text-gray-200' : 'text-slate-700'
-                        }`}>{skill.name}</span>
-                        <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">
-                          {skill.level}
-                        </span>
-                      </div>
-                      <div className={`h-1 rounded-full overflow-hidden transition-colors duration-300 ${
-                        isDarkMode ? 'bg-white/5' : 'bg-slate-200'
-                      }`}>
-                        <motion.div 
-                          initial={{ width: 0 }}
-                          whileInView={{ 
-                            width: skill.level === 'Expert' ? '95%' : skill.level === 'Advanced' ? '80%' : '60%' 
-                          }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 1, ease: 'easeOut' }}
-                          className="h-full bg-gradient-to-r from-emerald-500 to-cyan-500" 
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Right: 3D Loss Landscape Visualizer (Span 4) */}
-          <div className="lg:col-span-4 flex flex-col justify-center">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="h-full"
-            >
-              <DataScienceVisualizer isDarkMode={isDarkMode} />
-            </motion.div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* --- FEATURED PROJECTS PORTFOLIO (Real Engineering focus) --- */}
-      <section id="portfolio" className="py-24 px-6 max-w-7xl mx-auto border-t border-emerald-500/5">
-        <div className="mb-12 text-center lg:text-left flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-          <div>
-            <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">// CAPSTONE ARCHIVES</span>
+      <section id="arsenal" className="py-24 px-6 max-w-7xl mx-auto overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, y: 45, rotateX: 6 }}
+          whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          style={{ transformOrigin: "top center", transformStyle: "preserve-3d" }}
+        >
+          <div className="mb-16 text-center lg:text-left">
+            <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">// TECHNICAL COMPETENCE</span>
             <h2 className={`text-3xl sm:text-5xl font-extrabold transition-colors duration-300 ${
               isDarkMode ? 'text-white' : 'text-slate-900'
-            }`}>Featured Projects</h2>
+            }`}>Technical Arsenal</h2>
             <div className="h-[2px] w-20 bg-gradient-to-r from-emerald-500 to-cyan-500 mt-4 mx-auto lg:mx-0" />
           </div>
 
-          {/* Filtering Controller controls */}
-          <div className={`flex flex-wrap gap-2 justify-center lg:justify-end p-1.5 rounded-xl border transition-colors duration-300 ${
-            isDarkMode ? 'bg-white/5 border-white/5' : 'bg-slate-100 border-slate-200'
-          }`}>
-            {[
-              { id: 'all', label: 'All Projects' },
-              { id: 'ml', label: 'Data Science & ML' },
-              { id: 'web', label: 'Full-Stack & Web' }
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setSelectedFilter(tab.id)}
-                className={`px-4 py-2 text-xs font-mono rounded-lg transition-all duration-300 cursor-none ${
-                  selectedFilter === tab.id
-                    ? 'bg-emerald-500 text-black font-bold shadow-[0_0_15px_rgba(16,185,129,0.35)]'
-                    : `hover:text-emerald-500 ${isDarkMode ? 'text-gray-400 hover:bg-white/5' : 'text-slate-600 hover:bg-slate-200'}`
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-        </div>
+          {/* Skill card layout with 3D canvas projection */}
+          <div className="grid lg:grid-cols-12 gap-8 items-stretch">
+            
+            {/* Left: Skills Categories (Span 8) */}
+            <div className="lg:col-span-8 grid md:grid-cols-2 gap-6">
+              {SKILLS_DATA.map((cat, idx) => (
+                <motion.div
+                  key={cat.category}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: idx * 0.08 }}
+                  whileHover={{ 
+                    y: -6, 
+                    borderColor: cat.color,
+                    boxShadow: `0 0 30px ${cat.color.replace('0.4', '0.08')}` 
+                  }}
+                  className={`p-6 rounded-2xl glass-panel border transition-all duration-300 ${
+                    isDarkMode ? 'border-white/5' : 'border-emerald-500/10'
+                  }`}
+                >
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className={`p-2.5 rounded-xl border transition-colors duration-300 ${
+                      isDarkMode ? 'bg-white/5 border-white/5' : 'bg-slate-100 border-slate-200'
+                    }`}>
+                      {cat.icon}
+                    </div>
+                    <h3 className={`text-lg font-bold font-mono transition-colors duration-300 ${
+                      isDarkMode ? 'text-white' : 'text-slate-800'
+                    }`}>{cat.category}</h3>
+                  </div>
 
-        {/* Filtered Project Cards Grid */}
-        <motion.div 
-          layout
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+                  <div className="space-y-4">
+                    {cat.items.map((skill) => (
+                      <motion.div 
+                        key={skill.name} 
+                        className="flex flex-col group/item"
+                        whileHover={{ x: 4 }}
+                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                      >
+                        <div className="flex justify-between items-center text-sm mb-1.5">
+                          <span className={`font-medium transition-colors duration-300 group-hover/item:text-emerald-500 dark:group-hover/item:text-emerald-400 ${
+                            isDarkMode ? 'text-gray-200' : 'text-slate-700'
+                          }`}>{skill.name}</span>
+                          <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded transition-transform group-hover/item:scale-105">
+                            {skill.level}
+                          </span>
+                        </div>
+                        <div className={`h-1 rounded-full overflow-hidden transition-colors duration-300 ${
+                          isDarkMode ? 'bg-white/5' : 'bg-slate-200'
+                        }`}>
+                          <motion.div 
+                            initial={{ width: 0 }}
+                            whileInView={{ 
+                              width: skill.level === 'Expert' ? '95%' : skill.level === 'Advanced' ? '80%' : '60%' 
+                            }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 1, ease: 'easeOut' }}
+                            className="h-full bg-gradient-to-r from-emerald-500 to-cyan-500" 
+                          />
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Right: 3D Loss Landscape Visualizer (Span 4) */}
+            <div className="lg:col-span-4 flex flex-col justify-center">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="h-full"
+              >
+                <DataScienceVisualizer isDarkMode={isDarkMode} />
+              </motion.div>
+            </div>
+
+          </div>
+        </motion.div>
+      </section>
+
+      {/* --- FEATURED PROJECTS PORTFOLIO (Real Engineering focus) --- */}
+      <section id="portfolio" className="py-24 px-6 max-w-7xl mx-auto border-t border-emerald-500/5 overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, y: 45, rotateX: 6 }}
+          whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          style={{ transformOrigin: "top center", transformStyle: "preserve-3d" }}
         >
-          <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project) => (
-              <ProjectCard key={project.title} project={project} isDarkMode={isDarkMode} />
-            ))}
-          </AnimatePresence>
+          <div className="mb-12 text-center lg:text-left flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+            <div>
+              <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">// CAPSTONE ARCHIVES</span>
+              <h2 className={`text-3xl sm:text-5xl font-extrabold transition-colors duration-300 ${
+                isDarkMode ? 'text-white' : 'text-slate-900'
+              }`}>Featured Projects</h2>
+              <div className="h-[2px] w-20 bg-gradient-to-r from-emerald-500 to-cyan-500 mt-4 mx-auto lg:mx-0" />
+            </div>
+
+            {/* Filtering Controller controls */}
+            <div className={`flex flex-wrap gap-2 justify-center lg:justify-end p-1.5 rounded-xl border transition-colors duration-300 ${
+              isDarkMode ? 'bg-white/5 border-white/5' : 'bg-slate-100 border-slate-200'
+            }`}>
+              {[
+                { id: 'all', label: 'All Projects' },
+                { id: 'ml', label: 'Data Science & ML' },
+                { id: 'web', label: 'Full-Stack & Web' }
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setSelectedFilter(tab.id)}
+                  className={`px-4 py-2 text-xs font-mono rounded-lg transition-all duration-300 cursor-none ${
+                    selectedFilter === tab.id
+                      ? 'bg-emerald-500 text-black font-bold shadow-[0_0_15px_rgba(16,185,129,0.35)]'
+                      : `hover:text-emerald-500 ${isDarkMode ? 'text-gray-400 hover:bg-white/5' : 'text-slate-650 hover:bg-slate-200'}`
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Filtered Project Cards Grid */}
+          <motion.div 
+            layout
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            <AnimatePresence mode="popLayout">
+              {filteredProjects.map((project) => (
+                <ProjectCard key={project.title} project={project} isDarkMode={isDarkMode} />
+              ))}
+            </AnimatePresence>
+          </motion.div>
         </motion.div>
       </section>
 
       {/* --- EDUCATION, CERTIFICATES & TRAINING (Consolidated Secondary Section) --- */}
-      <section id="academic" className={`py-24 border-t transition-colors duration-300 ${
+      <section id="academic" className={`py-24 border-t transition-colors duration-300 overflow-hidden ${
         isDarkMode ? 'bg-white/[0.01] border-white/5' : 'bg-slate-500/[0.01] border-emerald-500/10'
       }`}>
-        <div className="max-w-7xl mx-auto px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 45, rotateX: 6 }}
+          whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          style={{ transformOrigin: "top center", transformStyle: "preserve-3d" }}
+          className="max-w-7xl mx-auto px-6"
+        >
           <div className="grid lg:grid-cols-12 gap-12">
             
             {/* Education History (Span 6) */}
@@ -785,7 +976,7 @@ const App = () => {
                 {EDUCATION_DATA.map((edu) => (
                   <motion.div
                     key={edu.degree}
-                    whileHover={{ x: 6 }}
+                    whileHover={{ x: 6, scale: 1.01 }}
                     className={`p-6 rounded-2xl glass-panel border-l-4 ${edu.color} border-y border-r transition-all duration-300 ${
                       isDarkMode ? 'border-white/5' : 'border-emerald-500/10'
                     }`}
@@ -821,7 +1012,7 @@ const App = () => {
                 {CERTIFICATIONS.map((cert) => (
                   <motion.div
                     key={cert.title}
-                    whileHover={{ y: -4, borderColor: 'rgba(0, 245, 212, 0.4)' }}
+                    whileHover={{ y: -6, scale: 1.02, borderColor: 'rgba(0, 245, 212, 0.4)' }}
                     className={`flex items-start gap-3.5 p-4 rounded-xl glass-panel border transition-all duration-300 ${
                       isDarkMode ? 'border-white/5' : 'border-emerald-500/15'
                     }`}
@@ -856,7 +1047,7 @@ const App = () => {
                 {TRAINING_DATA.map((train) => (
                   <motion.div
                     key={train.role}
-                    whileHover={{ y: -4, borderColor: 'rgba(245, 158, 11, 0.4)' }}
+                    whileHover={{ y: -6, scale: 1.02, borderColor: 'rgba(245, 158, 11, 0.4)' }}
                     className={`p-4 rounded-xl glass-panel border transition-all duration-300 ${
                       isDarkMode ? 'border-white/5' : 'border-emerald-500/15'
                     }`}
@@ -883,12 +1074,19 @@ const App = () => {
             </div>
 
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* --- CONTACT & CONNECT --- */}
-      <section id="connect" className="py-24 px-6 border-t border-emerald-500/5 relative">
-        <div className="max-w-7xl mx-auto">
+      <section id="connect" className="py-24 px-6 border-t border-emerald-500/5 relative overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, y: 45, rotateX: 6 }}
+          whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          style={{ transformOrigin: "top center", transformStyle: "preserve-3d" }}
+          className="max-w-7xl mx-auto"
+        >
           <div className="mb-16 text-center">
             <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">// DIRECT INTERACTION</span>
             <h2 className={`text-3xl sm:text-5xl font-extrabold transition-colors duration-300 ${
@@ -973,7 +1171,7 @@ const App = () => {
                       onChange={handleInputChange}
                       required
                       placeholder="Uday Kumar"
-                      className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500/50 focus:bg-white/[0.08] transition-all cursor-none ${
+                      className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 focus:shadow-[0_0_15px_rgba(16,185,129,0.15)] focus:bg-white/[0.08] transition-all cursor-none ${
                         isDarkMode 
                           ? 'bg-white/5 border-white/5 text-white' 
                           : 'bg-slate-100 border-slate-200 text-slate-800 focus:bg-slate-50'
@@ -990,7 +1188,7 @@ const App = () => {
                       onChange={handleInputChange}
                       required
                       placeholder="udaypatnala5@gmail.com"
-                      className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500/50 focus:bg-white/[0.08] transition-all cursor-none ${
+                      className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 focus:shadow-[0_0_15px_rgba(16,185,129,0.15)] focus:bg-white/[0.08] transition-all cursor-none ${
                         isDarkMode 
                           ? 'bg-white/5 border-white/5 text-white' 
                           : 'bg-slate-100 border-slate-200 text-slate-800 focus:bg-slate-50'
@@ -1008,7 +1206,7 @@ const App = () => {
                     value={formData.subject}
                     onChange={handleInputChange}
                     placeholder="Associate Software Engineer Role Opportunities"
-                    className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500/50 focus:bg-white/[0.08] transition-all cursor-none ${
+                    className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 focus:shadow-[0_0_15px_rgba(16,185,129,0.15)] focus:bg-white/[0.08] transition-all cursor-none ${
                       isDarkMode 
                         ? 'bg-white/5 border-white/5 text-white' 
                         : 'bg-slate-100 border-slate-200 text-slate-800 focus:bg-slate-50'
@@ -1026,7 +1224,7 @@ const App = () => {
                     required
                     rows="5"
                     placeholder="Let's build something amazing together..."
-                    className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500/50 focus:bg-white/[0.08] transition-all cursor-none ${
+                    className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 focus:shadow-[0_0_15px_rgba(16,185,129,0.15)] focus:bg-white/[0.08] transition-all cursor-none ${
                       isDarkMode 
                         ? 'bg-white/5 border-white/5 text-white' 
                         : 'bg-slate-100 border-slate-200 text-slate-800 focus:bg-slate-50'
@@ -1063,7 +1261,7 @@ const App = () => {
             </div>
 
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* --- FOOTER --- */}
