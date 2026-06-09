@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useSpring, useMotionValue, useTransform } from 'framer-motion';
 import { 
   Mail, 
@@ -18,7 +18,9 @@ import {
   CheckCircle,
   FileText,
   Sun,
-  Moon
+  Moon,
+  Volume2,
+  VolumeX
 } from 'lucide-react';
 import { Typewriter } from 'react-simple-typewriter';
 
@@ -680,6 +682,52 @@ const ViewAllProjectsCard = ({ onClick, remainingCount, isDarkMode }) => {
 const App = () => {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
+
+  // Background music states & refs
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+  const audioRef = useRef(null);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = 0.15;
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!audioRef.current) return;
+    if (isMusicPlaying) {
+      audioRef.current.play().catch((err) => {
+        console.warn("Autoplay / playback blocked or failed:", err);
+        setIsMusicPlaying(false);
+      });
+    } else {
+      audioRef.current.pause();
+    }
+  }, [isMusicPlaying]);
+
+  useEffect(() => {
+    const handleFirstInteraction = () => {
+      if (audioRef.current && !isMusicPlaying) {
+        audioRef.current.play()
+          .then(() => {
+            setIsMusicPlaying(true);
+          })
+          .catch((err) => {
+            console.log("Interaction autoplay blocked or failed:", err);
+          });
+      }
+      document.removeEventListener('click', handleFirstInteraction);
+      document.removeEventListener('keydown', handleFirstInteraction);
+    };
+
+    document.addEventListener('click', handleFirstInteraction);
+    document.addEventListener('keydown', handleFirstInteraction);
+
+    return () => {
+      document.removeEventListener('click', handleFirstInteraction);
+      document.removeEventListener('keydown', handleFirstInteraction);
+    };
+  }, [isMusicPlaying]);
 
   // Theme Toggler state
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -1738,26 +1786,6 @@ const App = () => {
                     <span className={isDarkMode ? 'text-white' : 'text-slate-900'}>Andhra Pradesh, India</span>
                   </div>
                 </div>
-
-                <div className="flex items-center gap-4">
-                  <div className={`p-3 border rounded-xl text-purple-500 transition-colors duration-300 ${
-                    isDarkMode ? 'bg-white/5 border-white/5' : 'bg-slate-100 border-slate-200'
-                  }`}>
-                    <FileText size={18} />
-                  </div>
-                  <div>
-                    <span className="text-xs text-gray-500 block font-bold">&bull; CURRICULUM VITAE</span>
-                    <a 
-                      href="/PATNALA UDAY KUMAR.pdf" 
-                      download="PATNALA UDAY KUMAR.pdf"
-                      className={`font-bold transition-all duration-300 hover:scale-[1.02] flex items-center gap-1.5 cursor-none ${
-                        isDarkMode ? 'text-white hover:text-purple-400' : 'text-slate-900 hover:text-purple-600'
-                      }`}
-                    >
-                      Download Resume <ExternalLink size={12} className="opacity-70 animate-pulse" />
-                    </a>
-                  </div>
-                </div>
               </div>
             </div>
 
@@ -1881,6 +1909,79 @@ const App = () => {
           </div>
         </div>
       </footer>
+
+      {/* --- AUDIO SYSTEM SOURCE --- */}
+      <audio 
+        ref={audioRef} 
+        src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" 
+        loop 
+        preload="auto"
+      />
+
+      {/* --- CYBERNETIC SOUND / EQ CONTROLLER PILL --- */}
+      <div 
+        className={`fixed bottom-8 left-8 z-40 flex items-center h-12 rounded-full border transition-all duration-500 group pointer-events-auto shadow-lg px-3 gap-3 ${
+          isDarkMode 
+            ? 'bg-slate-950/65 border-emerald-500/20 shadow-emerald-500/5 hover:border-emerald-500/40 hover:bg-slate-950/85' 
+            : 'bg-white/75 border-emerald-500/20 shadow-emerald-500/5 hover:border-emerald-500/40 hover:bg-white/95'
+        } ${isMusicPlaying ? 'w-48' : 'w-12 hover:w-48'}`}
+      >
+        {/* Toggle Button */}
+        <button
+          onClick={() => setIsMusicPlaying(!isMusicPlaying)}
+          className={`flex items-center justify-center w-7 h-7 rounded-full transition-all duration-300 cursor-none ${
+            isMusicPlaying 
+              ? 'bg-emerald-500 text-black shadow-[0_0_12px_rgba(16,185,129,0.4)]' 
+              : 'bg-slate-500/10 text-gray-400 hover:text-emerald-400 hover:bg-slate-500/20'
+          }`}
+          title={isMusicPlaying ? "Pause Soundtrack" : "Play Ambient Soundtrack"}
+        >
+          {isMusicPlaying ? <Volume2 size={13} /> : <VolumeX size={13} />}
+        </button>
+
+        {/* EQ Soundwave Visualizer Bars */}
+        <div className="flex items-end gap-[2px] h-3.5 w-6 pb-[2px]">
+          {[
+            { delay: 0.1, duration: 0.8, min: 0.3, max: 1.0 },
+            { delay: 0.3, duration: 0.6, min: 0.4, max: 1.0 },
+            { delay: 0.0, duration: 0.7, min: 0.2, max: 1.0 },
+            { delay: 0.2, duration: 0.5, min: 0.5, max: 1.0 }
+          ].map((bar, idx) => (
+            <motion.div
+              key={idx}
+              className={`w-[3px] rounded-full origin-bottom ${
+                isMusicPlaying ? 'bg-emerald-400' : 'bg-gray-500/40'
+              }`}
+              style={{ height: '100%' }}
+              animate={isMusicPlaying ? {
+                scaleY: [1, bar.min, bar.max, 1]
+              } : {
+                scaleY: 0.2
+              }}
+              transition={isMusicPlaying ? {
+                duration: bar.duration,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: bar.delay
+              } : {
+                duration: 0.3
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Track Title Info */}
+        <div className="flex flex-col overflow-hidden text-left leading-tight w-24">
+          <span className={`text-[9px] font-bold font-mono tracking-wider truncate uppercase transition-colors duration-300 ${
+            isMusicPlaying ? 'text-emerald-400' : 'text-gray-500'
+          }`}>
+            Soundtrack
+          </span>
+          <span className="text-[8px] font-mono text-gray-500 truncate">
+            Ambient Synth
+          </span>
+        </div>
+      </div>
 
       {/* --- FLOAT BACK TO TOP BUTTON --- */}
       <AnimatePresence>
