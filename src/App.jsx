@@ -743,7 +743,13 @@ const App = () => {
   }, [currentTrackIndex]);
 
   useEffect(() => {
-    const handleFirstInteraction = () => {
+    const handleFirstInteraction = (e) => {
+      if (e && e.target && e.target.closest('.audio-controller-pill')) {
+        document.removeEventListener('click', handleFirstInteraction);
+        document.removeEventListener('keydown', handleFirstInteraction);
+        return;
+      }
+
       if (audioRef.current && !isMusicPlaying) {
         audioRef.current.play()
           .then(() => {
@@ -1966,7 +1972,7 @@ const App = () => {
 
       {/* --- CYBERNETIC SOUND / EQ CONTROLLER PILL --- */}
       <div 
-        className={`fixed bottom-8 left-8 z-40 flex items-center h-12 rounded-full border transition-all duration-500 group pointer-events-auto shadow-lg px-3 gap-3 ${
+        className={`audio-controller-pill fixed bottom-8 right-8 z-40 flex items-center h-12 rounded-full border transition-all duration-500 group pointer-events-auto shadow-lg px-3 gap-3 ${
           isDarkMode 
             ? 'bg-slate-950/65 border-emerald-500/20 shadow-emerald-500/5 hover:border-emerald-500/40 hover:bg-slate-950/85' 
             : 'bg-white/75 border-emerald-500/20 shadow-emerald-500/5 hover:border-emerald-500/40 hover:bg-white/95'
@@ -2050,7 +2056,7 @@ const App = () => {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="fixed bottom-8 right-8 p-3.5 bg-emerald-500 border border-emerald-400 rounded-full text-black hover:bg-emerald-400 hover:shadow-[0_0_20px_rgba(16,185,129,0.5)] z-40 transition-all duration-300 cursor-none"
+            className="fixed bottom-24 right-8 p-3.5 bg-emerald-500 border border-emerald-400 rounded-full text-black hover:bg-emerald-400 hover:shadow-[0_0_20px_rgba(16,185,129,0.5)] z-40 transition-all duration-300 cursor-none"
           >
             <ArrowUp size={18} />
           </motion.button>
