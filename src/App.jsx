@@ -1341,8 +1341,13 @@ const App = () => {
             className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
             <AnimatePresence mode="popLayout">
-              {(showAll ? filteredProjects : filteredProjects.slice(0, 3)).map((project) => (
-                <ProjectCard key={project.title} project={project} isDarkMode={isDarkMode} />
+              {(showAll ? filteredProjects : filteredProjects.slice(0, 3)).map((project, idx) => (
+                <ProjectCard 
+                  key={project.title} 
+                  project={project} 
+                  isDarkMode={isDarkMode}
+                  isExtra={showAll && idx >= 3}
+                />
               ))}
               
               {!showAll && filteredProjects.length > 3 && (
@@ -1532,10 +1537,10 @@ const App = () => {
                 whileHover={{ scale: 1.03 }}
               >
                 <img
-                  src="/profile-suit.jpg"
-                  alt="Patnala Uday Kumar — Professional"
+                  src="/profile.jpg"
+                  alt="Patnala Uday Kumar — Profile"
                   className="w-full h-56 object-cover filter grayscale group-hover:grayscale-0 transition-all duration-700 select-none"
-                  style={{ objectPosition: 'center 20%' }}
+                  style={{ objectPosition: 'center 18%' }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent pointer-events-none" />
                 <div className="absolute bottom-0 left-0 right-0 px-4 py-3">

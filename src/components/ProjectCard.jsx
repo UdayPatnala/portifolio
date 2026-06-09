@@ -20,7 +20,7 @@ const Github = ({ size = 18, className = "" }) => (
   </svg>
 );
 
-const ProjectCard = ({ project, isDarkMode }) => {
+const ProjectCard = ({ project, isDarkMode, isExtra = false }) => {
   const { title, description, tags, category, highlights, github, live, type, image } = project;
   
   const cardRef = useRef(null);
@@ -130,8 +130,8 @@ const ProjectCard = ({ project, isDarkMode }) => {
       />
 
       <div className="z-10" style={{ transform: 'translateZ(15px)', transformStyle: 'preserve-3d' }}>
-        {/* Project Screenshot */}
-        {image && !imgError && (
+        {/* Image slot — only for featured (non-extra) cards */}
+        {!isExtra && image && !imgError && (
           <div 
             style={{ transform: 'translateZ(30px)' }}
             className="relative w-full h-44 mb-4 overflow-hidden rounded-xl border border-black/10 dark:border-white/5 bg-slate-950/20 shadow-md"
@@ -146,8 +146,8 @@ const ProjectCard = ({ project, isDarkMode }) => {
           </div>
         )}
 
-        {/* Placeholder when image is unavailable */}
-        {(!image || imgError) && (
+        {/* Placeholder when image is unavailable (non-extra, errored) */}
+        {!isExtra && (!image || imgError) && (
           <div
             style={{ transform: 'translateZ(30px)' }}
             className={`relative w-full h-44 mb-4 overflow-hidden rounded-xl border flex items-center justify-center ${
@@ -166,6 +166,41 @@ const ProjectCard = ({ project, isDarkMode }) => {
               type === 'ml' ? 'from-emerald-900/20 to-transparent' : 'from-cyan-900/20 to-transparent'
             } pointer-events-none`} />
           </div>
+        )}
+
+        {/* Extra (show-more) cards: prominent GitHub link banner instead of image */}
+        {isExtra && github && (
+          <a
+            href={github}
+            target="_blank"
+            rel="noreferrer"
+            style={{ transform: 'translateZ(30px)' }}
+            className={`group/repo relative w-full h-14 mb-4 flex items-center gap-3 px-4 rounded-xl border transition-all duration-300 overflow-hidden ${
+              isDarkMode
+                ? 'bg-white/[0.03] border-white/8 hover:border-emerald-500/40 hover:bg-emerald-500/5'
+                : 'bg-slate-100 border-slate-200 hover:border-emerald-500/40 hover:bg-emerald-50'
+            }`}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`w-5 h-5 shrink-0 transition-colors ${
+              isDarkMode ? 'text-gray-400 group-hover/repo:text-emerald-400' : 'text-slate-500 group-hover/repo:text-emerald-600'
+            }`}>
+              <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+              <path d="M9 18c-4.51 2-5-2-7-2" />
+            </svg>
+            <div className="flex flex-col min-w-0">
+              <span className={`text-[10px] font-mono font-bold tracking-widest uppercase ${
+                isDarkMode ? 'text-gray-500' : 'text-slate-400'
+              }`}>// REPOSITORY</span>
+              <span className={`text-xs font-mono truncate transition-colors ${
+                isDarkMode ? 'text-gray-300 group-hover/repo:text-emerald-400' : 'text-slate-700 group-hover/repo:text-emerald-600'
+              }`}>{github.replace('https://github.com/', '')}</span>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`w-3.5 h-3.5 ml-auto shrink-0 opacity-0 group-hover/repo:opacity-100 transition-all duration-200 group-hover/repo:translate-x-0.5 group-hover/repo:-translate-y-0.5 ${
+              isDarkMode ? 'text-emerald-400' : 'text-emerald-600'
+            }`}>
+              <path d="M7 7h10v10" /><path d="M7 17 17 7" />
+            </svg>
+          </a>
         )}
 
         {/* Top Header */}
