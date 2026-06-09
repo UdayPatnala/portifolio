@@ -1471,8 +1471,8 @@ const App = () => {
                   <div>
                     <span className="text-xs text-gray-500 block font-bold">// CURRICULUM VITAE</span>
                     <a 
-                      href="/resume.pdf" 
-                      download="Patnala_Uday_Kumar_Resume.pdf"
+                      href="/PATNALA UDAY KUMAR.pdf" 
+                      download="PATNALA UDAY KUMAR.pdf"
                       className={`font-bold transition-all duration-300 hover:scale-[1.02] flex items-center gap-1.5 cursor-none ${
                         isDarkMode ? 'text-white hover:text-purple-400' : 'text-slate-900 hover:text-purple-600'
                       }`}
