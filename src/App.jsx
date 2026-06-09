@@ -432,7 +432,7 @@ const ShowcaseItem = ({ project, index, isDarkMode }) => {
 
   const isLeft = index % 2 === 0;
 
-  // Visual styling colors based on project
+  ? Visual styling colors based on project
   const getColors = (title) => {
     if (title.includes("Music")) {
       return {
@@ -579,7 +579,7 @@ const Scrolling3DImages = ({ isDarkMode }) => {
   const featuredTitles = ["Music Mirror", "Nebula Cinematic Gallery", "JavaPath Pro"];
   const featuredProjects = PROJECT_DATA.filter(p => featuredTitles.includes(p.title));
   
-  // Sort them to match the order: Music Mirror first, Nebula second, JavaPath Pro third
+  ? Sort them to match the order: Music Mirror first, Nebula second, JavaPath Pro third
   const sortedProjects = featuredTitles.map(title => featuredProjects.find(p => p.title === title)).filter(Boolean);
 
   return (
@@ -668,7 +668,7 @@ const App = () => {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
 
-  // Theme Toggler state
+  ? Theme Toggler state
   const [isDarkMode, setIsDarkMode] = useState(() => {
     try {
       const saved = localStorage.getItem('portfolio_theme');
@@ -680,27 +680,27 @@ const App = () => {
 
 
 
-  // Filter project cards
+  ? Filter project cards
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [filteredProjects, setFilteredProjects] = useState(PROJECT_DATA);
 
-  // Mobile menu navbar
+  ? Mobile menu navbar
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Scroll to Top float button visibility
+  ? Scroll to Top float button visibility
   const [showScrollTop, setShowScrollTop] = useState(false);
 
-  // Active section for sliding nav underline indicator
+  ? Active section for sliding nav underline indicator
   const [activeSection, setActiveSection] = useState('hero');
 
-  // Contact form submission state
+  ? Contact form submission state
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
   const [formStatus, setFormStatus] = useState('idle');
 
-  // State to control expansion of Featured Projects grid
+  ? State to control expansion of Featured Projects grid
   const [showAll, setShowAll] = useState(false);
 
-  // Parallax mouse movements for the profile visual
+  ? Parallax mouse movements for the profile visual
   const heroX = useMotionValue(0.5);
   const heroY = useMotionValue(0.5);
   
@@ -720,7 +720,7 @@ const App = () => {
     heroY.set(0.5);
   };
 
-  // Scroll spy IntersectionObserver for Navbar active states
+  ? Scroll spy IntersectionObserver for Navbar active states
   useEffect(() => {
     const sections = ['hero', 'arsenal', 'portfolio', 'academic', 'connect'];
     const observers = sections.map((secId) => {
@@ -745,7 +745,7 @@ const App = () => {
     };
   }, []);
 
-  // Synchronize layout theme body class
+  ? Synchronize layout theme body class
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.remove('light');
@@ -762,7 +762,7 @@ const App = () => {
   }, [isDarkMode]);
 
   useEffect(() => {
-    // Project filtering logic
+    ? Project filtering logic
     if (selectedFilter === 'all') {
       setFilteredProjects(PROJECT_DATA);
     } else {
@@ -772,7 +772,7 @@ const App = () => {
   }, [selectedFilter]);
 
   useEffect(() => {
-    // Scroll event listener for float button
+    ? Scroll event listener for float button
     const toggleVisibility = () => {
       if (window.scrollY > 500) {
         setShowScrollTop(true);
@@ -813,7 +813,7 @@ const App = () => {
             email: formData.email,
             subject: formData.subject || "New Message from Portfolio",
             message: formData.message,
-            _captcha: "false" // Disable captcha for seamless AJAX submission
+            _captcha: "false" ? Disable captcha for seamless AJAX submission
         })
       });
 
@@ -1205,7 +1205,7 @@ const App = () => {
           style={{ transformOrigin: "top center", transformStyle: "preserve-3d" }}
         >
           <div className="mb-16 text-center lg:text-left">
-            <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">// TECHNICAL COMPETENCE</span>
+            <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">? TECHNICAL COMPETENCE</span>
             <h2 className={`text-3xl sm:text-5xl font-extrabold transition-colors duration-300 ${
               isDarkMode ? 'text-white' : 'text-slate-900'
             }`}>Technical Arsenal</h2>
@@ -1288,7 +1288,7 @@ const App = () => {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
           <div className="mb-16 text-center">
-            <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">// VOLUMETRIC SYSTEM ARCHIVE</span>
+            <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">? VOLUMETRIC SYSTEM ARCHIVE</span>
             <h2 className={`text-3xl sm:text-5xl font-extrabold transition-colors duration-300 ${
               isDarkMode ? 'text-white' : 'text-slate-900'
             }`}>System Showcase</h2>
@@ -1313,7 +1313,7 @@ const App = () => {
         >
           <div className="mb-12 text-center lg:text-left flex flex-col lg:flex-row lg:items-end justify-between gap-6">
             <div>
-              <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">// CAPSTONE ARCHIVES</span>
+              <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">? CAPSTONE ARCHIVES</span>
               <h2 className={`text-3xl sm:text-5xl font-extrabold transition-colors duration-300 ${
                 isDarkMode ? 'text-white' : 'text-slate-900'
               }`}>Featured Projects</h2>
@@ -1407,7 +1407,7 @@ const App = () => {
             {/* Education History (Span 6) */}
             <div className="lg:col-span-6 space-y-8">
               <div>
-                <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">// ACADEMIC PATHWAYS</span>
+                <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">? ACADEMIC PATHWAYS</span>
                 <h2 className={`text-2xl sm:text-4xl font-extrabold transition-colors duration-300 ${
                   isDarkMode ? 'text-white' : 'text-slate-900'
                 }`}>Education</h2>
@@ -1443,7 +1443,7 @@ const App = () => {
             {/* Certifications (Span 3) */}
             <div className="lg:col-span-3 space-y-8">
               <div>
-                <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">// PROFESSIONAL CREDENTIALS</span>
+                <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">? PROFESSIONAL CREDENTIALS</span>
                 <h2 className={`text-2xl sm:text-4xl font-extrabold transition-colors duration-300 ${
                   isDarkMode ? 'text-white' : 'text-slate-900'
                 }`}>Certifications</h2>
@@ -1488,7 +1488,7 @@ const App = () => {
             {/* Technical Training & Internships (Span 3 - secondary representation) */}
             <div className="lg:col-span-3 space-y-8">
               <div>
-                <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">// TECHNICAL CREDENTIALS</span>
+                <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">? TECHNICAL CREDENTIALS</span>
                 <h2 className={`text-2xl sm:text-4xl font-extrabold transition-colors duration-300 ${
                   isDarkMode ? 'text-white' : 'text-slate-900'
                 }`}>Training</h2>
@@ -1540,7 +1540,7 @@ const App = () => {
           className="max-w-7xl mx-auto"
         >
           <div className="mb-16 text-center">
-            <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">// DIRECT INTERACTION</span>
+            <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">? DIRECT INTERACTION</span>
             <h2 className={`text-3xl sm:text-5xl font-extrabold transition-colors duration-300 ${
               isDarkMode ? 'text-white' : 'text-slate-900'
             }`}>Initialize Connect</h2>
@@ -1566,7 +1566,7 @@ const App = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent pointer-events-none" />
                 <div className="absolute bottom-0 left-0 right-0 px-4 py-3">
-                  <span className="text-[10px] font-mono font-bold tracking-widest text-emerald-400">// PATNALA UDAY KUMAR</span>
+                  <span className="text-[10px] font-mono font-bold tracking-widest text-emerald-400">? PATNALA UDAY KUMAR</span>
                   <p className="text-[9px] text-white/50 font-mono mt-0.5">Associate Software Engineer</p>
                 </div>
               </motion.div>
@@ -1588,7 +1588,7 @@ const App = () => {
                     <Mail size={18} />
                   </div>
                   <div>
-                    <span className="text-xs text-gray-500 block font-bold">// EMAIL ADDRESS</span>
+                    <span className="text-xs text-gray-500 block font-bold">? EMAIL ADDRESS</span>
                     <a href="mailto:udaypatnala5@gmail.com" className={`transition-colors ${
                       isDarkMode ? 'text-white hover:text-emerald-400' : 'text-slate-900 hover:text-emerald-600'
                     }`}>
@@ -1604,7 +1604,7 @@ const App = () => {
                     <Phone size={18} />
                   </div>
                   <div>
-                    <span className="text-xs text-gray-500 block font-bold">// PHONE NUMBER</span>
+                    <span className="text-xs text-gray-500 block font-bold">? PHONE NUMBER</span>
                     <a href="tel:+919703660750" className={`transition-colors ${
                       isDarkMode ? 'text-white hover:text-cyan-400' : 'text-slate-900 hover:text-cyan-600'
                     }`}>
@@ -1620,7 +1620,7 @@ const App = () => {
                     <MapPin size={18} />
                   </div>
                   <div>
-                    <span className="text-xs text-gray-500 block font-bold">// CURRENT LOCATION</span>
+                    <span className="text-xs text-gray-500 block font-bold">? CURRENT LOCATION</span>
                     <span className={isDarkMode ? 'text-white' : 'text-slate-900'}>Andhra Pradesh, India</span>
                   </div>
                 </div>
@@ -1632,7 +1632,7 @@ const App = () => {
                     <FileText size={18} />
                   </div>
                   <div>
-                    <span className="text-xs text-gray-500 block font-bold">// CURRICULUM VITAE</span>
+                    <span className="text-xs text-gray-500 block font-bold">? CURRICULUM VITAE</span>
                     <a 
                       href="/PATNALA UDAY KUMAR.pdf" 
                       download="PATNALA UDAY KUMAR.pdf"

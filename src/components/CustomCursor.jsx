@@ -31,6 +31,7 @@ class Particle {
 
 const CustomCursor = () => {
   const canvasRef = useRef(null);
+  const dotRef = useRef(null);
   const particlesRef = useRef([]);
   const mouseRef = useRef({ x: -9999, y: -9999 });
   const rafRef = useRef(null);
@@ -55,12 +56,12 @@ const CustomCursor = () => {
     if (isMobile) return;
 
     const canvas = canvasRef.current;
+    const dot = dotRef.current;
     const ctx = canvas.getContext('2d');
 
     const resize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      // Reinitialize particles on resize
       particlesRef.current = Array.from(
         { length: PARTICLE_COUNT },
         () => new Particle(canvas.width, canvas.height)
@@ -71,8 +72,23 @@ const CustomCursor = () => {
 
     const onMouseMove = (e) => {
       mouseRef.current = { x: e.clientX, y: e.clientY };
+      // Move DOM cursor dot instantly
+      if (dot) {
+        dot.style.transform = `translate(${e.clientX - 8}px, ${e.clientY - 8}px)`;
+        dot.style.opacity = '1';
+      }
     };
+
+    const onMouseLeave = () => {
+      if (dot) dot.style.opacity = '0';
+    };
+    const onMouseEnter = () => {
+      if (dot) dot.style.opacity = '1';
+    };
+
     window.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseleave', onMouseLeave);
+    document.addEventListener('mouseenter', onMouseEnter);
 
     const draw = () => {
       const w = canvas.width;
@@ -84,7 +100,6 @@ const CustomCursor = () => {
 
       const particles = particlesRef.current;
 
-      // Update positions, slightly attract nearby particles to cursor
       particles.forEach((p) => {
         const dx = mx - p.x;
         const dy = my - p.y;
@@ -93,7 +108,6 @@ const CustomCursor = () => {
           const force = (CURSOR_ATTRACT_DIST - dist) / CURSOR_ATTRACT_DIST;
           p.vx += (dx / dist) * force * 0.018;
           p.vy += (dy / dist) * force * 0.018;
-          // Speed cap
           const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
           if (speed > 1.4) {
             p.vx = (p.vx / speed) * 1.4;
@@ -103,7 +117,7 @@ const CustomCursor = () => {
         p.update(w, h);
       });
 
-      // Draw connection lines
+      // Particle-to-particle lines
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
@@ -120,7 +134,7 @@ const CustomCursor = () => {
           }
         }
 
-        // Lines from cursor to nearby particles
+        // Cursor-to-particle lines
         const cdx = mx - particles[i].x;
         const cdy = my - particles[i].y;
         const cdist = Math.sqrt(cdx * cdx + cdy * cdy);
@@ -135,31 +149,13 @@ const CustomCursor = () => {
         }
       }
 
-      // Draw particles
+      // Draw particles (dots)
       particles.forEach((p) => {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(16, 185, 129, ${p.opacity})`;
         ctx.fill();
       });
-
-      // Draw cursor dot
-      if (mx > 0 && my > 0) {
-        // Outer glow ring
-        const grad = ctx.createRadialGradient(mx, my, 0, mx, my, 18);
-        grad.addColorStop(0, 'rgba(16, 185, 129, 0.25)');
-        grad.addColorStop(1, 'rgba(16, 185, 129, 0)');
-        ctx.beginPath();
-        ctx.arc(mx, my, 18, 0, Math.PI * 2);
-        ctx.fillStyle = grad;
-        ctx.fill();
-
-        // Core dot
-        ctx.beginPath();
-        ctx.arc(mx, my, 3.5, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(16, 185, 129, 0.95)';
-        ctx.fill();
-      }
 
       rafRef.current = requestAnimationFrame(draw);
     };
@@ -170,6 +166,8 @@ const CustomCursor = () => {
       cancelAnimationFrame(rafRef.current);
       window.removeEventListener('resize', resize);
       window.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseleave', onMouseLeave);
+      document.removeEventListener('mouseenter', onMouseEnter);
       document.body.classList.remove('custom-cursor-active');
     };
   }, [isMobile]);
@@ -177,11 +175,31 @@ const CustomCursor = () => {
   if (isMobile) return null;
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="fixed inset-0 pointer-events-none"
-      style={{ zIndex: 9999 }}
-    />
+    <>
+      {/* Constellation canvas — behind all content */}
+      <canvas
+        ref={canvasRef}
+        className="fixed inset-0 pointer-events-none"
+        style={{ zIndex: 0 }}
+      />
+
+      {/* Bright cursor dot — always on top */}
+      <div
+        ref={dotRef}
+        className="fixed top-0 left-0 pointer-events-none"
+        style={{
+          zIndex: 9999,
+          width: 16,
+          height: 16,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, #ffffff 0%, #34d399 45%, rgba(16,185,129,0) 100%)',
+          boxShadow: '0 0 10px 4px rgba(52,211,153,0.7), 0 0 22px 8px rgba(16,185,129,0.35)',
+          opacity: 0,
+          transition: 'opacity 0.2s ease',
+          willChange: 'transform',
+        }}
+      />
+    </>
   );
 };
 
