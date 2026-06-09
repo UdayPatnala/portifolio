@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+    background-color: #03060a;
+    
+    /* Classic Data Science / Mathematical Coordinate Grid Background */
+    background-image: 
+      linear-gradient(rgba(16, 185, 129, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(16, 185, 129, 0.03) 1px, transparent 1px);
+    background-size: 30px 30px;
+    background-position: center center;
+  }
+  
+  code, pre {
+    font-family: 'Fira Code', monospace;
+  }
+}
+
+/* Glassmorphism utility classes with neon data science border glows */
+.glass-panel {
+  background: rgba(4, 9, 20, 0.6);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(16, 185, 129, 0.08);
+}
+
+.glass-panel-heavy {
+  background: rgba(3, 7, 16, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(16, 185, 129, 0.12);
+}
+
+/* Scrollbar customizations */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #03060a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0b1522;
+  border-radius: 9999px;
+  border: 2px solid #03060a;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #10b981; /* Neon green scrollbar thumb */
+}
+
+/* Hide cursor on desktop viewports to support the glowing cursor trail */
+@media (min-width: 1024px) {
+  .custom-cursor-active, 
+  .custom-cursor-active a, 
+  .custom-cursor-active button, 
+  .custom-cursor-active select, 
+  .custom-cursor-active input, 
+  .custom-cursor-active textarea,
+  .custom-cursor-active [role="button"] {
+    cursor: none !important;
+  }
+}
+
+/* Smooth selection colors - Emerald / Cyber Green */
+::selection {
+  background: rgba(16, 185, 129, 0.25);
+  color: #ffffff;
+}

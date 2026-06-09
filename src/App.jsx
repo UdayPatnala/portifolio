@@ -1,0 +1,1051 @@
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
+import { 
+  Mail, 
+  Phone, 
+  MapPin, 
+  ExternalLink, 
+  Code, 
+  Book, 
+  Briefcase, 
+  Award, 
+  Terminal, 
+  Database, 
+  Cpu, 
+  Send, 
+  ArrowUp, 
+  Menu, 
+  X, 
+  Sparkles, 
+  CheckCircle,
+  FileText,
+  User
+} from 'lucide-react';
+import { Typewriter } from 'react-simple-typewriter';
+
+import ParticleBackground from './components/ParticleBackground';
+import CustomCursor from './components/CustomCursor';
+import Hero3DCard from './components/Hero3DCard';
+import ProjectCard from './components/ProjectCard';
+import DataScienceVisualizer from './components/DataScienceVisualizer';
+
+// --- CUSTOM SVG BRAND ICONS ---
+
+const Github = ({ size = 20, className = "" }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round" 
+    width={size}
+    height={size}
+    className={className}
+  >
+    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+    <path d="M9 18c-4.51 2-5-2-7-2" />
+  </svg>
+);
+
+const Linkedin = ({ size = 20, className = "" }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round" 
+    width={size}
+    height={size}
+    className={className}
+  >
+    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+    <rect width="4" height="12" x="2" y="9" />
+    <circle cx="4" cy="4" r="2" />
+  </svg>
+);
+
+// --- DATASET DEFINITIONS ---
+
+const PROJECT_DATA = [
+  {
+    title: "Music Mirror",
+    description: "A real-time facial emotion recognition music recommendation system. Reads expressions via webcam to dynamically recommend curated tracks inside an embedded player.",
+    tags: ["React.js", "FastAPI", "face-api.js", "Python", "Webcam API", "LocalStorage"],
+    category: "Data Science & ML",
+    type: "ml",
+    highlights: [
+      "Detects dominant facial expressions from real-time webcam feed.",
+      "Embedded YouTube player plays matched songs dynamically.",
+      "Stores recent mood history, user profiles, and favorites in browser LocalStorage."
+    ],
+    github: "https://github.com/UdayPatnala/music-mirror",
+    live: "#"
+  },
+  {
+    title: "JavaPath Pro",
+    description: "An interactive full-stack learning platform designed to help junior developers master Java syntax, OOP concepts, and design patterns through a simulated corporate ticketing system.",
+    tags: ["React.js", "Vite", "Node.js", "Express", "SQLite", "Sequelize ORM", "Gemini API", "JWT"],
+    category: "Full-Stack & Web",
+    type: "web",
+    highlights: [
+      "Built-in browser sandbox IDE with custom regex-based real-time syntax checking.",
+      "Integrates an adaptive AI Mentor (Gemini API) offering tailored structural hints.",
+      "Secure user profiles, progress logs, and career rank promotion dashboard."
+    ],
+    github: "https://github.com/UdayPatnala/Java-Path",
+    live: "#"
+  },
+  {
+    title: "Spedex Fintech Dashboard",
+    description: "A comprehensive fintech workspace for tracking spending indexing, transaction velocities, and budgeting aggregates.",
+    tags: ["Spring Boot", "Java 17", "React Native", "Expo", "Kotlin", "React.js", "H2 Database", "JWT"],
+    category: "Full-Stack & Web",
+    type: "web",
+    highlights: [
+      "Robust Spring Boot backend serving JWT-authenticated endpoints.",
+      "Expo React Native mobile app with a transient Android/Kotlin module integration.",
+      "Feature-rich React web dashboard mapping budgets, vendor insights, and reminders."
+    ],
+    github: "#",
+    live: "#"
+  },
+  {
+    title: "SkyFlow: Real-Time Weather Pipeline",
+    description: "A professional-grade, end-to-end data pipeline demonstrating stream ingestion, rolling window aggregation, and dashboard analytics.",
+    tags: ["Python", "Pandas", "Streamlit", "Plotly", "Open-Meteo API", "Dotenv"],
+    category: "Data Science & ML",
+    type: "ml",
+    highlights: [
+      "Decoupled producer-consumer setup with structured logging and environment overrides.",
+      "Continuous ingestion daemon polling weather metrics and saving to immutable stores.",
+      "Stream processing engine computing rolling 5-point averages and plotly trend charts."
+    ],
+    github: "#",
+    live: "#"
+  },
+  {
+    title: "Customer Churn Prediction System",
+    description: "A machine learning pipeline that predicts user churn probability served via a FastAPI REST endpoint and an interactive Streamlit UI.",
+    tags: ["Scikit-learn", "FastAPI", "Streamlit", "Pandas", "Joblib", "Pydantic"],
+    category: "Data Science & ML",
+    type: "ml",
+    highlights: [
+      "Scikit-learn ColumnTransformer pipeline preventing data leakage during inference.",
+      "Hyperparameter optimization via GridSearchCV evaluated with accuracy & ROC-AUC.",
+      "Middleware tracing injecting unique X-Request-ID to FastAPI request headers."
+    ],
+    github: "https://github.com/UdayPatnala/churn-prediction-system",
+    live: "#"
+  },
+  {
+    title: "TaskMaster Pro",
+    description: "A high-fidelity task management dashboard with dual access authorizations, real-time analytics, and fluid animations.",
+    tags: ["React.js", "Tailwind CSS", "Radix UI Primitives", "Framer Motion", "date-fns", "Docker"],
+    category: "Full-Stack & Web",
+    type: "web",
+    highlights: [
+      "Passcode authentication unlocking synchronized browser LocalStorage lists.",
+      "Custom circular SVG progress gauge dynamically animating on task completion.",
+      "Export to Excel utility sheet parsing, date filters, and overdue task alerts."
+    ],
+    github: "#",
+    live: "#"
+  },
+  {
+    title: "JobFlow Copilot",
+    description: "A compliant, Human-in-the-Loop job application tracker dashboard that bypasses platform scraping blocks.",
+    tags: ["HTML5", "CSS3", "JavaScript", "Gemini API", "PowerShell", "Toast Alerts", "Web Audio API"],
+    category: "Software & Systems",
+    type: "sys",
+    highlights: [
+      "Resume adaptation engine utilizing Gemini 1.5 Flash to fit job keywords factually.",
+      "Startup integration scripting generating local PowerShell tasks for logon launch.",
+      "PowerShell-driven Toast reminders and Synthesized AudioContext dual chime alerts."
+    ],
+    github: "https://github.com/UdayPatnala/JobFlow",
+    live: "#"
+  },
+  {
+    title: "Smart Parking System",
+    description: "A parking slot allocation system demonstrating OOP structure, priority allocation queues, and clean architecture.",
+    tags: ["Java", "PriorityQueue", "EnumMap", "HashMap", "OOP Design", "Unit Testing"],
+    category: "Software & Systems",
+    type: "sys",
+    highlights: [
+      "Nearest-slot-first allocation engine powered by priority min-heaps.",
+      "Highly immutable domain records (Vehicle, ParkingSlot, Ticket) for thread safety.",
+      "Custom PowerShell compile-and-run harness bypassing external dependency weight."
+    ],
+    github: "#",
+    live: "#"
+  },
+  {
+    title: "ETL Data Pipeline",
+    description: "A production-style ETL utility extracting data from APIs and CSV files, engineering features in Pandas, and loading to PostgreSQL.",
+    tags: ["Python", "Pandas", "SQLAlchemy", "PostgreSQL", "dotenv", "CLI Tools"],
+    category: "Software & Systems",
+    type: "sys",
+    highlights: [
+      "Extracts and sanitizes JSON strings from REST APIs or local data structures.",
+      "Computes custom features (activity band, risk score) via vectorized calculations.",
+      "Loads and upserts records to PostgreSQL using SQLAlchemy connection pools."
+    ],
+    github: "#",
+    live: "#"
+  }
+];
+
+const SKILLS_DATA = [
+  {
+    category: "Programming",
+    icon: <Terminal size={24} className="text-emerald-400" />,
+    color: "rgba(16, 185, 129, 0.4)",
+    items: [
+      { name: "Java", level: "Advanced" },
+      { name: "Python", level: "Advanced" },
+      { name: "C Language", level: "Intermediate" }
+    ]
+  },
+  {
+    category: "Web & Frontend",
+    icon: <Code size={24} className="text-cyan-400" />,
+    color: "rgba(6, 182, 212, 0.4)",
+    items: [
+      { name: "React.js", level: "Advanced" },
+      { name: "Tailwind CSS", level: "Advanced" },
+      { name: "HTML5 & CSS3", level: "Expert" },
+      { name: "JavaScript (ES6+)", level: "Advanced" }
+    ]
+  },
+  {
+    category: "Database & Backend",
+    icon: <Database size={24} className="text-amber-400" />,
+    color: "rgba(245, 158, 11, 0.4)",
+    items: [
+      { name: "SQL", level: "Advanced" },
+      { name: "PostgreSQL", level: "Intermediate" },
+      { name: "Node.js & Express", level: "Intermediate" },
+      { name: "Spring Boot", level: "Intermediate" }
+    ]
+  },
+  {
+    category: "Core CS & Tools",
+    icon: <Award size={24} className="text-emerald-400" />,
+    color: "rgba(16, 185, 129, 0.4)",
+    items: [
+      { name: "Data Structures & Algorithms", level: "Advanced" },
+      { name: "Object Oriented Programming", level: "Expert" },
+      { name: "Git & GitHub", level: "Advanced" },
+      { name: "Docker & Vercel", level: "Intermediate" },
+      { name: "Software Testing", level: "Advanced" }
+    ]
+  }
+];
+
+const TIMELINE_DATA = [
+  {
+    title: "Machine Learning Intern",
+    company: "Codec Technologies Pvt. Ltd.",
+    duration: "8 Weeks (Oct 2024 - Dec 2024)",
+    type: "ml",
+    bullets: [
+      "Performed data preprocessing and model training using Python pipelines.",
+      "Implemented ML algorithms using NumPy, Pandas, and Scikit-learn.",
+      "Strengthened analytical and problem-solving skills through real-world datasets."
+    ]
+  },
+  {
+    title: "Web Developer Intern",
+    company: "Codec Technologies Pvt. Ltd.",
+    duration: "4 Weeks (Aug 2024 - Sep 2024)",
+    type: "web",
+    bullets: [
+      "Developed responsive web applications using HTML, CSS, and JavaScript.",
+      "Built portfolio landing pages, layout calculators, and responsive projects.",
+      "Applied DOM manipulation and UI/UX typography principles.",
+      "Performed functional testing and debugging to improve application performance.",
+      "Collaborated in a team environment, enhancing communication and teamwork skills."
+    ]
+  }
+];
+
+const EDUCATION_DATA = [
+  {
+    degree: "B.Tech in Computer Science Engineering (Data Science)",
+    institution: "Raghu Institute of Technology, Andhra Pradesh",
+    period: "2022 - 2026",
+    grade: "CGPA: 7.5",
+    color: "border-emerald-500"
+  },
+  {
+    degree: "Intermediate Education",
+    institution: "Narayana Junior College, Visakhapatnam",
+    period: "2020 - 2022",
+    grade: "Score: 910 / 1000",
+    color: "border-cyan-500"
+  },
+  {
+    degree: "SSC (Secondary School Certificate)",
+    institution: "Abhyudaya High School, Bobbili",
+    period: "2019 - 2020",
+    grade: "GPA: 10 / 10",
+    color: "border-amber-500"
+  }
+];
+
+const CERTIFICATIONS = [
+  { title: "Programming in Java", provider: "NPTEL (National Programme on Technology Enhanced Learning)" },
+  { title: "AWS Cloud Foundations Training Badge", provider: "Amazon Web Services (AWS)" },
+  { title: "Software Testing Master Class", provider: "Udemy Professional Certificate" }
+];
+
+// --- MAIN PORTFOLIO COMPONENT ---
+
+const App = () => {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
+
+  // Photo switcher: 3 profiles copied to public
+  const [profilePhoto, setProfilePhoto] = useState('profile-casual.jpg');
+  const [activePhotoLabel, setActivePhotoLabel] = useState('Casual');
+
+  // Filter project cards
+  const [selectedFilter, setSelectedFilter] = useState('all');
+  const [filteredProjects, setFilteredProjects] = useState(PROJECT_DATA);
+
+  // Mobile menu navbar
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Scroll to Top float button visibility
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  // Contact form submission state
+  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
+  const [formStatus, setFormStatus] = useState('idle'); // idle, submitting, success
+
+  useEffect(() => {
+    // Project filtering logic
+    if (selectedFilter === 'all') {
+      setFilteredProjects(PROJECT_DATA);
+    } else {
+      const filtered = PROJECT_DATA.filter((proj) => proj.type === selectedFilter);
+      setFilteredProjects(filtered);
+    }
+  }, [selectedFilter]);
+
+  useEffect(() => {
+    // Scroll event listener for float button
+    const toggleVisibility = () => {
+      if (window.scrollY > 500) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+
+    window.addEventListener('scroll', toggleVisibility);
+    return () => window.removeEventListener('scroll', toggleVisibility);
+  }, []);
+
+  const handlePhotoChange = (fileName, label) => {
+    setProfilePhoto(fileName);
+    setActivePhotoLabel(label);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    if (!formData.name || !formData.email || !formData.message) return;
+
+    setFormStatus('submitting');
+
+    setTimeout(() => {
+      const newMsg = {
+        ...formData,
+        id: Date.now(),
+        date: new Date().toISOString()
+      };
+      
+      const existingMsgs = JSON.parse(localStorage.getItem('portfolio_messages') || '[]');
+      existingMsgs.push(newMsg);
+      localStorage.setItem('portfolio_messages', JSON.stringify(existingMsgs));
+
+      setFormStatus('success');
+      setFormData({ name: '', email: '', subject: '', message: '' });
+
+      setTimeout(() => {
+        setFormStatus('idle');
+      }, 5000);
+    }, 1500);
+  };
+
+  const scrollToSection = (id) => {
+    setMobileMenuOpen(false);
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  return (
+    <div className="relative min-h-screen text-gray-100 bg-[#03060a] overflow-x-hidden selection:bg-emerald-500/30 selection:text-white">
+      {/* Visual background components */}
+      <ParticleBackground />
+      <CustomCursor />
+
+      {/* Top scroll neon progress bar */}
+      <motion.div 
+        className="fixed top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-500 origin-left z-[100]" 
+        style={{ scaleX }} 
+      />
+
+      {/* --- FLOATING HEADER / NAVBAR --- */}
+      <header className="fixed top-0 inset-x-0 h-16 z-45 glass-panel border-b border-emerald-500/5 transition-all duration-300">
+        <div className="max-w-7xl mx-auto h-full px-6 flex items-center justify-between">
+          <div 
+            onClick={() => scrollToSection('hero')} 
+            className="flex items-center gap-2 cursor-pointer font-bold tracking-widest text-lg font-mono text-white group"
+          >
+            <span className="text-emerald-400 group-hover:text-cyan-400 transition-colors">{"<"}</span>
+            <span>UDAY.DS</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-emerald-400 group-hover:text-cyan-400 transition-colors">{"/>"}</span>
+          </div>
+
+          {/* Desktop Nav Links */}
+          <nav className="hidden lg:flex items-center gap-8 text-sm font-mono text-gray-400">
+            {['Arsenal', 'Experience', 'Portfolio', 'Academic', 'Connect'].map((section) => (
+              <button
+                key={section}
+                onClick={() => scrollToSection(section.toLowerCase())}
+                className="hover:text-emerald-400 transition-colors relative py-1 group cursor-none"
+              >
+                {section}
+                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-emerald-500 transition-all duration-300 group-hover:w-full" />
+              </button>
+            ))}
+            <button 
+              onClick={() => scrollToSection('connect')}
+              className="px-4 py-1.5 bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 border border-emerald-500/30 text-emerald-300 rounded-lg font-bold hover:from-emerald-500/30 hover:to-cyan-500/30 hover:border-emerald-400/50 transition-all duration-300 cursor-none"
+            >
+              Initialize Connect
+            </button>
+          </nav>
+
+          {/* Mobile hamburger menu */}
+          <button 
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)} 
+            className="lg:hidden text-gray-300 p-2 hover:text-white transition-colors"
+          >
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+      </header>
+
+      {/* Mobile Menu Dropdown */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed top-16 inset-x-0 bg-[#03070d]/95 backdrop-blur-lg border-b border-emerald-500/10 z-40 py-6 px-8 flex flex-col gap-5 lg:hidden shadow-2xl"
+          >
+            {['Arsenal', 'Experience', 'Portfolio', 'Academic', 'Connect'].map((section) => (
+              <button
+                key={section}
+                onClick={() => scrollToSection(section.toLowerCase())}
+                className="text-left font-mono text-gray-300 hover:text-emerald-400 transition-colors text-lg py-1 border-b border-white/5"
+              >
+                {section}
+              </button>
+            ))}
+            <button
+              onClick={() => scrollToSection('connect')}
+              className="mt-2 w-full py-2.5 bg-gradient-to-r from-emerald-500 to-cyan-500 text-white rounded-xl font-bold font-mono tracking-wide shadow-[0_0_15px_rgba(16,185,129,0.3)]"
+            >
+              Establish Connection
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* --- HERO SECTION --- */}
+      <section 
+        id="hero" 
+        className="relative min-h-screen flex flex-col justify-center items-center pt-24 pb-16 px-6 overflow-hidden max-w-7xl mx-auto"
+      >
+        <div className="grid lg:grid-cols-12 gap-12 items-center w-full z-10">
+          
+          {/* Left Text details */}
+          <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left space-y-6">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-full text-xs font-mono"
+            >
+              <Sparkles size={12} className="animate-spin" />
+              <span>Stochastic Gradient Descent Ready | CSE (Data Science)</span>
+            </motion.div>
+
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-none font-sans"
+            >
+              PATNALA <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">UDAY</span> KUMAR
+            </motion.h1>
+
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-xl sm:text-2xl font-mono text-gray-400 h-16 flex items-center justify-center lg:justify-start"
+            >
+              <span className="text-emerald-500 mr-2">root@uday:~# </span>
+              <Typewriter
+                words={[
+                  'Data Science Enthusiast', 
+                  'Java Backend Architect', 
+                  'Optimization Engineer', 
+                  'Full-Stack Developer'
+                ]}
+                loop={0}
+                cursor
+                cursorStyle='_'
+                typeSpeed={70}
+                deleteSpeed={50}
+                delaySpeed={1500}
+              />
+            </motion.div>
+
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="text-gray-400 max-w-lg leading-relaxed text-sm sm:text-base"
+            >
+              Specializing in analytical modeling, machine learning pipelines, and database tuning. Experienced in creating enterprise-grade Spring Boot APIs, structured ETL scripts, and responsive React interfaces.
+            </motion.p>
+
+            {/* Quick Resume & Contact Action Buttons */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="flex flex-wrap gap-4 justify-center lg:justify-start w-full pt-2"
+            >
+              <button 
+                onClick={() => scrollToSection('portfolio')}
+                className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-cyan-500 text-black rounded-xl font-bold font-mono tracking-wide hover:shadow-[0_0_20px_rgba(16,185,129,0.4)] transition-all duration-300 cursor-none"
+              >
+                Inspect CAPSTONES
+              </button>
+              <button 
+                onClick={() => scrollToSection('connect')}
+                className="px-6 py-3 bg-white/5 border border-white/10 rounded-xl font-bold font-mono tracking-wide hover:bg-white/10 hover:border-white/20 transition-all duration-300 cursor-none"
+              >
+                Verify Contact
+              </button>
+            </motion.div>
+
+            {/* Social details */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="flex gap-4 items-center justify-center lg:justify-start pt-6 border-t border-white/5 w-full"
+            >
+              <a 
+                href="https://github.com" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="p-3 bg-white/5 border border-white/5 rounded-xl text-gray-450 hover:text-emerald-400 hover:border-emerald-500/30 hover:bg-emerald-500/5 transition-all duration-300 cursor-none"
+              >
+                <Github size={20} />
+              </a>
+              <a 
+                href="https://linkedin.com/in/patnala-uday-kumar" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="p-3 bg-white/5 border border-white/5 rounded-xl text-gray-450 hover:text-emerald-400 hover:border-emerald-500/30 hover:bg-emerald-500/5 transition-all duration-300 cursor-none"
+              >
+                <Linkedin size={20} />
+              </a>
+              <a 
+                href="mailto:udaypatnala5@gmail.com" 
+                className="p-3 bg-white/5 border border-white/5 rounded-xl text-gray-455 hover:text-emerald-400 hover:border-emerald-500/30 hover:bg-emerald-500/5 transition-all duration-300 cursor-none"
+              >
+                <Mail size={20} />
+              </a>
+              <a 
+                href="tel:+919703660750" 
+                className="p-3 bg-white/5 border border-white/5 rounded-xl text-gray-455 hover:text-emerald-400 hover:border-emerald-500/30 hover:bg-emerald-500/5 transition-all duration-300 cursor-none"
+              >
+                <Phone size={20} />
+              </a>
+            </motion.div>
+          </div>
+
+          {/* Right Profile 3D Card and switcher */}
+          <div className="lg:col-span-5 flex flex-col items-center justify-center space-y-6">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              <Hero3DCard imgSrc={profilePhoto} />
+            </motion.div>
+
+            {/* Interactive Photo Swapping panel */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+              className="p-3 bg-white/5 border border-emerald-500/10 rounded-2xl flex flex-col items-center space-y-2 z-10"
+            >
+              <span className="text-[10px] font-mono text-gray-500 uppercase tracking-wider">Change Portrait Style</span>
+              <div className="flex gap-2">
+                {[
+                  { label: 'Casual', file: 'profile-casual.jpg', color: 'hover:text-emerald-400 hover:border-emerald-500/30' },
+                  { label: 'Corporate Suit', file: 'profile-suit.jpg', color: 'hover:text-cyan-400 hover:border-cyan-500/30' },
+                  { label: 'In Office', file: 'profile-office.jpg', color: 'hover:text-amber-400 hover:border-amber-500/30' }
+                ].map((item) => (
+                  <button
+                    key={item.label}
+                    onClick={() => handlePhotoChange(item.file, item.label)}
+                    className={`px-3 py-1.5 text-xs font-mono rounded-lg border transition-all duration-300 cursor-none ${
+                      activePhotoLabel === item.label 
+                        ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-400' 
+                        : 'bg-transparent border-white/5 text-gray-400 ' + item.color
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* --- SKILLS SECTION (High Interaction + 3D loss surface) --- */}
+      <section id="arsenal" className="py-24 px-6 max-w-7xl mx-auto">
+        <div className="mb-16 text-center lg:text-left">
+          <span className="text-emerald-400 font-mono tracking-widest uppercase text-xs block mb-2">// TECHNICAL COMPETENCE</span>
+          <h2 className="text-3xl sm:text-5xl font-extrabold text-white">Technical Arsenal</h2>
+          <div className="h-[2px] w-20 bg-gradient-to-r from-emerald-500 to-cyan-500 mt-4 mx-auto lg:mx-0" />
+        </div>
+
+        {/* Skill card layout with 3D canvas projection */}
+        <div className="grid lg:grid-cols-12 gap-8 items-stretch">
+          
+          {/* Left side: Skills Categories (Span 8) */}
+          <div className="lg:col-span-8 grid md:grid-cols-2 gap-6">
+            {SKILLS_DATA.map((cat, idx) => (
+              <motion.div
+                key={cat.category}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.08 }}
+                whileHover={{ 
+                  y: -6, 
+                  borderColor: cat.color,
+                  boxShadow: `0 0 30px ${cat.color.replace('0.4', '0.08')}` 
+                }}
+                className="p-6 rounded-2xl glass-panel border border-white/5 transition-all duration-300"
+              >
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="p-2.5 rounded-xl bg-white/5 border border-white/5">
+                    {cat.icon}
+                  </div>
+                  <h3 className="text-lg font-bold text-white font-mono">{cat.category}</h3>
+                </div>
+
+                <div className="space-y-4">
+                  {cat.items.map((skill) => (
+                    <div key={skill.name} className="flex flex-col">
+                      <div className="flex justify-between items-center text-sm mb-1.5">
+                        <span className="text-gray-200 font-medium">{skill.name}</span>
+                        <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">
+                          {skill.level}
+                        </span>
+                      </div>
+                      <div className="h-1 bg-white/5 rounded-full overflow-hidden">
+                        <motion.div 
+                          initial={{ width: 0 }}
+                          whileInView={{ 
+                            width: skill.level === 'Expert' ? '95%' : skill.level === 'Advanced' ? '80%' : '60%' 
+                          }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 1, ease: 'easeOut' }}
+                          className="h-full bg-gradient-to-r from-emerald-500 to-cyan-500" 
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Right side: 3D Loss Landscape Visualizer widget (Span 4) */}
+          <div className="lg:col-span-4 flex flex-col justify-center">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="h-full"
+            >
+              <DataScienceVisualizer />
+            </motion.div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* --- EXPERIENCE TIMELINE --- */}
+      <section id="experience" className="py-24 bg-white/[0.01] border-y border-emerald-500/5">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="mb-16 text-center">
+            <span className="text-emerald-400 font-mono tracking-widest uppercase text-xs block mb-2">// PROFESSIONAL MILESTONES</span>
+            <h2 className="text-3xl sm:text-5xl font-extrabold text-white">Experience</h2>
+            <div className="h-[2px] w-20 bg-gradient-to-r from-emerald-500 to-cyan-500 mt-4 mx-auto" />
+          </div>
+
+          {/* Timeline Wrapper */}
+          <div className="relative border-l-2 border-emerald-500/10 pl-8 ml-4 space-y-12">
+            {TIMELINE_DATA.map((item, idx) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: idx * 0.15 }}
+                className="relative group"
+              >
+                {/* Neon pulsing point marker */}
+                <div className="absolute left-[-41px] top-1.5 w-6 h-6 rounded-full bg-[#03060a] border-2 border-emerald-500 flex items-center justify-center shadow-[0_0_10px_rgba(16,185,129,0.8)] group-hover:scale-125 transition-transform duration-300">
+                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                </div>
+
+                <div className="p-6 rounded-2xl glass-panel border border-white/5 hover:border-emerald-500/20 transition-all duration-300 shadow-[0_5px_15px_rgba(0,0,0,0.3)]">
+                  <span className="text-xs font-mono text-emerald-400 mb-2 block">{item.duration}</span>
+                  
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4">
+                    <h3 className="text-xl font-bold text-white group-hover:text-emerald-400 transition-colors">
+                      {item.title}
+                    </h3>
+                    <span className="text-sm text-gray-400 font-mono flex items-center gap-1.5 mt-1 sm:mt-0">
+                      <Briefcase size={14} className="text-cyan-400" />
+                      {item.company}
+                    </span>
+                  </div>
+
+                  <ul className="space-y-2">
+                    {item.bullets.map((bullet, bIdx) => (
+                      <li key={bIdx} className="flex items-start text-sm text-gray-300 leading-relaxed">
+                        <span className="text-emerald-500 mr-2.5 mt-1 text-xs">•</span>
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- FEATURED PROJECTS PORTFOLIO --- */}
+      <section id="portfolio" className="py-24 px-6 max-w-7xl mx-auto">
+        <div className="mb-12 text-center lg:text-left flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+          <div>
+            <span className="text-emerald-400 font-mono tracking-widest uppercase text-xs block mb-2">// CAPSTONE ARCHIVES</span>
+            <h2 className="text-3xl sm:text-5xl font-extrabold text-white">Featured Projects</h2>
+            <div className="h-[2px] w-20 bg-gradient-to-r from-emerald-500 to-cyan-500 mt-4 mx-auto lg:mx-0" />
+          </div>
+
+          {/* Filtering Controller controls */}
+          <div className="flex flex-wrap gap-2 justify-center lg:justify-end bg-white/5 p-1.5 rounded-xl border border-white/5">
+            {[
+              { id: 'all', label: 'All Capstones' },
+              { id: 'ml', label: 'Data Science & ML' },
+              { id: 'web', label: 'Full-Stack & Web' },
+              { id: 'sys', label: 'Software & Systems' }
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setSelectedFilter(tab.id)}
+                className={`px-4 py-2 text-xs font-mono rounded-lg transition-all duration-300 cursor-none ${
+                  selectedFilter === tab.id
+                    ? 'bg-emerald-500 text-black font-bold shadow-[0_0_15px_rgba(16,185,129,0.4)]'
+                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Filtered Project Cards Grid layout */}
+        <motion.div 
+          layout
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          <AnimatePresence mode="popLayout">
+            {filteredProjects.map((project) => (
+              <ProjectCard key={project.title} project={project} />
+            ))}
+          </AnimatePresence>
+        </motion.div>
+      </section>
+
+      {/* --- EDUCATION & CERTIFICATES --- */}
+      <section id="academic" className="py-24 bg-white/[0.01] border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid lg:grid-cols-12 gap-12">
+            
+            {/* Education Sub-Grid */}
+            <div className="lg:col-span-7 space-y-8">
+              <div>
+                <span className="text-emerald-400 font-mono tracking-widest uppercase text-xs block mb-2">// ACADEMIC PIPELINES</span>
+                <h2 className="text-2xl sm:text-4xl font-extrabold text-white">Education History</h2>
+                <div className="h-[2px] w-16 bg-emerald-500 mt-3" />
+              </div>
+
+              <div className="space-y-6">
+                {EDUCATION_DATA.map((edu) => (
+                  <motion.div
+                    key={edu.degree}
+                    whileHover={{ x: 6 }}
+                    className={`p-6 rounded-2xl glass-panel border-l-4 ${edu.color} border-y border-r border-white/5 transition-all duration-300`}
+                  >
+                    <div className="flex justify-between items-start flex-wrap gap-2 mb-2">
+                      <h3 className="font-bold text-lg text-white">{edu.degree}</h3>
+                      <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full">
+                        {edu.grade}
+                      </span>
+                    </div>
+                    <p className="text-gray-300 text-sm mb-3">{edu.institution}</p>
+                    <span className="text-xs text-gray-500 font-mono">{edu.period}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* Certifications Sub-Grid */}
+            <div className="lg:col-span-5 space-y-8">
+              <div>
+                <span className="text-emerald-400 font-mono tracking-widest uppercase text-xs block mb-2">// VERIFIED CREDENTIALS</span>
+                <h2 className="text-2xl sm:text-4xl font-extrabold text-white">Certifications</h2>
+                <div className="h-[2px] w-16 bg-cyan-500 mt-3" />
+              </div>
+
+              <div className="space-y-4">
+                {CERTIFICATIONS.map((cert) => (
+                  <motion.div
+                    key={cert.title}
+                    whileHover={{ y: -4, borderColor: 'rgba(0, 245, 212, 0.4)' }}
+                    className="flex items-start gap-4 p-4 rounded-xl glass-panel border border-white/5 transition-all duration-300"
+                  >
+                    <div className="p-2.5 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 mt-0.5">
+                      <Award size={20} />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-sm text-white">{cert.title}</h4>
+                      <p className="text-xs text-gray-400 mt-1">{cert.provider}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* --- CONTACT & CONNECT --- */}
+      <section id="connect" className="py-24 px-6 border-t border-white/5 relative">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-16 text-center">
+            <span className="text-emerald-400 font-mono tracking-widest uppercase text-xs block mb-2">// DIRECT INTERACTION</span>
+            <h2 className="text-3xl sm:text-5xl font-extrabold text-white">Initialize Connect</h2>
+            <div className="h-[2px] w-20 bg-gradient-to-r from-emerald-500 to-cyan-500 mt-4 mx-auto" />
+          </div>
+
+          <div className="grid lg:grid-cols-12 gap-12">
+            
+            {/* Contact details list */}
+            <div className="lg:col-span-5 space-y-8">
+              <h3 className="text-2xl font-bold text-white font-mono">Telemetry Nodes</h3>
+              <p className="text-gray-400 leading-relaxed text-sm">
+                Feel free to drop a message or reach out via email for potential projects, professional networks, or internship roles.
+              </p>
+
+              <div className="space-y-6 font-mono text-sm">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-white/5 border border-white/5 rounded-xl text-emerald-400">
+                    <Mail size={18} />
+                  </div>
+                  <div>
+                    <span className="text-xs text-gray-500 block font-bold">// EMAIL ADDRESS</span>
+                    <a href="mailto:udaypatnala5@gmail.com" className="text-white hover:text-emerald-400 transition-colors">
+                      udaypatnala5@gmail.com
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-white/5 border border-white/5 rounded-xl text-cyan-400">
+                    <Phone size={18} />
+                  </div>
+                  <div>
+                    <span className="text-xs text-gray-500 block font-bold">// PHONE NUMBER</span>
+                    <a href="tel:+919703660750" className="text-white hover:text-cyan-400 transition-colors">
+                      +91 9703660750
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-white/5 border border-white/5 rounded-xl text-amber-400">
+                    <MapPin size={18} />
+                  </div>
+                  <div>
+                    <span className="text-xs text-gray-500 block font-bold">// CURRENT LOCATION</span>
+                    <span className="text-white">Andhra Pradesh, India</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Interactive Form panel */}
+            <div className="lg:col-span-7">
+              <form onSubmit={handleFormSubmit} className="p-8 rounded-2xl glass-panel border border-white/5 space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-xs font-mono text-gray-400 mb-2">YOUR NAME</label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      required
+                      placeholder="Uday Kumar"
+                      className="w-full bg-white/5 border border-white/5 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500/50 focus:bg-white/[0.08] transition-all text-white cursor-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-mono text-gray-400 mb-2">EMAIL ADDRESS</label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      required
+                      placeholder="udaypatnala5@gmail.com"
+                      className="w-full bg-white/5 border border-white/5 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500/50 focus:bg-white/[0.08] transition-all text-white cursor-none"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-mono text-gray-400 mb-2">SUBJECT</label>
+                  <input
+                    type="text"
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleInputChange}
+                    placeholder="Associate Software Engineer Role Opportunities"
+                    className="w-full bg-white/5 border border-white/5 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500/50 focus:bg-white/[0.08] transition-all text-white cursor-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-mono text-gray-400 mb-2">MESSAGE CONTENT</label>
+                  <textarea
+                    name="message"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    required
+                    rows="5"
+                    placeholder="Let's build something amazing together..."
+                    className="w-full bg-white/5 border border-white/5 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500/50 focus:bg-white/[0.08] transition-all text-white cursor-none"
+                  />
+                </div>
+
+                <div className="flex items-center justify-between flex-wrap gap-4 pt-2">
+                  <button
+                    type="submit"
+                    disabled={formStatus === 'submitting'}
+                    className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-xl font-bold font-mono tracking-wide flex items-center gap-2 hover:shadow-[0_0_20px_rgba(16,185,129,0.4)] disabled:opacity-50 transition-all duration-300 cursor-none text-black animate-pulse"
+                  >
+                    <span>{formStatus === 'submitting' ? 'Transmitting...' : 'Transmit Message'}</span>
+                    <Send size={14} className={formStatus === 'submitting' ? 'animate-ping' : ''} />
+                  </button>
+
+                  {/* Toast Success Message */}
+                  <AnimatePresence>
+                    {formStatus === 'success' && (
+                      <motion.div
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0 }}
+                        className="flex items-center gap-2 text-emerald-400 font-mono text-xs py-2 px-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl"
+                      >
+                        <CheckCircle size={14} />
+                        <span>Data transmitted & stored in LocalStorage successfully!</span>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </form>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* --- FOOTER --- */}
+      <footer className="py-12 border-t border-white/5 text-center bg-[#020306]">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-mono text-gray-500">
+          <p>© 2026 Patnala Uday Kumar. All Rights Reserved.</p>
+          <div className="flex gap-4">
+            <span className="text-[10px] text-emerald-500/40 tracking-wider">BUILT WITH REACT, TAILWIND V4 & FRAMER MOTION</span>
+          </div>
+        </div>
+      </footer>
+
+      {/* --- FLOAT BACK TO TOP BUTTON --- */}
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="fixed bottom-8 right-8 p-3.5 bg-emerald-500 border border-emerald-400 rounded-full text-black hover:bg-emerald-400 hover:shadow-[0_0_20px_rgba(16,185,129,0.5)] z-40 transition-all duration-300 cursor-none"
+          >
+            <ArrowUp size={18} />
+          </motion.button>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+export default App;
