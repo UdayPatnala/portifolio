@@ -48,7 +48,8 @@ This website features advanced visual interactions designed to impress engineeri
     *   *Mid-Front:* Counter-spinning dashed orbit ring `translateZ(30px)`.
     *   *Front:* Radial-gradient masked portrait photo `translateZ(50px)`.
 *   **3D Viewport Unfold Scroll:** Outer section envelopes are mounted inside 3D perspective scroll triggers that unfold from the page as the visitor scrolls down.
-*   **Glowing Trailer Cursor:** Custom-morphic diamond trails that snap, rotate, and expand into target crosshairs when hovering over buttons, inverting colors of text beneath.
+*   **Cybernetic Trailing Target Cursor:** A dual-element cursor featuring a central bright dot and an outer dashed target ring. The outer ring follows the pointer coordinates with an elastic linear interpolation (lerp) delay. When hovering over links or buttons, the ring expands, changes to cyan, and glows. On click events, both elements contract and flash purple.
+*   **Ambient Soundtrack Equalizer:** A floating glassmorphic audio player pill at the bottom-left corner playing a progressive synth track at low volume (`0.15`). Includes a 4-bar soundwave equalizer that pulses dynamically when playing and freezes flat when paused. Implements autoplay safety by listening to the user's first click or keypress to begin playback.
 *   **Micro-Interactive Project Tags:** Individual technology stack badges dynamically scale and light up in category-specific neon colors (emerald, cyan) when hovered.
 *   **3D SGD Loss landscape:** Interactive visualizer representing a mathematical gradient loss field. Click and drag to rotate the field in 3D canvas coordinates.
 
