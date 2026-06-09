@@ -688,17 +688,6 @@ const App = () => {
   // State to control expansion of Featured Projects grid
   const [showAll, setShowAll] = useState(false);
 
-  // Profile photo automatic rotation carousel
-  const PROFILE_PHOTOS = ['profile-casual.jpg', 'profile-office.jpg', 'profile-suit.jpg'];
-  const [profilePhotoIndex, setProfilePhotoIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setProfilePhotoIndex((prev) => (prev + 1) % PROFILE_PHOTOS.length);
-    }, 4500); // Cross-fade every 4.5 seconds
-    return () => clearInterval(interval);
-  }, []);
-
   // Parallax mouse movements for the profile visual
   const heroX = useMotionValue(0.5);
   const heroY = useMotionValue(0.5);
@@ -990,6 +979,18 @@ const App = () => {
         className="relative min-h-screen flex flex-col justify-center items-center pt-24 pb-16 px-6 overflow-hidden max-w-7xl mx-auto"
         style={{ perspective: 1200 }}
       >
+        {/* Main profile pic as blurred hero background watermark */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 -z-10 pointer-events-none"
+          style={{
+            backgroundImage: `url('profile.jpg')`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center top',
+            opacity: 0.045,
+            filter: 'blur(60px) saturate(0.6)',
+          }}
+        />
         <div className="grid lg:grid-cols-12 gap-12 items-center w-full z-10">
           
           {/* Left Text details */}
@@ -1166,22 +1167,16 @@ const App = () => {
               transition={{ duration: 1.2, ease: "easeOut" }}
               className="relative w-72 h-72 md:w-88 md:h-88 rounded-full overflow-hidden border border-emerald-500/10 shadow-2xl bg-black/10 dark:bg-white/[0.02] flex items-center justify-center group"
             >
-              <AnimatePresence mode="wait">
-                <motion.img 
-                  key={profilePhotoIndex}
-                  src={PROFILE_PHOTOS[profilePhotoIndex]} 
-                  alt="Patnala Uday Kumar Profile" 
-                  initial={{ opacity: 0, scale: 0.96 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 1.04 }}
-                  transition={{ duration: 0.8, ease: "easeInOut" }}
-                  className="absolute w-full h-full object-cover filter grayscale contrast-115 brightness-95 group-hover:grayscale-0 group-hover:contrast-100 group-hover:brightness-100 transition-all duration-700 select-none pointer-events-none"
-                  style={{
-                    maskImage: 'radial-gradient(circle, rgba(0,0,0,1) 45%, rgba(0,0,0,0.1) 85%, rgba(0,0,0,0) 100%)',
-                    WebkitMaskImage: 'radial-gradient(circle, rgba(0,0,0,1) 45%, rgba(0,0,0,0.1) 85%, rgba(0,0,0,0) 100%)'
-                  }}
-                />
-              </AnimatePresence>
+              {/* Office profile pic — static portrait with 3D tilt */}
+              <img 
+                src="profile-office.jpg"
+                alt="Patnala Uday Kumar — Office Portrait"
+                className="absolute w-full h-full object-cover object-top filter grayscale contrast-115 brightness-95 group-hover:grayscale-0 group-hover:contrast-100 group-hover:brightness-100 transition-all duration-700 select-none pointer-events-none"
+                style={{
+                  maskImage: 'radial-gradient(circle, rgba(0,0,0,1) 45%, rgba(0,0,0,0.1) 85%, rgba(0,0,0,0) 100%)',
+                  WebkitMaskImage: 'radial-gradient(circle, rgba(0,0,0,1) 45%, rgba(0,0,0,0.1) 85%, rgba(0,0,0,0) 100%)'
+                }}
+              />
             </motion.div>
           </motion.div>
         </div>
@@ -1528,6 +1523,25 @@ const App = () => {
             
             {/* Contact details list */}
             <div className="lg:col-span-5 space-y-8">
+              {/* Suit/Professional photo card in contact sidebar */}
+              <motion.div
+                className="group relative rounded-2xl overflow-hidden border border-emerald-500/10 shadow-xl mb-2"
+                style={{ maxHeight: 200 }}
+                animate={{ y: [0, -6, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                whileHover={{ scale: 1.03 }}
+              >
+                <img
+                  src="profile-suit.jpg"
+                  alt="Patnala Uday Kumar — Professional"
+                  className="w-full h-48 object-cover object-top filter grayscale group-hover:grayscale-0 transition-all duration-700 select-none"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+                <span className={`absolute bottom-3 left-4 text-[10px] font-mono font-bold tracking-widest ${
+                  isDarkMode ? 'text-emerald-400' : 'text-emerald-300'
+                }`}>// PATNALA UDAY KUMAR</span>
+              </motion.div>
+
               <h3 className={`text-2xl font-bold font-mono transition-colors duration-300 ${
                 isDarkMode ? 'text-white' : 'text-slate-900'
               }`}>Telemetry Nodes</h3>
