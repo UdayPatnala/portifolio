@@ -183,6 +183,126 @@ const PROJECT_DATA = [
     github: "https://github.com/UdayPatnala/Spedex",
     live: "https://spe-dex.vercel.app",
     image: "/spedex_real.png"
+  },
+  {
+    title: "Churn Prediction System",
+    description: "An end-to-end customer churn analysis and prediction model utilizing machine learning to identify high-risk accounts and analyze churn velocities.",
+    tags: ["Python", "Pandas", "Scikit-Learn", "XGBoost", "Matplotlib"],
+    category: "Data Science & ML",
+    type: "ml",
+    highlights: [
+      "Performs demographic and transaction feature engineering on user datasets.",
+      "Trains random forests and XGBoost classification models.",
+      "Generates detailed feature importances and ROC-AUC evaluation curves."
+    ],
+    github: "https://github.com/UdayPatnala/Churn-Prediction-System",
+    live: "https://github.com/UdayPatnala/Churn-Prediction-System",
+    image: "/churn_real.png"
+  },
+  {
+    title: "Job Finder Portal",
+    description: "A job portal search aggregator, application tracker, and resume match diagnostic dashboard for junior developers.",
+    tags: ["React.js", "Express", "Node.js", "MongoDB", "Tailwind CSS"],
+    category: "Full-Stack & Web",
+    type: "web",
+    highlights: [
+      "Aggregates job listings via custom search endpoints.",
+      "Matches resume skills against posting requirements using regex comparison.",
+      "Tracks application status pipelines with progress alerts."
+    ],
+    github: "https://github.com/UdayPatnala/Job-Finder",
+    live: "https://github.com/UdayPatnala/Job-Finder",
+    image: "/jobflow_real.png"
+  },
+  {
+    title: "SkyFlow Sales Dashboard",
+    description: "An interactive business analytics sales dashboard visualizing transaction velocities, regional metrics, and revenue targets.",
+    tags: ["React.js", "Chart.js", "Express", "Tailwind CSS", "Node.js"],
+    category: "Full-Stack & Web",
+    type: "web",
+    highlights: [
+      "Renders dynamic charts mapping sales performance by region.",
+      "Simulates real-time transaction ingestion using socket updates.",
+      "Exportable data sheets and metrics summaries."
+    ],
+    github: "https://github.com/UdayPatnala/Sales-Dashboard",
+    live: "https://github.com/UdayPatnala/Sales-Dashboard",
+    image: "/skyflow_real.png"
+  },
+  {
+    title: "Smart Parking System",
+    description: "A Java-based smart parking space booking and tracking system mapping real-time slot occupancy and reservations.",
+    tags: ["Java", "Swing", "JDBC", "MySQL", "Socket Programming"],
+    category: "Full-Stack & Web",
+    type: "web",
+    highlights: [
+      "Interactive Java Swing desktop client displaying slot diagrams.",
+      "Tracks reservations and real-time occupancy updates in MySQL DB.",
+      "Features simulated ticket printouts and check-in/check-out logs."
+    ],
+    github: "https://github.com/UdayPatnala/Smart-Parking-Java",
+    live: "https://github.com/UdayPatnala/Smart-Parking-Java",
+    image: "/taskmaster_real.png"
+  },
+  {
+    title: "ETL Data Pipeline",
+    description: "An automated data pipeline extracting logs, transforming schemas, and loading processed records into an analytics data warehouse.",
+    tags: ["Python", "Apache Airflow", "PostgreSQL", "SQL", "Pandas"],
+    category: "Data Science & ML",
+    type: "ml",
+    highlights: [
+      "Extracts unstructured log records from simulated files.",
+      "Performs schema cleanups and date indexing transformations using Pandas.",
+      "Loads cleaned tables into PostgreSQL for analysis."
+    ],
+    github: "https://github.com/UdayPatnala/Etl-Data-Pipeline",
+    live: "https://github.com/UdayPatnala/Etl-Data-Pipeline",
+    image: "/churn_real.png"
+  },
+  {
+    title: "LRU Cache Java Utility",
+    description: "A custom thread-safe implementation of a Least Recently Used (LRU) cache in Java with generic key-value mappings.",
+    tags: ["Java", "Data Structures", "Generics", "Concurrency", "JUnit"],
+    category: "Full-Stack & Web",
+    type: "web",
+    highlights: [
+      "Custom double-linked list and hash map implementation.",
+      "Thread-safe synchronization locks for parallel access.",
+      "Unit tested coverage validating evictions and cache hits."
+    ],
+    github: "https://github.com/UdayPatnala/Iru-Cache-Java",
+    live: "https://github.com/UdayPatnala/Iru-Cache-Java",
+    image: "/taskmaster_real.png"
+  },
+  {
+    title: "Online Bookstore Backend",
+    description: "A robust Spring Boot REST API backend managing user catalog carts, orders, and payment integrations.",
+    tags: ["Spring Boot", "Java 17", "Hibernate", "Spring Security", "MySQL"],
+    category: "Full-Stack & Web",
+    type: "web",
+    highlights: [
+      "Implements repository layers with JPA/Hibernate query bindings.",
+      "Secure user profile registration and token checks.",
+      "Structured payment checkouts flow simulation."
+    ],
+    github: "https://github.com/UdayPatnala/Online-Bookstore-Backend",
+    live: "https://github.com/UdayPatnala/Online-Bookstore-Backend",
+    image: "/taskmaster_real.png"
+  },
+  {
+    title: "GitHub Profile Upgrader",
+    description: "A utility script and dashboard to automatically update developer profiles with dynamic readmes and workflow statistics.",
+    tags: ["JavaScript", "Node.js", "GitHub Actions", "Markdown"],
+    category: "Full-Stack & Web",
+    type: "web",
+    highlights: [
+      "Fetches repository metadata and contributions via GitHub APIs.",
+      "Generates customized markdown badges and profiles readmes.",
+      "Automates updates on cron schedule triggers."
+    ],
+    github: "https://github.com/UdayPatnala/github-profile-upgrader",
+    live: "https://github.com/UdayPatnala/github-profile-upgrader",
+    image: "/skyflow_real.png"
   }
 ];
 
