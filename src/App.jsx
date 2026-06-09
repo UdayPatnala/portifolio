@@ -785,11 +785,6 @@ const App = () => {
     return () => window.removeEventListener('scroll', toggleVisibility);
   }, []);
 
-  const handlePhotoChange = (fileName, label) => {
-    setProfilePhoto(fileName);
-    setActivePhotoLabel(label);
-  };
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -841,8 +836,43 @@ const App = () => {
     }
   };
 
+  const isEditableTarget = (target) => {
+    if (!(target instanceof Element)) return false;
+    return Boolean(target.closest('input, textarea, select, [contenteditable="true"], .allow-copy'));
+  };
+
+  const preventContentCopy = (event) => {
+    if (!isEditableTarget(event.target)) {
+      event.preventDefault();
+    }
+  };
+
+  const preventContentDrag = (event) => {
+    if (!isEditableTarget(event.target)) {
+      event.preventDefault();
+    }
+  };
+
+  useEffect(() => {
+    const preventProtectedShortcuts = (event) => {
+      if (isEditableTarget(event.target)) return;
+      const key = event.key.toLowerCase();
+      if ((event.ctrlKey || event.metaKey) && ['a', 'c', 'p', 's', 'u', 'x'].includes(key)) {
+        event.preventDefault();
+      }
+    };
+
+    window.addEventListener('keydown', preventProtectedShortcuts);
+    return () => window.removeEventListener('keydown', preventProtectedShortcuts);
+  }, []);
+
   return (
-    <div className={`relative min-h-screen transition-colors duration-300 overflow-x-hidden selection:bg-emerald-500/30 ${
+    <div 
+      onCopy={preventContentCopy}
+      onCut={preventContentCopy}
+      onContextMenu={preventContentCopy}
+      onDragStart={preventContentDrag}
+      className={`read-only-interface relative min-h-screen transition-colors duration-300 overflow-x-hidden selection:bg-emerald-500/30 ${
       isDarkMode ? 'bg-[#03060a] text-gray-100 selection:text-white' : 'bg-[#f8fafc] text-slate-900 selection:text-emerald-950'
     }`}>
       {/* Visual background components */}
@@ -856,7 +886,7 @@ const App = () => {
       />
 
       {/* --- FLOATING HEADER / NAVBAR --- */}
-      <header className="fixed top-0 inset-x-0 h-16 z-45 glass-panel border-b transition-all duration-300">
+      <header className="fixed top-0 inset-x-0 h-16 z-[45] glass-panel border-b transition-all duration-300">
         <div className="max-w-7xl mx-auto h-full px-6 flex items-center justify-between">
           <div 
             onClick={() => scrollToSection('hero')} 
@@ -1169,7 +1199,7 @@ const App = () => {
               <div className="w-1.5 h-1.5 rounded-full bg-purple-500/30 absolute -right-0.5" />
             </motion.div>
  
-            {/* Profile image with circular fade gradient mask at Z-depth 50 */}
+            {/* Profile image revealed through a recessed circular cut-out */}
             <motion.div
               style={{ 
                 transform: 'translateZ(50px)' 
@@ -1177,19 +1207,17 @@ const App = () => {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1.2, ease: "easeOut" }}
-              className="relative w-72 h-72 md:w-88 md:h-88 rounded-full overflow-hidden border border-emerald-500/10 shadow-2xl bg-black/10 dark:bg-white/[0.02] flex items-center justify-center group"
+              className="hero-portrait-hole relative w-72 h-72 sm:w-80 sm:h-80 md:w-[23rem] md:h-[23rem] rounded-full flex items-center justify-center group"
             >
               {/* Office profile pic — static portrait with 3D tilt */}
-              <img 
-                src="/profile-office.jpg"
-                alt="Patnala Uday Kumar — Office Portrait"
-                className="absolute w-full h-full object-cover filter grayscale contrast-115 brightness-95 group-hover:grayscale-0 group-hover:contrast-100 group-hover:brightness-100 transition-all duration-700 select-none pointer-events-none"
-                style={{
-                  objectPosition: 'center 15%',
-                  maskImage: 'radial-gradient(circle, rgba(0,0,0,1) 45%, rgba(0,0,0,0.1) 85%, rgba(0,0,0,0) 100%)',
-                  WebkitMaskImage: 'radial-gradient(circle, rgba(0,0,0,1) 45%, rgba(0,0,0,0.1) 85%, rgba(0,0,0,0) 100%)'
-                }}
-              />
+              <div className="hero-portrait-window">
+                <img 
+                  src="/profile-office.jpg"
+                  alt="Patnala Uday Kumar — Office Portrait"
+                  className="hero-portrait-img filter grayscale contrast-115 brightness-95 group-hover:grayscale-0 group-hover:contrast-100 group-hover:brightness-100 transition-all duration-700 select-none pointer-events-none"
+                  style={{ objectPosition: 'center 15%' }}
+                />
+              </div>
             </motion.div>
           </motion.div>
         </div>

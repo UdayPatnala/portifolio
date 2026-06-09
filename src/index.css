@@ -72,6 +72,126 @@ body.light-theme .glass-panel-heavy {
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
 }
 
+/* --- READ-ONLY PRESENTATION GUARD --- */
+.read-only-interface,
+.read-only-interface * {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.read-only-interface img,
+.read-only-interface svg {
+  -webkit-user-drag: none;
+}
+
+.read-only-interface input,
+.read-only-interface textarea,
+.read-only-interface select,
+.read-only-interface [contenteditable="true"],
+.read-only-interface .allow-copy {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* --- HERO PORTRAIT CUT-OUT --- */
+.hero-portrait-hole {
+  --hole-page: rgba(248, 250, 252, 0.94);
+  --hole-shadow: rgba(15, 23, 42, 0.22);
+  --hole-deep: rgba(2, 6, 23, 0.28);
+  --hole-edge: rgba(16, 185, 129, 0.24);
+  isolation: isolate;
+}
+
+body:not(.light-theme) .hero-portrait-hole {
+  --hole-page: rgba(3, 6, 10, 0.92);
+  --hole-shadow: rgba(0, 0, 0, 0.72);
+  --hole-deep: rgba(0, 0, 0, 0.64);
+  --hole-edge: rgba(45, 212, 191, 0.22);
+}
+
+.hero-portrait-hole::before,
+.hero-portrait-hole::after {
+  content: "";
+  position: absolute;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.hero-portrait-hole::before {
+  inset: -18px;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 50% 45%, transparent 57%, var(--hole-page) 58%, var(--hole-page) 67%, transparent 69%),
+    conic-gradient(from 95deg, rgba(16, 185, 129, 0.04), rgba(6, 182, 212, 0.34), rgba(139, 92, 246, 0.16), rgba(16, 185, 129, 0.04));
+  box-shadow:
+    0 34px 72px rgba(15, 23, 42, 0.18),
+    inset 0 18px 34px rgba(255, 255, 255, 0.35),
+    inset 0 -28px 38px var(--hole-shadow);
+}
+
+.hero-portrait-hole::after {
+  inset: -2px;
+  z-index: 3;
+  background:
+    radial-gradient(circle at 50% 43%, transparent 58%, rgba(255, 255, 255, 0.18) 59%, transparent 63%),
+    radial-gradient(circle at 50% 50%, transparent 60%, var(--hole-deep) 69%, transparent 74%);
+  box-shadow:
+    inset 0 26px 34px rgba(255, 255, 255, 0.18),
+    inset 0 -26px 42px var(--hole-shadow),
+    0 0 0 1px var(--hole-edge);
+}
+
+.hero-portrait-window {
+  position: absolute;
+  inset: 9%;
+  overflow: hidden;
+  border-radius: inherit;
+  background: var(--hole-page);
+  box-shadow:
+    inset 0 22px 34px var(--hole-shadow),
+    inset 0 -18px 30px rgba(255, 255, 255, 0.16),
+    0 18px 46px rgba(2, 6, 23, 0.18);
+}
+
+.hero-portrait-window::before,
+.hero-portrait-window::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.hero-portrait-window::before {
+  z-index: 2;
+  box-shadow:
+    inset 0 32px 46px var(--hole-shadow),
+    inset 0 -26px 42px rgba(255, 255, 255, 0.16);
+}
+
+.hero-portrait-window::after {
+  z-index: 3;
+  background:
+    radial-gradient(circle at 50% 38%, transparent 46%, rgba(3, 6, 10, 0.04) 62%, rgba(3, 6, 10, 0.52) 100%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.18), transparent 34%, rgba(16, 185, 129, 0.10) 78%, transparent);
+  mix-blend-mode: multiply;
+}
+
+body:not(.light-theme) .hero-portrait-window::after {
+  background:
+    radial-gradient(circle at 50% 38%, transparent 45%, rgba(0, 0, 0, 0.22) 68%, rgba(0, 0, 0, 0.72) 100%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 32%, rgba(45, 212, 191, 0.12) 78%, transparent);
+  mix-blend-mode: normal;
+}
+
+.hero-portrait-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.07);
+}
+
 /* --- SCROLLBAR CUSTOMIZATIONS --- */
 ::-webkit-scrollbar {
   width: 8px;
