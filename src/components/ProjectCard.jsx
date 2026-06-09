@@ -20,18 +20,18 @@ const Github = ({ size = 18, className = "" }) => (
   </svg>
 );
 
-const ProjectCard = ({ project }) => {
+const ProjectCard = ({ project, isDarkMode }) => {
   const { title, description, tags, category, highlights, github, live, type } = project;
 
   // Icon mapping depending on type
   const getCategoryIcon = () => {
     switch (type) {
       case 'ml':
-        return <Cpu className="text-emerald-400" size={18} />;
+        return <Cpu className="text-emerald-500" size={18} />;
       case 'web':
-        return <Layout className="text-cyan-400" size={18} />;
+        return <Layout className="text-cyan-500" size={18} />;
       default:
-        return <Database className="text-amber-400" size={18} />;
+        return <Database className="text-amber-500" size={18} />;
     }
   };
 
@@ -39,22 +39,28 @@ const ProjectCard = ({ project }) => {
   const getHoverBorderColor = () => {
     switch (type) {
       case 'ml':
-        return 'hover:border-emerald-500/50 hover:shadow-[0_0_25px_rgba(16,185,129,0.15)]';
+        return isDarkMode 
+          ? 'hover:border-emerald-500/50 hover:shadow-[0_0_25px_rgba(16,185,129,0.15)]'
+          : 'hover:border-emerald-500/70 hover:shadow-[0_0_25px_rgba(16,185,129,0.12)]';
       case 'web':
-        return 'hover:border-cyan-400/50 hover:shadow-[0_0_25px_rgba(0,245,212,0.15)]';
+        return isDarkMode
+          ? 'hover:border-cyan-400/50 hover:shadow-[0_0_25px_rgba(0,245,212,0.15)]'
+          : 'hover:border-cyan-500/70 hover:shadow-[0_0_25px_rgba(0,245,212,0.12)]';
       default:
-        return 'hover:border-amber-500/50 hover:shadow-[0_0_25px_rgba(245,158,11,0.15)]';
+        return isDarkMode
+          ? 'hover:border-amber-500/50 hover:shadow-[0_0_25px_rgba(245,158,11,0.15)]'
+          : 'hover:border-amber-500/70 hover:shadow-[0_0_25px_rgba(245,158,11,0.12)]';
     }
   };
 
   const getBadgeColor = () => {
     switch (type) {
       case 'ml':
-        return 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400';
+        return 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400';
       case 'web':
-        return 'bg-cyan-500/10 border-cyan-500/30 text-cyan-400';
+        return 'bg-cyan-500/10 border-cyan-500/20 text-cyan-600 dark:text-cyan-400';
       default:
-        return 'bg-amber-500/10 border-amber-500/30 text-amber-400';
+        return 'bg-amber-500/10 border-amber-500/20 text-amber-600 dark:text-amber-450';
     }
   };
 
@@ -71,7 +77,9 @@ const ProjectCard = ({ project }) => {
         z: 15 
       }}
       style={{ transformStyle: 'preserve-3d', perspective: 1000 }}
-      className={`flex flex-col justify-between p-6 rounded-2xl glass-panel border border-white/5 transition-all duration-300 ${getHoverBorderColor()}`}
+      className={`flex flex-col justify-between p-6 rounded-2xl glass-panel border transition-all duration-300 ${
+        isDarkMode ? 'border-white/5' : 'border-emerald-500/10'
+      } ${getHoverBorderColor()}`}
     >
       <div style={{ transform: 'translateZ(10px)' }}>
         {/* Top Header */}
@@ -86,12 +94,16 @@ const ProjectCard = ({ project }) => {
         </div>
 
         {/* Title */}
-        <h3 className="text-xl font-bold text-white mb-2 group-hover:text-emerald-400 transition-colors">
+        <h3 className={`text-xl font-bold mb-2 transition-colors duration-300 ${
+          isDarkMode ? 'text-white' : 'text-slate-900'
+        }`}>
           {title}
         </h3>
 
         {/* Description */}
-        <p className="text-gray-400 text-sm leading-relaxed mb-4">
+        <p className={`text-sm leading-relaxed mb-4 transition-colors duration-300 ${
+          isDarkMode ? 'text-gray-400' : 'text-slate-600'
+        }`}>
           {description}
         </p>
 
@@ -99,9 +111,9 @@ const ProjectCard = ({ project }) => {
         {highlights && highlights.length > 0 && (
           <ul className="space-y-1.5 mb-6">
             {highlights.map((h, i) => (
-              <li key={i} className="flex items-start text-xs text-gray-400">
+              <li key={i} className="flex items-start text-xs text-gray-450">
                 <span className="text-emerald-500 mr-2 mt-0.5">•</span>
-                <span>{h}</span>
+                <span className={isDarkMode ? 'text-gray-400' : 'text-slate-600'}>{h}</span>
               </li>
             ))}
           </ul>
@@ -114,7 +126,11 @@ const ProjectCard = ({ project }) => {
           {tags.map((tag) => (
             <span
               key={tag}
-              className="text-[10px] font-mono px-2 py-0.5 bg-[#08121e] border border-white/5 text-gray-300 rounded"
+              className={`text-[10px] font-mono px-2 py-0.5 border rounded transition-colors duration-300 ${
+                isDarkMode 
+                  ? 'bg-[#08121e] border-white/5 text-gray-300' 
+                  : 'bg-emerald-500/5 border-emerald-500/10 text-slate-700'
+              }`}
             >
               {tag}
             </span>
@@ -122,31 +138,37 @@ const ProjectCard = ({ project }) => {
         </div>
 
         {/* Footer Actions */}
-        <div className="flex justify-between items-center pt-3 border-t border-white/5">
-          {github ? (
+        <div className={`flex justify-between items-center pt-3 border-t transition-colors duration-300 ${
+          isDarkMode ? 'border-white/5' : 'border-emerald-500/10'
+        }`}>
+          {github && github !== '#' ? (
             <a
               href={github}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs text-gray-400 hover:text-white transition-colors"
+              className={`inline-flex items-center gap-1.5 text-xs transition-colors duration-300 ${
+                isDarkMode ? 'text-gray-400 hover:text-white' : 'text-slate-500 hover:text-slate-900'
+              }`}
             >
               <Github size={14} />
               Repository
             </a>
           ) : (
-            <span className="text-[10px] font-mono text-gray-600">Local Workspace</span>
+            <span className={`text-[10px] font-mono ${isDarkMode ? 'text-gray-650' : 'text-slate-400'}`}>Local Workspace</span>
           )}
 
-          {live && (
+          {live && live !== '#' ? (
             <a
               href={live}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-1 text-xs font-bold text-emerald-400 hover:text-emerald-300 transition-colors"
+              className="inline-flex items-center gap-1 text-xs font-bold text-emerald-500 hover:text-emerald-600 transition-colors"
             >
-              Explore
+              Explore Vercel
               <ExternalLink size={12} />
             </a>
+          ) : (
+            <span className={`text-[10px] font-mono ${isDarkMode ? 'text-gray-650' : 'text-slate-400'}`}>In Development</span>
           )}
         </div>
       </div>

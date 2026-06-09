@@ -5,14 +5,7 @@
   body {
     font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
     overflow-x: hidden;
-    background-color: #03060a;
-    
-    /* Classic Data Science / Mathematical Coordinate Grid Background */
-    background-image: 
-      linear-gradient(rgba(16, 185, 129, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(16, 185, 129, 0.03) 1px, transparent 1px);
-    background-size: 30px 30px;
-    background-position: center center;
+    transition: background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1), color 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
   code, pre {
@@ -20,42 +13,94 @@
   }
 }
 
-/* Glassmorphism utility classes with neon data science border glows */
-.glass-panel {
-  background: rgba(4, 9, 20, 0.6);
+/* --- THEME TRANSITIONS & GRAPH GRIDS --- */
+
+/* Dark Theme Background (Default) */
+body:not(.light-theme) {
+  background-color: #03060a;
+  color: #f3f4f6;
+  background-image: 
+    linear-gradient(rgba(16, 185, 129, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16, 185, 129, 0.035) 1px, transparent 1px);
+  background-size: 30px 30px;
+  background-position: center center;
+}
+
+/* Light Theme Background (Green Graph Paper) */
+body.light-theme {
+  background-color: #f8fafc;
+  color: #0f172a;
+  background-image: 
+    linear-gradient(rgba(16, 185, 129, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16, 185, 129, 0.05) 1px, transparent 1px);
+  background-size: 30px 30px;
+  background-position: center center;
+}
+
+/* --- GLASSMORPHISM CARDS --- */
+
+/* Dark Mode Glass */
+body:not(.light-theme) .glass-panel {
+  background: rgba(4, 9, 20, 0.65);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid rgba(16, 185, 129, 0.08);
 }
 
-.glass-panel-heavy {
+/* Light Mode Glass */
+body.light-theme .glass-panel {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(16, 185, 129, 0.16);
+  box-shadow: 0 8px 32px rgba(16, 185, 129, 0.04), 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+
+/* Heavy panels */
+body:not(.light-theme) .glass-panel-heavy {
   background: rgba(3, 7, 16, 0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(16, 185, 129, 0.12);
 }
 
-/* Scrollbar customizations */
+body.light-theme .glass-panel-heavy {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+}
+
+/* --- SCROLLBAR CUSTOMIZATIONS --- */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
-::-webkit-scrollbar-track {
+body:not(.light-theme) ::-webkit-scrollbar-track {
   background: #03060a;
 }
+body.light-theme ::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
 
-::-webkit-scrollbar-thumb {
-  background: #0b1522;
+body:not(.light-theme) ::-webkit-scrollbar-thumb {
+  background: #0c1622;
   border-radius: 9999px;
   border: 2px solid #03060a;
 }
-
-::-webkit-scrollbar-thumb:hover {
-  background: #10b981; /* Neon green scrollbar thumb */
+body.light-theme ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+  border: 2px solid #f8fafc;
 }
 
-/* Hide cursor on desktop viewports to support the glowing cursor trail */
+::-webkit-scrollbar-thumb:hover {
+  background: #10b981;
+}
+
+/* --- DESKTOP CURSOR HIDING --- */
 @media (min-width: 1024px) {
   .custom-cursor-active, 
   .custom-cursor-active a, 
@@ -68,8 +113,12 @@
   }
 }
 
-/* Smooth selection colors - Emerald / Cyber Green */
-::selection {
+/* Smooth selection colors */
+body:not(.light-theme) ::selection {
   background: rgba(16, 185, 129, 0.25);
   color: #ffffff;
+}
+body.light-theme ::selection {
+  background: rgba(16, 185, 129, 0.18);
+  color: #047857;
 }
