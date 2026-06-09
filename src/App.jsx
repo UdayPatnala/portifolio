@@ -568,6 +568,17 @@ const App = () => {
   // State to control expansion of Featured Projects grid
   const [showAll, setShowAll] = useState(false);
 
+  // Profile photo automatic rotation carousel
+  const PROFILE_PHOTOS = ['profile-casual.jpg', 'profile-office.jpg', 'profile-suit.jpg'];
+  const [profilePhotoIndex, setProfilePhotoIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setProfilePhotoIndex((prev) => (prev + 1) % PROFILE_PHOTOS.length);
+    }, 4500); // Cross-fade every 4.5 seconds
+    return () => clearInterval(interval);
+  }, []);
+
   // Parallax mouse movements for the profile visual
   const heroX = useMotionValue(0.5);
   const heroY = useMotionValue(0.5);
@@ -1035,15 +1046,22 @@ const App = () => {
               transition={{ duration: 1.2, ease: "easeOut" }}
               className="relative w-72 h-72 md:w-88 md:h-88 rounded-full overflow-hidden border border-emerald-500/10 shadow-2xl bg-black/10 dark:bg-white/[0.02] flex items-center justify-center group"
             >
-              <img 
-                src="profile.jpg" 
-                alt="Patnala Uday Kumar Profile" 
-                className="w-full h-full object-cover filter grayscale contrast-115 brightness-95 group-hover:grayscale-0 group-hover:contrast-100 group-hover:brightness-100 transition-all duration-700 select-none pointer-events-none"
-                style={{
-                  maskImage: 'radial-gradient(circle, rgba(0,0,0,1) 45%, rgba(0,0,0,0.1) 85%, rgba(0,0,0,0) 100%)',
-                  WebkitMaskImage: 'radial-gradient(circle, rgba(0,0,0,1) 45%, rgba(0,0,0,0.1) 85%, rgba(0,0,0,0) 100%)'
-                }}
-              />
+              <AnimatePresence mode="wait">
+                <motion.img 
+                  key={profilePhotoIndex}
+                  src={PROFILE_PHOTOS[profilePhotoIndex]} 
+                  alt="Patnala Uday Kumar Profile" 
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 1.04 }}
+                  transition={{ duration: 0.8, ease: "easeInOut" }}
+                  className="absolute w-full h-full object-cover filter grayscale contrast-115 brightness-95 group-hover:grayscale-0 group-hover:contrast-100 group-hover:brightness-100 transition-all duration-700 select-none pointer-events-none"
+                  style={{
+                    maskImage: 'radial-gradient(circle, rgba(0,0,0,1) 45%, rgba(0,0,0,0.1) 85%, rgba(0,0,0,0) 100%)',
+                    WebkitMaskImage: 'radial-gradient(circle, rgba(0,0,0,1) 45%, rgba(0,0,0,0.1) 85%, rgba(0,0,0,0) 100%)'
+                  }}
+                />
+              </AnimatePresence>
             </motion.div>
           </motion.div>
         </div>
