@@ -393,9 +393,21 @@ const EDUCATION_DATA = [
 ];
 
 const CERTIFICATIONS = [
-  { title: "Programming in Java", provider: "NPTEL (National Programme on Technology Enhanced Learning)" },
-  { title: "AWS Cloud Foundations Training Badge", provider: "Amazon Web Services (AWS)" },
-  { title: "Software Testing Master Class", provider: "Udemy Professional Certificate" }
+  { 
+    title: "Programming in Java", 
+    provider: "NPTEL (National Programme on Technology Enhanced Learning)",
+    link: "https://nptel.ac.in/noc/E_Certificate/NPTEL24CS43S97030107030776012"
+  },
+  { 
+    title: "AWS Cloud Foundations Training Badge", 
+    provider: "Amazon Web Services (AWS)",
+    link: "https://www.credly.com/go/nrAdO7j9"
+  },
+  { 
+    title: "Software Testing Master Class", 
+    provider: "Udemy Professional Certificate",
+    link: "https://ude.my/UC-bd895877-add9-4488-be08-331cd88b2d6a"
+  }
 ];
 
 const ShowcaseItem = ({ project, index, isDarkMode }) => {
@@ -1440,25 +1452,35 @@ const App = () => {
 
               <div className="space-y-4">
                 {CERTIFICATIONS.map((cert) => (
-                  <motion.div
+                  <motion.a
                     key={cert.title}
-                    whileHover={{ y: -6, scale: 1.02, borderColor: 'rgba(0, 245, 212, 0.4)' }}
-                    className={`flex items-start gap-3.5 p-4 rounded-xl glass-panel border transition-all duration-300 ${
-                      isDarkMode ? 'border-white/5' : 'border-emerald-500/15'
+                    href={cert.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    whileHover={{ y: -6, scale: 1.02, borderColor: 'rgba(0, 245, 212, 0.5)' }}
+                    className={`group flex items-start gap-3.5 p-4 rounded-xl glass-panel border transition-all duration-300 cursor-none block ${
+                      isDarkMode 
+                        ? 'border-white/5 hover:bg-cyan-500/[0.04] hover:shadow-[0_0_20px_rgba(6,182,212,0.08)]' 
+                        : 'border-emerald-500/15 hover:bg-cyan-500/[0.04]'
                     }`}
                   >
-                    <div className="p-2 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-500 mt-0.5">
+                    <div className="p-2 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-500 mt-0.5 group-hover:bg-cyan-500/20 transition-colors duration-300">
                       <Award size={18} />
                     </div>
-                    <div>
+                    <div className="flex-1 min-w-0">
                       <h4 className={`font-bold text-xs leading-tight transition-colors duration-300 ${
-                        isDarkMode ? 'text-white' : 'text-slate-800'
+                        isDarkMode ? 'text-white group-hover:text-cyan-300' : 'text-slate-800 group-hover:text-cyan-700'
                       }`}>{cert.title}</h4>
                       <p className={`text-[10px] mt-1 transition-colors duration-300 ${
                         isDarkMode ? 'text-gray-400' : 'text-slate-500'
                       }`}>{cert.provider}</p>
                     </div>
-                  </motion.div>
+                    <div className={`shrink-0 mt-0.5 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-1 group-hover:translate-x-0 ${
+                      isDarkMode ? 'text-cyan-400' : 'text-cyan-600'
+                    }`}>
+                      <ExternalLink size={13} />
+                    </div>
+                  </motion.a>
                 ))}
               </div>
             </div>
