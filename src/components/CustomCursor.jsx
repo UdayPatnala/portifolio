@@ -7,12 +7,17 @@ const CustomCursor = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(true);
 
-  const mouseX = useMotionValue(-100);
-  const mouseY = useMotionValue(-100);
+  // Mouse Coordinates (Exact cursor position)
+  const rawX = useMotionValue(-100);
+  const rawY = useMotionValue(-100);
 
-  const springConfig = { stiffness: 450, damping: 30, mass: 0.4 };
-  const cursorX = useSpring(mouseX, springConfig);
-  const cursorY = useSpring(mouseY, springConfig);
+  // Smooth springs for the outer trailing x-ray circle
+  const trailX = useSpring(rawX, { stiffness: 280, damping: 26, mass: 0.6 });
+  const trailY = useSpring(rawY, { stiffness: 280, damping: 26, mass: 0.6 });
+
+  // Faster spring for the inner pointer dot to keep click precision instant
+  const pointX = useSpring(rawX, { stiffness: 800, damping: 38 });
+  const pointY = useSpring(rawY, { stiffness: 800, damping: 38 });
 
   useEffect(() => {
     const checkDevice = () => {
@@ -31,8 +36,10 @@ const CustomCursor = () => {
     window.addEventListener('resize', checkDevice);
 
     const moveCursor = (e) => {
-      mouseX.set(e.clientX - 16);
-      mouseY.set(e.clientY - 16);
+      // Center coordinates relative to cursor pointer
+      // Outer ring is 32px wide (w-8), so offset is half: -16px
+      rawX.set(e.clientX - 16);
+      rawY.set(e.clientY - 16);
       if (!isVisible) setIsVisible(true);
     };
 
@@ -73,46 +80,42 @@ const CustomCursor = () => {
       document.body.classList.remove('custom-cursor-active');
       observer.disconnect();
     };
-  }, [mouseX, mouseY, isVisible]);
+  }, [rawX, rawY, isVisible]);
 
   if (isMobile || !isVisible) return null;
 
   return (
     <>
+      {/* 1. Outer Trailing X-Ray Circle (Inverts colors underneath) */}
       <motion.div
-        className="fixed top-0 left-0 w-8 h-8 rounded-full pointer-events-none z-50 mix-blend-screen"
+        className="fixed top-0 left-0 w-8 h-8 rounded-full pointer-events-none z-50 mix-blend-difference bg-white"
         style={{
-          x: cursorX,
-          y: cursorY,
-          boxShadow: clicked
-            ? '0 0 15px rgba(0, 245, 212, 0.9)'
-            : hovered
-            ? '0 0 30px rgba(16, 185, 129, 0.8)'
-            : '0 0 15px rgba(16, 185, 129, 0.4)',
-          backgroundColor: clicked
-            ? 'rgba(0, 245, 212, 0.7)'
-            : hovered
-            ? 'rgba(16, 185, 129, 0.2)'
-            : 'rgba(16, 185, 129, 0.05)',
-          border: clicked
-            ? '1px solid rgba(0, 245, 212, 0.9)'
-            : hovered
-            ? '2px solid rgba(16, 185, 129, 0.8)'
-            : '1px solid rgba(16, 185, 129, 0.4)',
+          x: trailX,
+          y: trailY,
         }}
         animate={{
-          scale: clicked ? 0.75 : hovered ? 1.85 : 1.0,
+          scale: clicked ? 0.75 : hovered ? 2.0 : 1.0,
+          borderRadius: hovered ? '8px' : '9999px', // Morphs into rounded-rect on hover targets
         }}
-        transition={{ type: 'spring', stiffness: 400, damping: 28 }}
-      >
-        {hovered && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-[5px] font-bold tracking-widest text-white uppercase opacity-75">
-              Run
-            </span>
-          </div>
-        )}
-      </motion.div>
+        transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+      />
+
+      {/* 2. Inner High-Precision Core Dot */}
+      <motion.div
+        className="fixed top-0 left-0 w-2 h-2 rounded-full pointer-events-none z-50 bg-[#10b981]"
+        style={{
+          x: pointX,
+          y: pointY,
+          // Center inside outer: outer width/2 (16px) - inner width/2 (4px) = 12px offset
+          marginLeft: '12px',
+          marginTop: '12px',
+        }}
+        animate={{
+          scale: hovered ? 0 : 1, // Fades pointer dot out when snapping to buttons
+          backgroundColor: clicked ? '#00f5d4' : '#10b981',
+        }}
+        transition={{ duration: 0.15 }}
+      />
     </>
   );
 };
