@@ -104,7 +104,7 @@ const Hero3DCard = ({ imgSrc }) => {
           
           {/* Bottom Accent bar */}
           <div className="absolute bottom-0 inset-x-0 h-1/4 bg-gradient-to-t from-[#020509]/95 to-transparent flex flex-col justify-end p-4 z-10">
-            <span className="text-xs font-mono text-emerald-400 tracking-wider">DATA ARCHIVE v4.0</span>
+            <span className="text-xs font-mono text-emerald-400 tracking-wider">CSE (DATA SCIENCE)</span>
             <span className="text-sm font-bold text-white tracking-wide">UDAY KUMAR</span>
           </div>
         </div>

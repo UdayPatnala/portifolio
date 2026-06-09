@@ -323,13 +323,37 @@ const App = () => {
 
   // Theme Toggler state
   const [isDarkMode, setIsDarkMode] = useState(() => {
-    const saved = localStorage.getItem('portfolio_theme');
-    return saved !== null ? JSON.parse(saved) : true;
+    try {
+      const saved = localStorage.getItem('portfolio_theme');
+      return saved !== null ? JSON.parse(saved) : true;
+    } catch (e) {
+      return true;
+    }
   });
 
   // Photo switcher
   const [profilePhoto, setProfilePhoto] = useState('profile-casual.jpg');
   const [activePhotoLabel, setActivePhotoLabel] = useState('Casual');
+
+  // Automatic photo switcher cycling effect
+  useEffect(() => {
+    const photos = [
+      { label: 'Casual', file: 'profile-casual.jpg' },
+      { label: 'Corporate Suit', file: 'profile-suit.jpg' },
+      { label: 'In Office', file: 'profile-office.jpg' }
+    ];
+
+    const interval = setInterval(() => {
+      setProfilePhoto((currentPhoto) => {
+        const currentIndex = photos.findIndex(p => p.file === currentPhoto);
+        const nextIndex = (currentIndex + 1) % photos.length;
+        setActivePhotoLabel(photos[nextIndex].label);
+        return photos[nextIndex].file;
+      });
+    }, 6000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   // Filter project cards
   const [selectedFilter, setSelectedFilter] = useState('all');
@@ -356,7 +380,9 @@ const App = () => {
       document.documentElement.classList.add('light');
       document.body.classList.add('light-theme');
     }
-    localStorage.setItem('portfolio_theme', JSON.stringify(isDarkMode));
+    try {
+      localStorage.setItem('portfolio_theme', JSON.stringify(isDarkMode));
+    } catch (e) {}
   }, [isDarkMode]);
 
   useEffect(() => {
@@ -406,9 +432,18 @@ const App = () => {
         date: new Date().toISOString()
       };
       
-      const existingMsgs = JSON.parse(localStorage.getItem('portfolio_messages') || '[]');
+      let existingMsgs = [];
+      try {
+        existingMsgs = JSON.parse(localStorage.getItem('portfolio_messages') || '[]');
+      } catch (e) {}
+      
       existingMsgs.push(newMsg);
-      localStorage.setItem('portfolio_messages', JSON.stringify(existingMsgs));
+      
+      try {
+        localStorage.setItem('portfolio_messages', JSON.stringify(existingMsgs));
+      } catch (e) {
+        console.warn("Telemetry storage failed:", e);
+      }
 
       setFormStatus('success');
       setFormData({ name: '', email: '', subject: '', message: '' });
@@ -432,7 +467,7 @@ const App = () => {
       isDarkMode ? 'bg-[#03060a] text-gray-100 selection:text-white' : 'bg-[#f8fafc] text-slate-900 selection:text-emerald-950'
     }`}>
       {/* Visual background components */}
-      <ParticleBackground />
+      <ParticleBackground isDarkMode={isDarkMode} />
       <CustomCursor />
 
       {/* Top scroll neon progress bar */}
@@ -446,12 +481,11 @@ const App = () => {
         <div className="max-w-7xl mx-auto h-full px-6 flex items-center justify-between">
           <div 
             onClick={() => scrollToSection('hero')} 
-            className="flex items-center gap-2 cursor-pointer font-bold tracking-widest text-lg font-mono text-emerald-500 group"
+            className="flex items-center gap-1.5 cursor-pointer font-bold tracking-widest text-lg font-mono text-emerald-500 group"
           >
-            <span className="text-emerald-500 group-hover:text-cyan-500 transition-colors">{"<"}</span>
-            <span className={isDarkMode ? 'text-white' : 'text-slate-900'}>UDAY.DS</span>
+            <span className={isDarkMode ? 'text-white group-hover:text-emerald-400 transition-colors' : 'text-slate-900 group-hover:text-emerald-600 transition-colors'}>UDAY</span>
+            <span className="text-emerald-500 group-hover:text-cyan-400 transition-colors">.DS</span>
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-emerald-500 group-hover:text-cyan-400 transition-colors">{"/>"}</span>
           </div>
 
           {/* Desktop Nav Links */}
@@ -561,7 +595,7 @@ const App = () => {
               className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded-full text-xs font-mono"
             >
               <Sparkles size={12} className="animate-spin" />
-              <span>Stochastic Gradient Descent Ready | CSE (Data Science)</span>
+              <span>CSE (Data Science) | Raghu Institute of Technology</span>
             </motion.div>
 
             <motion.h1 
@@ -580,10 +614,10 @@ const App = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               className={`text-xl sm:text-2xl font-mono h-16 flex items-center justify-center lg:justify-start transition-colors duration-300 ${
-                isDarkMode ? 'text-gray-400' : 'text-slate-600'
+                isDarkMode ? 'text-gray-400' : 'text-slate-650'
               }`}
             >
-              <span className="text-emerald-500 mr-2">root@uday:~# </span>
+              <span className="text-emerald-500 mr-2">&gt; </span>
               <Typewriter
                 words={[
                   'Data Science Enthusiast', 
@@ -1052,9 +1086,10 @@ const App = () => {
               }`}>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-xs font-mono text-gray-500 mb-2">YOUR NAME</label>
+                    <label htmlFor="form-name" className="block text-xs font-mono text-gray-500 mb-2">YOUR NAME</label>
                     <input
                       type="text"
+                      id="form-name"
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
@@ -1068,9 +1103,10 @@ const App = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-mono text-gray-500 mb-2">EMAIL ADDRESS</label>
+                    <label htmlFor="form-email" className="block text-xs font-mono text-gray-500 mb-2">EMAIL ADDRESS</label>
                     <input
                       type="email"
+                      id="form-email"
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
@@ -1086,9 +1122,10 @@ const App = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-mono text-gray-500 mb-2">SUBJECT</label>
+                  <label htmlFor="form-subject" className="block text-xs font-mono text-gray-500 mb-2">SUBJECT</label>
                   <input
                     type="text"
+                    id="form-subject"
                     name="subject"
                     value={formData.subject}
                     onChange={handleInputChange}
@@ -1102,8 +1139,9 @@ const App = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-mono text-gray-500 mb-2">MESSAGE CONTENT</label>
+                  <label htmlFor="form-message" className="block text-xs font-mono text-gray-500 mb-2">MESSAGE CONTENT</label>
                   <textarea
+                    id="form-message"
                     name="message"
                     value={formData.message}
                     onChange={handleInputChange}

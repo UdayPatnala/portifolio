@@ -56,14 +56,7 @@ const DataScienceVisualizer = ({ isDarkMode }) => {
       const pathStyle = isDarkMode ? 'rgba(239, 68, 68, 0.4)' : 'rgba(220, 38, 38, 0.5)';
       const statusStyle = isDarkMode ? 'rgba(239, 68, 68, 0.8)' : 'rgba(220, 38, 38, 0.85)';
 
-      // Draw mathematical grid boundary
-      ctx.strokeStyle = bgStrokeStyle;
-      ctx.lineWidth = 1;
-      ctx.strokeRect(0, 0, width, height);
-      ctx.font = '8px monospace';
-      ctx.fillStyle = textStyle;
-      ctx.fillText("LOSS LANDSCAPE: OPTIMIZATION MODEL v4.0", 8, 12);
-      ctx.fillText("ALGORITHM: STOCHASTIC GRADIENT DESCENT", 8, 22);
+      // Draw mathematical grid boundary (removed inner border and text for cleaner presentation)
 
       const currentRotX = rotation.x;
       const currentRotY = isDraggingRef.current 
@@ -143,11 +136,7 @@ const DataScienceVisualizer = ({ isDarkMode }) => {
       ctx.arc(ballProjected.x, ballProjected.y, 7 + Math.sin(Date.now() * 0.01) * 2, 0, Math.PI * 2);
       ctx.stroke();
 
-      // Text status overlay
-      ctx.font = '7px monospace';
-      ctx.fillStyle = statusStyle;
-      ctx.fillText(`OPTIMIZER STATE: CONVERGING`, 8, height - 12);
-      ctx.fillText(`MINIMA LOSS: ${(radius * radius).toFixed(5)}`, 8, height - 4);
+      // Text status overlay (removed for cleaner UI)
 
       animationFrameId = requestAnimationFrame(drawFrame);
     };
