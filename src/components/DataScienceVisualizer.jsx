@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const DataScienceVisualizer = ({ isDarkMode }) => {
   const canvasRef = useRef(null);
@@ -49,12 +49,9 @@ const DataScienceVisualizer = ({ isDarkMode }) => {
       ctx.clearRect(0, 0, width, height);
 
       // Colors depending on active theme
-      const textStyle = isDarkMode ? 'rgba(16, 185, 129, 0.4)' : 'rgba(4, 120, 87, 0.6)';
-      const bgStrokeStyle = isDarkMode ? 'rgba(16, 185, 129, 0.05)' : 'rgba(16, 185, 129, 0.12)';
       const ballColor = isDarkMode ? 'rgba(239, 68, 68, 0.9)' : 'rgba(220, 38, 38, 0.95)';
       const ballShadowColor = isDarkMode ? '#ef4444' : '#dc2626';
       const pathStyle = isDarkMode ? 'rgba(239, 68, 68, 0.4)' : 'rgba(220, 38, 38, 0.5)';
-      const statusStyle = isDarkMode ? 'rgba(239, 68, 68, 0.8)' : 'rgba(220, 38, 38, 0.85)';
 
       // Draw mathematical grid boundary (removed inner border and text for cleaner presentation)
 

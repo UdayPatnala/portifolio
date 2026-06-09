@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const PARTICLE_COUNT = 60;
 const CONNECTION_DIST = 120;

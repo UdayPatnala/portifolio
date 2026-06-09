@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { ExternalLink, Cpu, Database, Layout } from 'lucide-react';
 
@@ -90,7 +90,7 @@ const ProjectCard = ({ project, isDarkMode, isExtra = false }) => {
       case 'web':
         return 'bg-cyan-500/10 border-cyan-500/20 text-cyan-600 dark:text-cyan-400';
       default:
-        return 'bg-amber-500/10 border-amber-500/20 text-amber-600 dark:text-amber-450';
+        return 'bg-amber-500/10 border-amber-500/20 text-amber-600 dark:text-amber-400';
     }
   };
 
@@ -228,7 +228,7 @@ const ProjectCard = ({ project, isDarkMode, isExtra = false }) => {
         <p 
           style={{ transform: 'translateZ(18px)' }}
           className={`text-sm leading-relaxed mb-4 transition-colors duration-300 ${
-            isDarkMode ? 'text-gray-400' : 'text-slate-650'
+            isDarkMode ? 'text-gray-400' : 'text-slate-600'
           }`}
         >
           {description}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useSpring, useMotionValue, useTransform } from 'framer-motion';
 import { 
   Mail, 
@@ -6,12 +6,10 @@ import {
   MapPin, 
   ExternalLink, 
   Code, 
-  Book, 
   Briefcase, 
   Award, 
   Terminal, 
   Database, 
-  Cpu, 
   Send, 
   ArrowUp, 
   Menu, 
@@ -19,7 +17,6 @@ import {
   Sparkles, 
   CheckCircle,
   FileText,
-  User,
   Sun,
   Moon
 } from 'lucide-react';
@@ -70,7 +67,7 @@ const Linkedin = ({ size = 20, className = "" }) => (
 
 // --- CUSTOM SVG LOGO COMPONENT ---
 
-const Logo = ({ size = 28, className = "", isDarkMode = true }) => (
+const Logo = ({ size = 28, className = "" }) => (
   <motion.svg 
     xmlns="http://www.w3.org/2000/svg" 
     viewBox="0 0 100 100" 
@@ -673,7 +670,7 @@ const App = () => {
     try {
       const saved = localStorage.getItem('portfolio_theme');
       return saved !== null ? JSON.parse(saved) : true;
-    } catch (e) {
+    } catch {
       return true;
     }
   });
@@ -682,7 +679,9 @@ const App = () => {
 
   // Filter project cards
   const [selectedFilter, setSelectedFilter] = useState('all');
-  const [filteredProjects, setFilteredProjects] = useState(PROJECT_DATA);
+  const filteredProjects = selectedFilter === 'all'
+    ? PROJECT_DATA
+    : PROJECT_DATA.filter((proj) => proj.type === selectedFilter);
 
   // Mobile menu navbar
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -758,18 +757,12 @@ const App = () => {
     }
     try {
       localStorage.setItem('portfolio_theme', JSON.stringify(isDarkMode));
-    } catch (e) {}
+    } catch (e) {
+      console.warn("Theme storage failed:", e);
+    }
   }, [isDarkMode]);
 
-  useEffect(() => {
-    // Project filtering logic
-    if (selectedFilter === 'all') {
-      setFilteredProjects(PROJECT_DATA);
-    } else {
-      const filtered = PROJECT_DATA.filter((proj) => proj.type === selectedFilter);
-      setFilteredProjects(filtered);
-    }
-  }, [selectedFilter]);
+
 
   useEffect(() => {
     // Scroll event listener for float button
@@ -911,7 +904,7 @@ const App = () => {
                   className={`transition-all duration-200 relative py-1 px-1.5 group cursor-none font-semibold ${
                     isActive 
                       ? (isDarkMode ? 'text-emerald-400 font-bold' : 'text-emerald-600 font-bold')
-                      : (isDarkMode ? 'text-gray-400 hover:text-emerald-300' : 'text-slate-600 hover:text-emerald-555')
+                      : (isDarkMode ? 'text-gray-400 hover:text-emerald-300' : 'text-slate-600 hover:text-emerald-600')
                   }`}
                 >
                   {section}
@@ -964,7 +957,7 @@ const App = () => {
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
               className={`p-2 rounded-lg border transition-all duration-300 cursor-none ${
-                isDarkMode ? 'bg-white/5 border-white/10 text-emerald-400' : 'bg-slate-150 border-slate-200 text-emerald-600'
+                isDarkMode ? 'bg-white/5 border-white/10 text-emerald-400' : 'bg-slate-100 border-slate-200 text-emerald-600'
               }`}
             >
               {isDarkMode ? <Sun size={16} /> : <Moon size={16} />}
@@ -1063,7 +1056,7 @@ const App = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               className={`text-xl sm:text-2xl font-mono h-16 flex items-center justify-center lg:justify-start transition-colors duration-300 ${
-                isDarkMode ? 'text-gray-400' : 'text-slate-650'
+                isDarkMode ? 'text-gray-400' : 'text-slate-600'
               }`}
             >
               <span className="text-emerald-500 mr-2">&gt; </span>
@@ -1088,7 +1081,7 @@ const App = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
               className={`max-w-lg leading-relaxed text-sm sm:text-base transition-colors duration-300 ${
-                isDarkMode ? 'text-gray-400' : 'text-slate-650'
+                isDarkMode ? 'text-gray-400' : 'text-slate-600'
               }`}
             >
               Specializing in analytical modeling, machine learning pipelines, and database tuning. Experienced in creating enterprise-grade Spring Boot APIs, structured ETL scripts, and responsive React interfaces.
@@ -1316,12 +1309,12 @@ const App = () => {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
           <div className="mb-16 text-center">
-            <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">// VOLUMETRIC SYSTEM ARCHIVE</span>
+            <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">&bull; VOLUMETRIC SYSTEM ARCHIVE</span>
             <h2 className={`text-3xl sm:text-5xl font-extrabold transition-colors duration-300 ${
               isDarkMode ? 'text-white' : 'text-slate-900'
             }`}>System Showcase</h2>
             <div className="h-[2px] w-20 bg-gradient-to-r from-emerald-500 to-cyan-500 mt-4 mx-auto" />
-            <p className={`mt-4 max-w-2xl mx-auto text-sm transition-colors duration-300 ${isDarkMode ? 'text-gray-400' : 'text-slate-605'}`}>
+            <p className={`mt-4 max-w-2xl mx-auto text-sm transition-colors duration-300 ${isDarkMode ? 'text-gray-400' : 'text-slate-600'}`}>
               Interactive 3D mockups of my top projects. Hover on desktop to tilt the display and inspect interface structures dynamically in real-time.
             </p>
           </div>
@@ -1366,7 +1359,7 @@ const App = () => {
                   className={`px-4 py-2 text-xs font-mono rounded-lg transition-all duration-300 cursor-none ${
                     selectedFilter === tab.id
                       ? 'bg-emerald-500 text-black font-bold shadow-[0_0_15px_rgba(16,185,129,0.35)]'
-                      : `hover:text-emerald-500 ${isDarkMode ? 'text-gray-400 hover:bg-white/5' : 'text-slate-650 hover:bg-slate-200'}`
+                      : `hover:text-emerald-500 ${isDarkMode ? 'text-gray-400 hover:bg-white/5' : 'text-slate-600 hover:bg-slate-200'}`
                   }`}
                 >
                   {tab.label}
@@ -1536,7 +1529,7 @@ const App = () => {
                       <h4 className={`font-bold text-xs transition-colors duration-300 ${
                         isDarkMode ? 'text-white' : 'text-slate-800'
                       }`}>{train.role}</h4>
-                      <span className="text-[9px] font-mono px-1.5 py-0.5 bg-amber-500/10 border border-amber-500/25 text-amber-550 rounded">
+                      <span className="text-[9px] font-mono px-1.5 py-0.5 bg-amber-500/10 border border-amber-500/25 text-amber-600 rounded">
                         {train.period}
                       </span>
                     </div>
@@ -1544,7 +1537,7 @@ const App = () => {
                       {train.provider}
                     </span>
                     <p className={`text-[11px] leading-relaxed mt-2 transition-colors duration-300 ${
-                      isDarkMode ? 'text-gray-400' : 'text-slate-650'
+                      isDarkMode ? 'text-gray-400' : 'text-slate-600'
                     }`}>
                       {train.description}
                     </p>
@@ -1603,7 +1596,7 @@ const App = () => {
                 isDarkMode ? 'text-white' : 'text-slate-900'
               }`}>Telemetry Nodes</h3>
               <p className={`leading-relaxed text-sm transition-colors duration-300 ${
-                isDarkMode ? 'text-gray-400' : 'text-slate-650'
+                isDarkMode ? 'text-gray-400' : 'text-slate-600'
               }`}>
                 Feel free to drop a message or reach out via email for potential projects, professional networks, or internship roles.
               </p>
