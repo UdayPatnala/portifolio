@@ -12,6 +12,7 @@ const ParticleBackground = ({ isDarkMode }) => {
     let particles = [];
     let mouse = { x: null, y: null, radius: 160 };
     let smoothMouse = { x: 0, y: 0 };
+    let gridOffset = 0;
 
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
@@ -123,10 +124,54 @@ const ParticleBackground = ({ isDarkMode }) => {
       }
     };
 
+    const drawCyberGrid = () => {
+      const horizon = canvas.height * 0.45;
+      const linesCount = 15;
+      
+      gridOffset = (gridOffset + 0.2) % 40;
+      
+      // Horizontal perspective grid lines scrolling forward
+      for (let i = 0; i <= linesCount; i++) {
+        const ratio = (i + gridOffset / 40) / linesCount;
+        const y = horizon + (canvas.height - horizon) * Math.pow(ratio, 2.8);
+        const baseAlpha = isDarkMode ? 0.06 : 0.08;
+        const alpha = Math.min(1, ratio) * baseAlpha; // Fades out towards horizon
+        
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.strokeStyle = isDarkMode 
+          ? `rgba(16, 185, 129, ${alpha})` 
+          : `rgba(16, 120, 80, ${alpha * 0.6})`;
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+      }
+      
+      // Vertical converging grid lines
+      const vLinesCount = 30;
+      const centerX = canvas.width / 2;
+      for (let i = 0; i <= vLinesCount; i++) {
+        const ratio = i / vLinesCount;
+        const startX = canvas.width * ratio;
+        
+        ctx.beginPath();
+        ctx.moveTo(centerX, horizon);
+        ctx.lineTo(startX, canvas.height);
+        ctx.strokeStyle = isDarkMode 
+          ? 'rgba(16, 185, 129, 0.03)' 
+          : 'rgba(16, 120, 80, 0.03)';
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+      }
+    };
+
     const animate = () => {
       // Dynamic background base color
       ctx.fillStyle = isDarkMode ? '#03060a' : '#f8fafc';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw the scrolling 3D grid in the background
+      drawCyberGrid();
 
       // Smooth mouse coordinates tracking for parallax effects
       if (mouse.x !== null && mouse.y !== null) {

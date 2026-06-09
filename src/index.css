@@ -122,3 +122,12 @@ body.light-theme ::selection {
   background: rgba(16, 185, 129, 0.18);
   color: #047857;
 }
+
+/* Futuristic holographic scanlines for camera stream */
+.bg-scanlines {
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.2) 50%
+  );
+  background-size: 100% 4px;
+}

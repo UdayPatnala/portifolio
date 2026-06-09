@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useSpring, useMotionValue, useTransform } from 'framer-motion';
 import { 
   Mail, 
@@ -278,42 +278,182 @@ const CERTIFICATIONS = [
   { title: "Software Testing Master Class", provider: "Udemy Professional Certificate" }
 ];
 
-const Scrolling3DImages = () => {
-  const images = [
-    '/music_mirror_real.png',
-    '/nebula_real.png',
-    '/javapath_real.png'
-  ];
+const ShowcaseItem = ({ project, index, isDarkMode }) => {
+  const mouseX = useMotionValue(0.5);
+  const mouseY = useMotionValue(0.5);
+  
+  const rotateX = useSpring(useTransform(mouseY, [0, 1], [15, -15]), { stiffness: 120, damping: 20 });
+  const rotateY = useSpring(useTransform(mouseX, [0, 1], [-15, 15]), { stiffness: 120, damping: 20 });
+  
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const xVal = (e.clientX - rect.left) / rect.width;
+    const yVal = (e.clientY - rect.top) / rect.height;
+    mouseX.set(xVal);
+    mouseY.set(yVal);
+  };
+  
+  const handleMouseLeave = () => {
+    mouseX.set(0.5);
+    mouseY.set(0.5);
+  };
+
+  const isLeft = index % 2 === 0;
+
+  // Visual styling colors based on project
+  const getColors = (title) => {
+    if (title.includes("Music")) {
+      return {
+        glow: "from-emerald-500/10 via-transparent to-emerald-500/5",
+        hoverShadow: "hover:shadow-[0_40px_80px_-20px_rgba(16,185,129,0.3)]",
+        border: "border-emerald-500/20 hover:border-emerald-500/40"
+      };
+    }
+    if (title.includes("Nebula")) {
+      return {
+        glow: "from-purple-500/10 via-transparent to-purple-500/5",
+        hoverShadow: "hover:shadow-[0_40px_80px_-20px_rgba(168,85,247,0.3)]",
+        border: "border-purple-500/20 hover:border-purple-500/40"
+      };
+    }
+    return {
+      glow: "from-cyan-500/10 via-transparent to-cyan-500/5",
+      hoverShadow: "hover:shadow-[0_40px_80px_-20px_rgba(6,182,212,0.3)]",
+      border: "border-cyan-500/20 hover:border-cyan-500/40"
+    };
+  };
+
+  const colors = getColors(project.title);
 
   return (
-    <div className="flex flex-col gap-10 w-full max-w-sm mx-auto relative" style={{ perspective: 1200 }}>
-      {/* Subtle ambient back-glow for volumetric depth */}
-      <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/10 via-transparent to-cyan-500/10 blur-[80px] -z-10" />
-      
-      {images.map((img, i) => (
+    <motion.div 
+      initial={{ opacity: 0, y: 80 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      className={`flex flex-col lg:flex-row items-center gap-12 py-10 ${
+        isLeft ? 'lg:flex-row' : 'lg:flex-row-reverse'
+      }`}
+    >
+      {/* 3D Browser Mockup Column */}
+      <div className="w-full lg:w-7/12" style={{ perspective: 1500 }}>
         <motion.div
-          key={i}
-          initial={{ opacity: 0, rotateX: 45, y: 80, scale: 0.9, z: -100 }}
-          whileInView={{ opacity: 1, rotateX: 0, y: 0, scale: 1, z: 0 }}
-          viewport={{ once: false, margin: "-100px" }}
-          transition={{ duration: 0.8, delay: i * 0.15, type: "spring", bounce: 0.4 }}
-          whileHover={{ scale: 1.05, rotateY: i % 2 === 0 ? 12 : -12, rotateX: 5, z: 80 }}
-          className="relative rounded-2xl overflow-hidden border border-emerald-500/20 bg-slate-900 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] hover:shadow-[0_40px_80px_-20px_rgba(16,185,129,0.4)] transition-all duration-500 group"
-          style={{ transformStyle: 'preserve-3d' }}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          style={{ 
+            rotateX, 
+            rotateY,
+            transformStyle: "preserve-3d"
+          }}
+          whileHover={{ scale: 1.02 }}
+          className={`relative rounded-2xl border bg-slate-950/80 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.6)] ${colors.hoverShadow} ${colors.border} transition-all duration-500 overflow-hidden group`}
         >
-          {/* Inner glass reflection gradient for depth */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none" />
-          
-          <img 
-             src={img} 
-             alt={`Showcase ${i}`} 
-             className="w-full h-40 object-cover object-top filter contrast-[1.15] brightness-90 group-hover:brightness-110 transition-all duration-500" 
-             style={{ transform: "translateZ(20px)" }}
-          />
-          
-          {/* Bottom vignette shade for realistic recessed lighting */}
-          <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-slate-950/90 to-transparent pointer-events-none z-10" style={{ transform: "translateZ(25px)" }} />
+          {/* Top Address Bar (Fake Browser UI) */}
+          <div className="flex items-center gap-2 px-4 py-3 bg-slate-900/90 border-b border-white/5 select-none">
+            {/* Window controls */}
+            <div className="flex gap-1.5">
+              <span className="w-3 h-3 rounded-full bg-red-500/80 block" />
+              <span className="w-3 h-3 rounded-full bg-amber-500/80 block" />
+              <span className="w-3 h-3 rounded-full bg-green-500/80 block" />
+            </div>
+            {/* Search/Address input */}
+            <div className="flex-1 max-w-md mx-auto bg-slate-950/80 rounded-md border border-white/5 px-3 py-0.5 text-center text-[10px] font-mono text-gray-500 truncate">
+              {project.live.replace('https://', '')}
+            </div>
+          </div>
+
+          {/* Screenshot container with 3D layers */}
+          <div className="relative w-full h-[220px] sm:h-[300px] md:h-[380px] overflow-hidden">
+            {/* Volumetric background glow */}
+            <div className={`absolute inset-0 bg-gradient-to-tr ${colors.glow} mix-blend-screen opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none`} />
+            
+            {/* Glass sheen overlay */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10 pointer-events-none" />
+
+            <img 
+              src={project.image} 
+              alt={project.title} 
+              className="w-full h-full object-cover object-top filter contrast-[1.05] brightness-90 group-hover:brightness-100 group-hover:scale-[1.01] transition-all duration-770 select-none pointer-events-none"
+              style={{ transform: "translateZ(20px)" }}
+            />
+
+            {/* Depth vignette */}
+            <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-slate-950 to-transparent pointer-events-none z-10" style={{ transform: "translateZ(30px)" }} />
+          </div>
         </motion.div>
+      </div>
+
+      {/* Narrative Info Column */}
+      <div className="w-full lg:w-5/12 flex flex-col items-start gap-4">
+        <div className="flex items-center gap-2">
+          <span className="text-emerald-500 font-mono text-sm font-semibold">0{index + 1}</span>
+          <span className="w-8 h-[1px] bg-emerald-500/40" />
+          <span className="text-[10px] font-mono tracking-wider uppercase text-cyan-500">Volumetric Preview</span>
+        </div>
+        
+        <h3 className={`text-2xl sm:text-3xl font-extrabold transition-colors duration-300 ${
+          isDarkMode ? 'text-white' : 'text-slate-900'
+        }`}>
+          {project.title}
+        </h3>
+
+        <p className={`text-sm leading-relaxed transition-colors duration-300 ${
+          isDarkMode ? 'text-gray-400' : 'text-slate-600'
+        }`}>
+          {project.description}
+        </p>
+
+        {/* Tags */}
+        <div className="flex flex-wrap gap-1.5 mt-2">
+          {project.tags.slice(0, 4).map(tag => (
+            <span 
+              key={tag} 
+              className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/10"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex items-center gap-4 mt-4">
+          <a 
+            href={project.live} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-4 py-2 text-xs font-mono font-bold rounded-lg bg-emerald-500 text-black shadow-md hover:bg-emerald-400 hover:shadow-lg hover:shadow-emerald-500/20 transition-all duration-300 cursor-none"
+          >
+            Launch System <ExternalLink size={12} />
+          </a>
+          <a 
+            href={project.github} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className={`flex items-center gap-2 px-4 py-2 text-xs font-mono rounded-lg border transition-all duration-300 cursor-none ${
+              isDarkMode 
+                ? 'border-white/10 hover:border-white/30 text-white hover:bg-white/5' 
+                : 'border-slate-200 hover:border-slate-400 text-slate-700 hover:bg-slate-50'
+            }`}
+          >
+            Source Code <Github size={12} />
+          </a>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+const Scrolling3DImages = ({ isDarkMode }) => {
+  const featuredTitles = ["Music Mirror", "Nebula Cinematic Gallery", "JavaPath Pro"];
+  const featuredProjects = PROJECT_DATA.filter(p => featuredTitles.includes(p.title));
+  
+  // Sort them to match the order: Music Mirror first, Nebula second, JavaPath Pro third
+  const sortedProjects = featuredTitles.map(title => featuredProjects.find(p => p.title === title)).filter(Boolean);
+
+  return (
+    <div className="w-full flex flex-col gap-16 md:gap-24 relative max-w-6xl mx-auto">
+      {sortedProjects.map((project, i) => (
+        <ShowcaseItem key={project.title} project={project} index={i} isDarkMode={isDarkMode} />
       ))}
     </div>
   );
@@ -353,6 +493,46 @@ const App = () => {
   // Contact form submission state
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
   const [formStatus, setFormStatus] = useState('idle');
+
+  // Live Webcam Feed for 3D Portrait Frame
+  const [useWebcam, setUseWebcam] = useState(false);
+  const videoRef = useRef(null);
+  const [webcamError, setWebcamError] = useState(null);
+
+  useEffect(() => {
+    let stream = null;
+    const startWebcam = async () => {
+      try {
+        setWebcamError(null);
+        stream = await navigator.mediaDevices.getUserMedia({ 
+          video: { width: 480, height: 480, facingMode: 'user' } 
+        });
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+        }
+      } catch (err) {
+        console.error("Error accessing webcam:", err);
+        setWebcamError("Camera unavailable or blocked");
+        setUseWebcam(false);
+      }
+    };
+
+    if (useWebcam) {
+      startWebcam();
+    } else {
+      if (videoRef.current && videoRef.current.srcObject) {
+        const tracks = videoRef.current.srcObject.getTracks();
+        tracks.forEach(track => track.stop());
+        videoRef.current.srcObject = null;
+      }
+    }
+
+    return () => {
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+      }
+    };
+  }, [useWebcam]);
 
   // Parallax mouse movements for the profile visual
   const heroX = useMotionValue(0.5);
@@ -768,6 +948,8 @@ const App = () => {
 
           {/* Right Profile Photo with Radial Mask (layered 3D depth) */}
           <motion.div 
+            animate={{ y: [0, -10, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
             style={{ 
               rotateX: heroRotateX, 
               rotateY: heroRotateY, 
@@ -817,18 +999,82 @@ const App = () => {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1.2, ease: "easeOut" }}
-              className="relative w-72 h-72 md:w-88 md:h-88 rounded-full overflow-hidden border border-emerald-500/10 shadow-2xl bg-black/10 dark:bg-white/[0.02] flex items-center justify-center"
+              className="relative w-72 h-72 md:w-88 md:h-88 rounded-full overflow-hidden border border-emerald-500/10 shadow-2xl bg-black/10 dark:bg-white/[0.02] flex items-center justify-center group"
             >
-              <img 
-                src="profile.jpg" 
-                alt="Patnala Uday Kumar Profile" 
-                className="w-full h-full object-cover filter grayscale contrast-110 hover:grayscale-0 transition-all duration-750 select-none pointer-events-none"
-                style={{
-                  maskImage: 'radial-gradient(circle, rgba(0,0,0,1) 45%, rgba(0,0,0,0.1) 85%, rgba(0,0,0,0) 100%)',
-                  WebkitMaskImage: 'radial-gradient(circle, rgba(0,0,0,1) 45%, rgba(0,0,0,0.1) 85%, rgba(0,0,0,0) 100%)'
-                }}
-              />
+              {useWebcam ? (
+                <div className="w-full h-full relative">
+                  <video 
+                    ref={videoRef}
+                    autoPlay 
+                    playsInline 
+                    muted 
+                    className="w-full h-full object-cover filter brightness-105 contrast-110 saturate-[0.8] hue-rotate-[10deg] scale-x-[-1]"
+                    style={{
+                      maskImage: 'radial-gradient(circle, rgba(0,0,0,1) 45%, rgba(0,0,0,0.1) 85%, rgba(0,0,0,0) 100%)',
+                      WebkitMaskImage: 'radial-gradient(circle, rgba(0,0,0,1) 45%, rgba(0,0,0,0.1) 85%, rgba(0,0,0,0) 100%)'
+                    }}
+                  />
+                  {/* Cyber Scanline overlay */}
+                  <div className="absolute inset-0 bg-scanlines pointer-events-none mix-blend-overlay opacity-30" />
+                  
+                  {/* Futuristic HUD interface overlay inside 3D space */}
+                  <div className="absolute inset-0 border border-emerald-500/20 rounded-full pointer-events-none flex items-center justify-center m-4">
+                    {/* Floating corner indicators */}
+                    <div className="absolute top-4 left-6 text-[8px] font-mono text-emerald-400/60 bg-slate-950/70 px-1.5 py-0.5 rounded">
+                      CAM_01 // SECURE_LINK
+                    </div>
+                    <div className="absolute bottom-4 right-6 text-[8px] font-mono text-emerald-400/60 bg-slate-950/70 px-1.5 py-0.5 rounded">
+                      EMOTION_ENG: ACTIVE
+                    </div>
+                    
+                    {/* Bounding box corners for face detection feel */}
+                    <div className="w-3/5 h-3/5 border border-dashed border-emerald-500/30 rounded-lg relative animate-pulse flex items-center justify-center">
+                      <span className="absolute top-0 left-0 w-2.5 h-2.5 border-t-2 border-l-2 border-emerald-500" />
+                      <span className="absolute top-0 right-0 w-2.5 h-2.5 border-t-2 border-r-2 border-emerald-500" />
+                      <span className="absolute bottom-0 left-0 w-2.5 h-2.5 border-b-2 border-l-2 border-emerald-500" />
+                      <span className="absolute bottom-0 right-0 w-2.5 h-2.5 border-b-2 border-r-2 border-emerald-500" />
+                      
+                      <div className="text-[9px] font-mono text-emerald-400 text-center select-none uppercase tracking-widest font-bold">
+                        A.I. Analyzing
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <img 
+                  src="profile.jpg" 
+                  alt="Patnala Uday Kumar Profile" 
+                  className="w-full h-full object-cover filter grayscale contrast-115 brightness-95 group-hover:grayscale-0 group-hover:contrast-100 group-hover:brightness-100 transition-all duration-700 select-none pointer-events-none"
+                  style={{
+                    maskImage: 'radial-gradient(circle, rgba(0,0,0,1) 45%, rgba(0,0,0,0.1) 85%, rgba(0,0,0,0) 100%)',
+                    WebkitMaskImage: 'radial-gradient(circle, rgba(0,0,0,1) 45%, rgba(0,0,0,0.1) 85%, rgba(0,0,0,0) 100%)'
+                  }}
+                />
+              )}
             </motion.div>
+
+            {/* Webcam Live Feed Toggle Button */}
+            <div 
+              style={{ transform: 'translateZ(60px)' }}
+              className="absolute bottom-2 md:bottom-4 z-35 flex flex-col items-center gap-1"
+            >
+              <button
+                onClick={() => setUseWebcam(!useWebcam)}
+                className={`px-4 py-2 rounded-xl text-[10px] font-mono font-bold tracking-wider uppercase flex items-center gap-2 shadow-2xl border transition-all duration-300 cursor-none ${
+                  useWebcam 
+                    ? 'bg-red-500/20 border-red-500/40 text-red-400 hover:bg-red-500/35 shadow-red-500/10'
+                    : 'bg-emerald-500/20 border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/35 shadow-emerald-500/10'
+                }`}
+              >
+                <span className={`w-1.5 h-1.5 rounded-full ${useWebcam ? 'bg-red-500 animate-ping' : 'bg-emerald-400'} block`} />
+                {useWebcam ? 'Disconnect Cam' : 'Activate 3D Live Feed'}
+              </button>
+              {webcamError && (
+                <span className="text-[8px] font-mono text-red-400 bg-black/80 px-2 py-0.5 rounded border border-red-500/20">
+                  {webcamError}
+                </span>
+              )}
+            </div>
           </motion.div>
         </div>
       </section>
@@ -851,79 +1097,92 @@ const App = () => {
           </div>
 
           {/* Skill card layout with 3D canvas projection */}
-          <div className="grid lg:grid-cols-12 gap-8 items-stretch">
-            
-            {/* Left: Skills Categories (Span 8) */}
-            <div className="lg:col-span-8 grid md:grid-cols-2 gap-6">
-              {SKILLS_DATA.map((cat, idx) => (
-                <motion.div
-                  key={cat.category}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: idx * 0.08 }}
-                  whileHover={{ 
-                    y: -6, 
-                    borderColor: cat.color,
-                    boxShadow: `0 0 30px ${cat.color.replace('0.4', '0.08')}` 
-                  }}
-                  className={`p-6 rounded-2xl glass-panel border transition-all duration-300 ${
-                    isDarkMode ? 'border-white/5' : 'border-emerald-500/10'
-                  }`}
-                >
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className={`p-2.5 rounded-xl border transition-colors duration-300 ${
-                      isDarkMode ? 'bg-white/5 border-white/5' : 'bg-slate-100 border-slate-200'
-                    }`}>
-                      {cat.icon}
-                    </div>
-                    <h3 className={`text-lg font-bold font-mono transition-colors duration-300 ${
-                      isDarkMode ? 'text-white' : 'text-slate-800'
-                    }`}>{cat.category}</h3>
+          <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+            {SKILLS_DATA.map((cat, idx) => (
+              <motion.div
+                key={cat.category}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.08 }}
+                whileHover={{ 
+                  y: -6, 
+                  borderColor: cat.color,
+                  boxShadow: `0 0 30px ${cat.color.replace('0.4', '0.08')}` 
+                }}
+                className={`p-6 rounded-2xl glass-panel border transition-all duration-300 ${
+                  isDarkMode ? 'border-white/5' : 'border-emerald-500/10'
+                }`}
+              >
+                <div className="flex items-center gap-3 mb-6">
+                  <div className={`p-2.5 rounded-xl border transition-colors duration-300 ${
+                    isDarkMode ? 'bg-white/5 border-white/5' : 'bg-slate-100 border-slate-200'
+                  }`}>
+                    {cat.icon}
                   </div>
+                  <h3 className={`text-lg font-bold font-mono transition-colors duration-300 ${
+                    isDarkMode ? 'text-white' : 'text-slate-800'
+                  }`}>{cat.category}</h3>
+                </div>
 
-                  <div className="space-y-4">
-                    {cat.items.map((skill) => (
-                      <motion.div 
-                        key={skill.name} 
-                        className="flex flex-col group/item"
-                        whileHover={{ x: 4 }}
-                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                      >
-                        <div className="flex justify-between items-center text-sm mb-1.5">
-                          <span className={`font-medium transition-colors duration-300 group-hover/item:text-emerald-500 dark:group-hover/item:text-emerald-400 ${
-                            isDarkMode ? 'text-gray-200' : 'text-slate-700'
-                          }`}>{skill.name}</span>
-                          <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded transition-transform group-hover/item:scale-105">
-                            {skill.level}
-                          </span>
-                        </div>
-                        <div className={`h-1 rounded-full overflow-hidden transition-colors duration-300 ${
-                          isDarkMode ? 'bg-white/5' : 'bg-slate-200'
-                        }`}>
-                          <motion.div 
-                            initial={{ width: 0 }}
-                            whileInView={{ 
-                              width: skill.level === 'Expert' ? '95%' : skill.level === 'Advanced' ? '80%' : '60%' 
-                            }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 1, ease: 'easeOut' }}
-                            className="h-full bg-gradient-to-r from-emerald-500 to-cyan-500" 
-                          />
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Right: 3D Stacked Scrolling Images (Span 4) */}
-            <div className="lg:col-span-4 flex flex-col justify-center">
-              <Scrolling3DImages />
-            </div>
-
+                <div className="space-y-4">
+                  {cat.items.map((skill) => (
+                    <motion.div 
+                      key={skill.name} 
+                      className="flex flex-col group/item"
+                      whileHover={{ x: 4 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    >
+                      <div className="flex justify-between items-center text-sm mb-1.5">
+                        <span className={`font-medium transition-colors duration-300 group-hover/item:text-emerald-500 dark:group-hover/item:text-emerald-400 ${
+                          isDarkMode ? 'text-gray-200' : 'text-slate-700'
+                        }`}>{skill.name}</span>
+                        <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded transition-transform group-hover/item:scale-105">
+                          {skill.level}
+                        </span>
+                      </div>
+                      <div className={`h-1 rounded-full overflow-hidden transition-colors duration-300 ${
+                        isDarkMode ? 'bg-white/5' : 'bg-slate-200'
+                      }`}>
+                        <motion.div 
+                          initial={{ width: 0 }}
+                          whileInView={{ 
+                            width: skill.level === 'Expert' ? '95%' : skill.level === 'Advanced' ? '80%' : '60%' 
+                          }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 1, ease: 'easeOut' }}
+                          className="h-full bg-gradient-to-r from-emerald-500 to-cyan-500" 
+                        />
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
           </div>
+        </motion.div>
+      </section>
+
+      {/* --- 3D INTERACTIVE SHOWCASE --- */}
+      <section id="showcase" className="py-24 px-6 max-w-7xl mx-auto border-t border-emerald-500/5 overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, y: 45 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <div className="mb-16 text-center">
+            <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">// VOLUMETRIC SYSTEM ARCHIVE</span>
+            <h2 className={`text-3xl sm:text-5xl font-extrabold transition-colors duration-300 ${
+              isDarkMode ? 'text-white' : 'text-slate-900'
+            }`}>System Showcase</h2>
+            <div className="h-[2px] w-20 bg-gradient-to-r from-emerald-500 to-cyan-500 mt-4 mx-auto" />
+            <p className={`mt-4 max-w-2xl mx-auto text-sm transition-colors duration-300 ${isDarkMode ? 'text-gray-400' : 'text-slate-605'}`}>
+              Interactive 3D mockups of my top projects. Hover on desktop to tilt the display and inspect interface structures dynamically in real-time.
+            </p>
+          </div>
+
+          <Scrolling3DImages isDarkMode={isDarkMode} />
         </motion.div>
       </section>
 
