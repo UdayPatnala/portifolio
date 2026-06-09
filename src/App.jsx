@@ -83,12 +83,12 @@ const Logo = ({ size = 28, className = "", isDarkMode = true }) => (
   >
     <defs>
       <linearGradient id="logo-u-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#10b981" />
-        <stop offset="100%" stop-color="#06b6d4" />
+        <stop offset="0%" stopColor="#10b981" />
+        <stop offset="100%" stopColor="#06b6d4" />
       </linearGradient>
       <linearGradient id="logo-k-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#8b5cf6" />
-        <stop offset="100%" stop-color="#ec4899" />
+        <stop offset="0%" stopColor="#8b5cf6" />
+        <stop offset="100%" stopColor="#ec4899" />
       </linearGradient>
     </defs>
     
@@ -1014,7 +1014,7 @@ const App = () => {
               className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded-full text-xs font-mono"
             >
               <Sparkles size={12} className="animate-spin" />
-              <span>CSE (Data Science) | Raghu Institute of Technology</span>
+              <span>Data Science Engineer</span>
             </motion.div>
 
             <motion.h1 
@@ -1205,7 +1205,7 @@ const App = () => {
           style={{ transformOrigin: "top center", transformStyle: "preserve-3d" }}
         >
           <div className="mb-16 text-center lg:text-left">
-            <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">â—† TECHNICAL COMPETENCE</span>
+            <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">&bull; TECHNICAL COMPETENCE</span>
             <h2 className={`text-3xl sm:text-5xl font-extrabold transition-colors duration-300 ${
               isDarkMode ? 'text-white' : 'text-slate-900'
             }`}>Technical Arsenal</h2>
@@ -1313,7 +1313,7 @@ const App = () => {
         >
           <div className="mb-12 text-center lg:text-left flex flex-col lg:flex-row lg:items-end justify-between gap-6">
             <div>
-              <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">â—† CAPSTONE ARCHIVES</span>
+              <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">&bull; CAPSTONE ARCHIVES</span>
               <h2 className={`text-3xl sm:text-5xl font-extrabold transition-colors duration-300 ${
                 isDarkMode ? 'text-white' : 'text-slate-900'
               }`}>Featured Projects</h2>
@@ -1443,7 +1443,7 @@ const App = () => {
             {/* Certifications (Span 3) */}
             <div className="lg:col-span-3 space-y-8">
               <div>
-                <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">â—† PROFESSIONAL CREDENTIALS</span>
+                <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">&bull; PROFESSIONAL CREDENTIALS</span>
                 <h2 className={`text-2xl sm:text-4xl font-extrabold transition-colors duration-300 ${
                   isDarkMode ? 'text-white' : 'text-slate-900'
                 }`}>Certifications</h2>
@@ -1488,7 +1488,7 @@ const App = () => {
             {/* Technical Training & Internships (Span 3 - secondary representation) */}
             <div className="lg:col-span-3 space-y-8">
               <div>
-                <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">â—† TECHNICAL CREDENTIALS</span>
+                <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">&bull; TECHNICAL CREDENTIALS</span>
                 <h2 className={`text-2xl sm:text-4xl font-extrabold transition-colors duration-300 ${
                   isDarkMode ? 'text-white' : 'text-slate-900'
                 }`}>Training</h2>
@@ -1540,7 +1540,7 @@ const App = () => {
           className="max-w-7xl mx-auto"
         >
           <div className="mb-16 text-center">
-            <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">â—† DIRECT INTERACTION</span>
+            <span className="text-emerald-500 font-mono tracking-widest uppercase text-xs block mb-2">&bull; DIRECT INTERACTION</span>
             <h2 className={`text-3xl sm:text-5xl font-extrabold transition-colors duration-300 ${
               isDarkMode ? 'text-white' : 'text-slate-900'
             }`}>Initialize Connect</h2>
@@ -1566,7 +1566,7 @@ const App = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent pointer-events-none" />
                 <div className="absolute bottom-0 left-0 right-0 px-4 py-3">
-                  <span className="text-[10px] font-mono font-bold tracking-widest text-emerald-400">â—† PATNALA UDAY KUMAR</span>
+                  <span className="text-[10px] font-mono font-bold tracking-widest text-emerald-400">&bull; PATNALA UDAY KUMAR</span>
                   <p className="text-[9px] text-white/50 font-mono mt-0.5">Associate Software Engineer</p>
                 </div>
               </motion.div>
@@ -1588,7 +1588,7 @@ const App = () => {
                     <Mail size={18} />
                   </div>
                   <div>
-                    <span className="text-xs text-gray-500 block font-bold">â—† EMAIL ADDRESS</span>
+                    <span className="text-xs text-gray-500 block font-bold">&bull; EMAIL ADDRESS</span>
                     <a href="mailto:udaypatnala5@gmail.com" className={`transition-colors ${
                       isDarkMode ? 'text-white hover:text-emerald-400' : 'text-slate-900 hover:text-emerald-600'
                     }`}>
@@ -1604,7 +1604,7 @@ const App = () => {
                     <Phone size={18} />
                   </div>
                   <div>
-                    <span className="text-xs text-gray-500 block font-bold">â—† PHONE NUMBER</span>
+                    <span className="text-xs text-gray-500 block font-bold">&bull; PHONE NUMBER</span>
                     <a href="tel:+919703660750" className={`transition-colors ${
                       isDarkMode ? 'text-white hover:text-cyan-400' : 'text-slate-900 hover:text-cyan-600'
                     }`}>
@@ -1620,7 +1620,7 @@ const App = () => {
                     <MapPin size={18} />
                   </div>
                   <div>
-                    <span className="text-xs text-gray-500 block font-bold">â—† CURRENT LOCATION</span>
+                    <span className="text-xs text-gray-500 block font-bold">&bull; CURRENT LOCATION</span>
                     <span className={isDarkMode ? 'text-white' : 'text-slate-900'}>Andhra Pradesh, India</span>
                   </div>
                 </div>
@@ -1632,7 +1632,7 @@ const App = () => {
                     <FileText size={18} />
                   </div>
                   <div>
-                    <span className="text-xs text-gray-500 block font-bold">â—† CURRICULUM VITAE</span>
+                    <span className="text-xs text-gray-500 block font-bold">&bull; CURRICULUM VITAE</span>
                     <a 
                       href="/PATNALA UDAY KUMAR.pdf" 
                       download="PATNALA UDAY KUMAR.pdf"
