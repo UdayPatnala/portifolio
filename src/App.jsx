@@ -476,7 +476,7 @@ const ShowcaseItem = ({ project, index, isDarkMode }) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className={`flex flex-col lg:flex-row items-center gap-12 py-10 ${
+      className={`flex flex-col lg:flex-row items-center gap-12 py-16 ${
         isLeft ? 'lg:flex-row' : 'lg:flex-row-reverse'
       }`}
     >
@@ -1505,7 +1505,7 @@ const App = () => {
                     className="relative"
                   >
                     {/* Timeline Dot Node */}
-                    <div className={`absolute -left-[35px] sm:-left-[43px] top-1.5 w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center border transition-all duration-300 shadow-md ${
+                    <div className={`absolute -left-[36px] sm:-left-[48px] top-1.5 w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center border transition-all duration-300 shadow-md ${
                       isDarkMode 
                         ? 'bg-[#03060a] border-emerald-500/30 text-emerald-400 hover:border-emerald-500' 
                         : 'bg-white border-emerald-500/40 text-emerald-600 hover:border-emerald-600'
@@ -1603,7 +1603,7 @@ const App = () => {
                     className="relative"
                   >
                     {/* Timeline Dot Node */}
-                    <div className={`absolute -left-[31px] top-1.5 w-5 h-5 rounded-full flex items-center justify-center border transition-all duration-300 shadow-md ${
+                    <div className={`absolute -left-[30px] top-1.5 w-5 h-5 rounded-full flex items-center justify-center border transition-all duration-300 shadow-md ${
                       isDarkMode 
                         ? 'bg-[#03060a] border-amber-500/30 text-amber-450 hover:border-amber-500' 
                         : 'bg-white border-amber-500/40 text-amber-600 hover:border-amber-600'
