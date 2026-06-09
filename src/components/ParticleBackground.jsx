@@ -58,12 +58,14 @@ const ParticleBackground = ({ isDarkMode }) => {
         if (mouse.x !== null && mouse.y !== null) {
           const dx = mouse.x - this.x;
           const dy = mouse.y - this.y;
-          const distance = Math.hypot(dx, dy);
+          const distSqr = dx * dx + dy * dy;
+          const radiusSqr = mouse.radius * mouse.radius;
 
-          if (distance < mouse.radius) {
+          if (distSqr < radiusSqr) {
+            const distance = Math.sqrt(distSqr);
             const force = (mouse.radius - distance) / mouse.radius;
-            this.x += (dx / distance) * force * 0.5;
-            this.y += (dy / distance) * force * 0.5;
+            this.x += (dx / (distance || 0.001)) * force * 0.5;
+            this.y += (dy / (distance || 0.001)) * force * 0.5;
           }
         }
       }
@@ -83,13 +85,17 @@ const ParticleBackground = ({ isDarkMode }) => {
 
     const drawLines = () => {
       const maxDistance = 115;
+      const maxDistSqr = maxDistance * maxDistance;
+      const mouseRadiusSqr = mouse.radius * mouse.radius;
+
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
-          const distance = Math.hypot(dx, dy);
+          const distSqr = dx * dx + dy * dy;
 
-          if (distance < maxDistance) {
+          if (distSqr < maxDistSqr) {
+            const distance = Math.sqrt(distSqr);
             const alpha = (1 - distance / maxDistance) * 0.18;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
@@ -107,9 +113,10 @@ const ParticleBackground = ({ isDarkMode }) => {
         if (mouse.x !== null && mouse.y !== null) {
           const dx = particles[i].x - mouse.x;
           const dy = particles[i].y - mouse.y;
-          const distance = Math.hypot(dx, dy);
+          const distSqr = dx * dx + dy * dy;
 
-          if (distance < mouse.radius) {
+          if (distSqr < mouseRadiusSqr) {
+            const distance = Math.sqrt(distSqr);
             const alpha = (1 - distance / mouse.radius) * 0.25;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);

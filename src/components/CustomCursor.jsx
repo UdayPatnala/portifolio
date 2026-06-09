@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-const PARTICLE_COUNT = 60;
+const PARTICLE_COUNT = 35;
 const CONNECTION_DIST = 120;
 const CURSOR_ATTRACT_DIST = 140;
 const PARTICLE_SPEED = 0.35;
@@ -103,13 +103,17 @@ const CustomCursor = () => {
       particles.forEach((p) => {
         const dx = mx - p.x;
         const dy = my - p.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < CURSOR_ATTRACT_DIST && dist > 0) {
+        const distSqr = dx * dx + dy * dy;
+        const attractSqr = CURSOR_ATTRACT_DIST * CURSOR_ATTRACT_DIST;
+
+        if (distSqr < attractSqr && distSqr > 0) {
+          const dist = Math.sqrt(distSqr);
           const force = (CURSOR_ATTRACT_DIST - dist) / CURSOR_ATTRACT_DIST;
           p.vx += (dx / dist) * force * 0.018;
           p.vy += (dy / dist) * force * 0.018;
-          const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
-          if (speed > 1.4) {
+          const speedSqr = p.vx * p.vx + p.vy * p.vy;
+          if (speedSqr > 1.96) { // 1.4 * 1.4 = 1.96
+            const speed = Math.sqrt(speedSqr);
             p.vx = (p.vx / speed) * 1.4;
             p.vy = (p.vy / speed) * 1.4;
           }
@@ -118,12 +122,17 @@ const CustomCursor = () => {
       });
 
       // Particle-to-particle lines
+      const connectSqr = CONNECTION_DIST * CONNECTION_DIST;
+      const cConnectSqr = CONNECTION_DIST * CONNECTION_DIST * 1.44; // 1.2 * 1.2 = 1.44
+
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < CONNECTION_DIST) {
+          const distSqr = dx * dx + dy * dy;
+
+          if (distSqr < connectSqr) {
+            const dist = Math.sqrt(distSqr);
             const alpha = (1 - dist / CONNECTION_DIST) * 0.35;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
@@ -137,8 +146,10 @@ const CustomCursor = () => {
         // Cursor-to-particle lines
         const cdx = mx - particles[i].x;
         const cdy = my - particles[i].y;
-        const cdist = Math.sqrt(cdx * cdx + cdy * cdy);
-        if (cdist < CONNECTION_DIST * 1.2) {
+        const cdistSqr = cdx * cdx + cdy * cdy;
+
+        if (cdistSqr < cConnectSqr) {
+          const cdist = Math.sqrt(cdistSqr);
           const alpha = (1 - cdist / (CONNECTION_DIST * 1.2)) * 0.55;
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
