@@ -459,6 +459,77 @@ const Scrolling3DImages = ({ isDarkMode }) => {
   );
 };
 
+const ViewAllProjectsCard = ({ onClick, remainingCount, isDarkMode }) => {
+  return (
+    <motion.div
+      onClick={onClick}
+      initial={{ opacity: 0, scale: 0.95 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true }}
+      whileHover={{ y: -6, scale: 1.02 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      className={`p-6 rounded-2xl border border-dashed flex flex-col justify-center items-center text-center cursor-pointer min-h-[380px] transition-all duration-300 relative group overflow-hidden ${
+        isDarkMode 
+          ? 'border-emerald-500/30 bg-emerald-500/[0.02] hover:border-emerald-500/60 hover:bg-emerald-500/[0.04]' 
+          : 'border-emerald-500/20 bg-slate-50 hover:border-emerald-500/40 hover:bg-slate-100'
+      }`}
+      style={{ perspective: 1000 }}
+    >
+      {/* Background cyber grid effect */}
+      <div className="absolute inset-0 bg-scanlines opacity-[0.03] pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/5 via-transparent to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+      
+      {/* Graphic Stack representation of hidden projects */}
+      <div className="relative w-36 h-28 mb-6 flex justify-center items-center" style={{ transformStyle: 'preserve-3d' }}>
+        {/* Layer 3 */}
+        <motion.div 
+          style={{ transform: "translateZ(10px) rotate(-8deg)" }}
+          className="absolute w-24 h-16 rounded-lg border border-emerald-500/10 bg-slate-900/40 shadow-md flex items-center justify-center -top-2 -left-2 group-hover:-top-4 group-hover:-left-4 transition-all duration-500"
+        >
+          <Code size={18} className="text-emerald-500/40" />
+        </motion.div>
+        
+        {/* Layer 2 */}
+        <motion.div 
+          style={{ transform: "translateZ(20px) rotate(6deg)" }}
+          className="absolute w-24 h-16 rounded-lg border border-emerald-500/10 bg-slate-900/60 shadow-lg flex items-center justify-center -bottom-2 -right-2 group-hover:-bottom-4 group-hover:-right-4 transition-all duration-500"
+        >
+          <Terminal size={18} className="text-cyan-500/40" />
+        </motion.div>
+        
+        {/* Main front card */}
+        <motion.div 
+          style={{ transform: "translateZ(30px)" }}
+          className="w-26 h-18 rounded-xl border border-emerald-500/30 bg-slate-950/80 shadow-[0_15px_30px_rgba(0,0,0,0.55)] hover:border-emerald-500/50 flex flex-col items-center justify-center gap-1 group-hover:scale-105 transition-all duration-500 z-10"
+        >
+          <Sparkles size={24} className="text-emerald-400 animate-pulse" />
+          <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded">
+            +{remainingCount}
+          </span>
+        </motion.div>
+      </div>
+      
+      <div className="z-10">
+        <h3 className={`text-xl font-bold font-mono tracking-wider mb-2 transition-colors duration-300 ${
+          isDarkMode ? 'text-white' : 'text-slate-800'
+        }`}>
+          Explore Database
+        </h3>
+        
+        <p className={`text-xs max-w-[200px] mx-auto mb-6 transition-colors duration-300 ${
+          isDarkMode ? 'text-gray-400' : 'text-slate-600'
+        }`}>
+          Expand grid to inspect all {remainingCount + 3} built systems in my capstone directory.
+        </p>
+        
+        <span className="inline-flex items-center gap-1.5 px-4 py-2 text-[10px] font-mono font-bold tracking-wider uppercase rounded-lg bg-emerald-500 text-black shadow-md hover:bg-emerald-400 hover:shadow-lg hover:shadow-emerald-500/20 transition-all duration-300">
+          Show All Projects <Briefcase size={12} />
+        </span>
+      </div>
+    </motion.div>
+  );
+};
+
 // --- MAIN PORTFOLIO COMPONENT ---
 
 const App = () => {
@@ -494,45 +565,8 @@ const App = () => {
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
   const [formStatus, setFormStatus] = useState('idle');
 
-  // Live Webcam Feed for 3D Portrait Frame
-  const [useWebcam, setUseWebcam] = useState(false);
-  const videoRef = useRef(null);
-  const [webcamError, setWebcamError] = useState(null);
-
-  useEffect(() => {
-    let stream = null;
-    const startWebcam = async () => {
-      try {
-        setWebcamError(null);
-        stream = await navigator.mediaDevices.getUserMedia({ 
-          video: { width: 480, height: 480, facingMode: 'user' } 
-        });
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-        }
-      } catch (err) {
-        console.error("Error accessing webcam:", err);
-        setWebcamError("Camera unavailable or blocked");
-        setUseWebcam(false);
-      }
-    };
-
-    if (useWebcam) {
-      startWebcam();
-    } else {
-      if (videoRef.current && videoRef.current.srcObject) {
-        const tracks = videoRef.current.srcObject.getTracks();
-        tracks.forEach(track => track.stop());
-        videoRef.current.srcObject = null;
-      }
-    }
-
-    return () => {
-      if (stream) {
-        stream.getTracks().forEach(track => track.stop());
-      }
-    };
-  }, [useWebcam]);
+  // State to control expansion of Featured Projects grid
+  const [showAll, setShowAll] = useState(false);
 
   // Parallax mouse movements for the profile visual
   const heroX = useMotionValue(0.5);
@@ -1001,80 +1035,16 @@ const App = () => {
               transition={{ duration: 1.2, ease: "easeOut" }}
               className="relative w-72 h-72 md:w-88 md:h-88 rounded-full overflow-hidden border border-emerald-500/10 shadow-2xl bg-black/10 dark:bg-white/[0.02] flex items-center justify-center group"
             >
-              {useWebcam ? (
-                <div className="w-full h-full relative">
-                  <video 
-                    ref={videoRef}
-                    autoPlay 
-                    playsInline 
-                    muted 
-                    className="w-full h-full object-cover filter brightness-105 contrast-110 saturate-[0.8] hue-rotate-[10deg] scale-x-[-1]"
-                    style={{
-                      maskImage: 'radial-gradient(circle, rgba(0,0,0,1) 45%, rgba(0,0,0,0.1) 85%, rgba(0,0,0,0) 100%)',
-                      WebkitMaskImage: 'radial-gradient(circle, rgba(0,0,0,1) 45%, rgba(0,0,0,0.1) 85%, rgba(0,0,0,0) 100%)'
-                    }}
-                  />
-                  {/* Cyber Scanline overlay */}
-                  <div className="absolute inset-0 bg-scanlines pointer-events-none mix-blend-overlay opacity-30" />
-                  
-                  {/* Futuristic HUD interface overlay inside 3D space */}
-                  <div className="absolute inset-0 border border-emerald-500/20 rounded-full pointer-events-none flex items-center justify-center m-4">
-                    {/* Floating corner indicators */}
-                    <div className="absolute top-4 left-6 text-[8px] font-mono text-emerald-400/60 bg-slate-950/70 px-1.5 py-0.5 rounded">
-                      CAM_01 // SECURE_LINK
-                    </div>
-                    <div className="absolute bottom-4 right-6 text-[8px] font-mono text-emerald-400/60 bg-slate-950/70 px-1.5 py-0.5 rounded">
-                      EMOTION_ENG: ACTIVE
-                    </div>
-                    
-                    {/* Bounding box corners for face detection feel */}
-                    <div className="w-3/5 h-3/5 border border-dashed border-emerald-500/30 rounded-lg relative animate-pulse flex items-center justify-center">
-                      <span className="absolute top-0 left-0 w-2.5 h-2.5 border-t-2 border-l-2 border-emerald-500" />
-                      <span className="absolute top-0 right-0 w-2.5 h-2.5 border-t-2 border-r-2 border-emerald-500" />
-                      <span className="absolute bottom-0 left-0 w-2.5 h-2.5 border-b-2 border-l-2 border-emerald-500" />
-                      <span className="absolute bottom-0 right-0 w-2.5 h-2.5 border-b-2 border-r-2 border-emerald-500" />
-                      
-                      <div className="text-[9px] font-mono text-emerald-400 text-center select-none uppercase tracking-widest font-bold">
-                        A.I. Analyzing
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <img 
-                  src="profile.jpg" 
-                  alt="Patnala Uday Kumar Profile" 
-                  className="w-full h-full object-cover filter grayscale contrast-115 brightness-95 group-hover:grayscale-0 group-hover:contrast-100 group-hover:brightness-100 transition-all duration-700 select-none pointer-events-none"
-                  style={{
-                    maskImage: 'radial-gradient(circle, rgba(0,0,0,1) 45%, rgba(0,0,0,0.1) 85%, rgba(0,0,0,0) 100%)',
-                    WebkitMaskImage: 'radial-gradient(circle, rgba(0,0,0,1) 45%, rgba(0,0,0,0.1) 85%, rgba(0,0,0,0) 100%)'
-                  }}
-                />
-              )}
+              <img 
+                src="profile.jpg" 
+                alt="Patnala Uday Kumar Profile" 
+                className="w-full h-full object-cover filter grayscale contrast-115 brightness-95 group-hover:grayscale-0 group-hover:contrast-100 group-hover:brightness-100 transition-all duration-700 select-none pointer-events-none"
+                style={{
+                  maskImage: 'radial-gradient(circle, rgba(0,0,0,1) 45%, rgba(0,0,0,0.1) 85%, rgba(0,0,0,0) 100%)',
+                  WebkitMaskImage: 'radial-gradient(circle, rgba(0,0,0,1) 45%, rgba(0,0,0,0.1) 85%, rgba(0,0,0,0) 100%)'
+                }}
+              />
             </motion.div>
-
-            {/* Webcam Live Feed Toggle Button */}
-            <div 
-              style={{ transform: 'translateZ(60px)' }}
-              className="absolute bottom-2 md:bottom-4 z-35 flex flex-col items-center gap-1"
-            >
-              <button
-                onClick={() => setUseWebcam(!useWebcam)}
-                className={`px-4 py-2 rounded-xl text-[10px] font-mono font-bold tracking-wider uppercase flex items-center gap-2 shadow-2xl border transition-all duration-300 cursor-none ${
-                  useWebcam 
-                    ? 'bg-red-500/20 border-red-500/40 text-red-400 hover:bg-red-500/35 shadow-red-500/10'
-                    : 'bg-emerald-500/20 border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/35 shadow-emerald-500/10'
-                }`}
-              >
-                <span className={`w-1.5 h-1.5 rounded-full ${useWebcam ? 'bg-red-500 animate-ping' : 'bg-emerald-400'} block`} />
-                {useWebcam ? 'Disconnect Cam' : 'Activate 3D Live Feed'}
-              </button>
-              {webcamError && (
-                <span className="text-[8px] font-mono text-red-400 bg-black/80 px-2 py-0.5 rounded border border-red-500/20">
-                  {webcamError}
-                </span>
-              )}
-            </div>
           </motion.div>
         </div>
       </section>
@@ -1215,7 +1185,10 @@ const App = () => {
               ].map((tab) => (
                 <button
                   key={tab.id}
-                  onClick={() => setSelectedFilter(tab.id)}
+                  onClick={() => {
+                    setSelectedFilter(tab.id);
+                    setShowAll(true);
+                  }}
                   className={`px-4 py-2 text-xs font-mono rounded-lg transition-all duration-300 cursor-none ${
                     selectedFilter === tab.id
                       ? 'bg-emerald-500 text-black font-bold shadow-[0_0_15px_rgba(16,185,129,0.35)]'
@@ -1234,11 +1207,35 @@ const App = () => {
             className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
             <AnimatePresence mode="popLayout">
-              {filteredProjects.map((project) => (
+              {(showAll ? filteredProjects : filteredProjects.slice(0, 3)).map((project) => (
                 <ProjectCard key={project.title} project={project} isDarkMode={isDarkMode} />
               ))}
+              
+              {!showAll && filteredProjects.length > 3 && (
+                <ViewAllProjectsCard 
+                  onClick={() => setShowAll(true)} 
+                  remainingCount={filteredProjects.length - 3} 
+                  isDarkMode={isDarkMode} 
+                />
+              )}
             </AnimatePresence>
           </motion.div>
+
+          {/* Show Less toggle control when expanded */}
+          {showAll && filteredProjects.length > 3 && (
+            <div className="flex justify-center mt-12">
+              <button
+                onClick={() => setShowAll(false)}
+                className={`px-5 py-2.5 text-xs font-mono font-bold uppercase rounded-lg border flex items-center gap-2 transition-all duration-300 cursor-none ${
+                  isDarkMode 
+                    ? 'border-emerald-500/30 hover:border-emerald-500/60 text-emerald-400 bg-emerald-500/5 hover:bg-emerald-500/10'
+                    : 'border-emerald-500/20 hover:border-emerald-500/40 text-emerald-600 bg-emerald-500/5 hover:bg-emerald-500/10'
+                }`}
+              >
+                Show Less <ArrowUp size={12} />
+              </button>
+            </div>
+          )}
         </motion.div>
       </section>
 
