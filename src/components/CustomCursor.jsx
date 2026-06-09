@@ -1,146 +1,187 @@
-import React, { useEffect, useState } from 'react';
-import { motion, useMotionValue, useSpring } from 'framer-motion';
+import React, { useEffect, useRef, useState } from 'react';
+
+const PARTICLE_COUNT = 60;
+const CONNECTION_DIST = 120;
+const CURSOR_ATTRACT_DIST = 140;
+const PARTICLE_SPEED = 0.35;
+
+function randomBetween(a, b) {
+  return a + Math.random() * (b - a);
+}
+
+class Particle {
+  constructor(w, h) {
+    this.reset(w, h);
+  }
+  reset(w, h) {
+    this.x = randomBetween(0, w);
+    this.y = randomBetween(0, h);
+    this.vx = randomBetween(-PARTICLE_SPEED, PARTICLE_SPEED);
+    this.vy = randomBetween(-PARTICLE_SPEED, PARTICLE_SPEED);
+    this.r = randomBetween(1.5, 3);
+    this.opacity = randomBetween(0.4, 0.9);
+  }
+  update(w, h) {
+    this.x += this.vx;
+    this.y += this.vy;
+    if (this.x < 0 || this.x > w) this.vx *= -1;
+    if (this.y < 0 || this.y > h) this.vy *= -1;
+  }
+}
 
 const CustomCursor = () => {
-  const [hovered, setHovered] = useState(false);
-  const [clicked, setClicked] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+  const canvasRef = useRef(null);
+  const particlesRef = useRef([]);
+  const mouseRef = useRef({ x: -9999, y: -9999 });
+  const rafRef = useRef(null);
   const [isMobile, setIsMobile] = useState(true);
-
-  // Mouse Coordinates (Exact cursor position)
-  const rawX = useMotionValue(-100);
-  const rawY = useMotionValue(-100);
-
-  // Smooth springs for the outer trailing x-ray cursor
-  const trailX = useSpring(rawX, { stiffness: 280, damping: 26, mass: 0.6 });
-  const trailY = useSpring(rawY, { stiffness: 280, damping: 26, mass: 0.6 });
-
-  // Faster spring for the inner pointer dot to keep click precision instant
-  const pointX = useSpring(rawX, { stiffness: 800, damping: 38 });
-  const pointY = useSpring(rawY, { stiffness: 800, damping: 38 });
 
   useEffect(() => {
     const checkDevice = () => {
-      const mobile = window.matchMedia('(max-width: 1024px)').matches || 
-                     ('ontouchstart' in window) || 
-                     (navigator.maxTouchPoints > 0);
+      const mobile =
+        window.matchMedia('(max-width: 1024px)').matches ||
+        'ontouchstart' in window ||
+        navigator.maxTouchPoints > 0;
       setIsMobile(mobile);
-      if (!mobile) {
-        document.body.classList.add('custom-cursor-active');
-      } else {
-        document.body.classList.remove('custom-cursor-active');
-      }
+      if (!mobile) document.body.classList.add('custom-cursor-active');
+      else document.body.classList.remove('custom-cursor-active');
     };
-
     checkDevice();
     window.addEventListener('resize', checkDevice);
+    return () => window.removeEventListener('resize', checkDevice);
+  }, []);
 
-    const moveCursor = (e) => {
-      // Center coordinates relative to cursor pointer
-      // Outer container is 40px wide, so offset is -20px
-      rawX.set(e.clientX - 20);
-      rawY.set(e.clientY - 20);
-      if (!isVisible) setIsVisible(true);
-    };
+  useEffect(() => {
+    if (isMobile) return;
 
-    const handleMouseLeave = () => setIsVisible(false);
-    const handleMouseEnter = () => setIsVisible(true);
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
 
-    const handleMouseDown = () => setClicked(true);
-    const handleMouseUp = () => setClicked(false);
-
-    window.addEventListener('mousemove', moveCursor);
-    document.addEventListener('mouseleave', handleMouseLeave);
-    document.addEventListener('mouseenter', handleMouseEnter);
-    window.addEventListener('mousedown', handleMouseDown);
-    window.addEventListener('mouseup', handleMouseUp);
-
-    const addHoverListeners = () => {
-      const interactiveElements = document.querySelectorAll(
-        'a, button, select, input, textarea, [role="button"], .interactive-target'
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      // Reinitialize particles on resize
+      particlesRef.current = Array.from(
+        { length: PARTICLE_COUNT },
+        () => new Particle(canvas.width, canvas.height)
       );
-      
-      interactiveElements.forEach((el) => {
-        el.addEventListener('mouseenter', () => setHovered(true));
-        el.addEventListener('mouseleave', () => setHovered(false));
+    };
+    resize();
+    window.addEventListener('resize', resize);
+
+    const onMouseMove = (e) => {
+      mouseRef.current = { x: e.clientX, y: e.clientY };
+    };
+    window.addEventListener('mousemove', onMouseMove);
+
+    const draw = () => {
+      const w = canvas.width;
+      const h = canvas.height;
+      const mx = mouseRef.current.x;
+      const my = mouseRef.current.y;
+
+      ctx.clearRect(0, 0, w, h);
+
+      const particles = particlesRef.current;
+
+      // Update positions, slightly attract nearby particles to cursor
+      particles.forEach((p) => {
+        const dx = mx - p.x;
+        const dy = my - p.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < CURSOR_ATTRACT_DIST && dist > 0) {
+          const force = (CURSOR_ATTRACT_DIST - dist) / CURSOR_ATTRACT_DIST;
+          p.vx += (dx / dist) * force * 0.018;
+          p.vy += (dy / dist) * force * 0.018;
+          // Speed cap
+          const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+          if (speed > 1.4) {
+            p.vx = (p.vx / speed) * 1.4;
+            p.vy = (p.vy / speed) * 1.4;
+          }
+        }
+        p.update(w, h);
       });
+
+      // Draw connection lines
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < CONNECTION_DIST) {
+            const alpha = (1 - dist / CONNECTION_DIST) * 0.35;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(16, 185, 129, ${alpha})`;
+            ctx.lineWidth = 0.7;
+            ctx.stroke();
+          }
+        }
+
+        // Lines from cursor to nearby particles
+        const cdx = mx - particles[i].x;
+        const cdy = my - particles[i].y;
+        const cdist = Math.sqrt(cdx * cdx + cdy * cdy);
+        if (cdist < CONNECTION_DIST * 1.2) {
+          const alpha = (1 - cdist / (CONNECTION_DIST * 1.2)) * 0.55;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(mx, my);
+          ctx.strokeStyle = `rgba(6, 182, 212, ${alpha})`;
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }
+      }
+
+      // Draw particles
+      particles.forEach((p) => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(16, 185, 129, ${p.opacity})`;
+        ctx.fill();
+      });
+
+      // Draw cursor dot
+      if (mx > 0 && my > 0) {
+        // Outer glow ring
+        const grad = ctx.createRadialGradient(mx, my, 0, mx, my, 18);
+        grad.addColorStop(0, 'rgba(16, 185, 129, 0.25)');
+        grad.addColorStop(1, 'rgba(16, 185, 129, 0)');
+        ctx.beginPath();
+        ctx.arc(mx, my, 18, 0, Math.PI * 2);
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        // Core dot
+        ctx.beginPath();
+        ctx.arc(mx, my, 3.5, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(16, 185, 129, 0.95)';
+        ctx.fill();
+      }
+
+      rafRef.current = requestAnimationFrame(draw);
     };
 
-    addHoverListeners();
-    const observer = new MutationObserver(addHoverListeners);
-    observer.observe(document.body, { childList: true, subtree: true });
+    rafRef.current = requestAnimationFrame(draw);
 
     return () => {
-      window.removeEventListener('resize', checkDevice);
-      window.removeEventListener('mousemove', moveCursor);
-      document.removeEventListener('mouseleave', handleMouseLeave);
-      document.removeEventListener('mouseenter', handleMouseEnter);
-      window.removeEventListener('mousedown', handleMouseDown);
-      window.removeEventListener('mouseup', handleMouseUp);
+      cancelAnimationFrame(rafRef.current);
+      window.removeEventListener('resize', resize);
+      window.removeEventListener('mousemove', onMouseMove);
       document.body.classList.remove('custom-cursor-active');
-      observer.disconnect();
     };
-  }, [rawX, rawY, isVisible]);
+  }, [isMobile]);
 
-  if (isMobile || !isVisible) return null;
+  if (isMobile) return null;
 
   return (
-    <>
-      {/* 1. Outer Trailing X-Ray Element (Diamond/Crosshair, inverts colors) */}
-      <motion.div
-        className="fixed top-0 left-0 w-10 h-10 pointer-events-none z-50 mix-blend-difference flex items-center justify-center"
-        style={{
-          x: trailX,
-          y: trailY,
-        }}
-        animate={{
-          scale: clicked ? 0.75 : hovered ? 1.5 : 1.0,
-          rotate: clicked ? 135 : hovered ? 90 : 0,
-        }}
-        transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-      >
-        <svg 
-          width="40" 
-          height="40" 
-          viewBox="0 0 40 40" 
-          className="text-white fill-none stroke-current" 
-          strokeWidth="1.5"
-        >
-          {hovered ? (
-            // Outer crosshair circle when hovering over buttons/links
-            <>
-              <circle cx="20" cy="20" r="14" strokeDasharray="3 3" />
-              <line x1="20" y1="2" x2="20" y2="7" />
-              <line x1="20" y1="33" x2="20" y2="38" />
-              <line x1="2" y1="20" x2="7" y2="20" />
-              <line x1="33" y1="20" x2="38" y2="20" />
-            </>
-          ) : (
-            // Glowing outer diamond when idle
-            <>
-              <rect x="13" y="13" width="14" height="14" rx="2" transform="rotate(45 20 20)" />
-            </>
-          )}
-        </svg>
-      </motion.div>
-
-      {/* 2. Inner High-Precision Core Dot */}
-      <motion.div
-        className="fixed top-0 left-0 w-2 h-2 rounded-full pointer-events-none z-50 bg-[#10b981]"
-        style={{
-          x: pointX,
-          y: pointY,
-          // Center inside 40px outer container: offset 19px (40/2 - 2/2 = 19px)
-          marginLeft: '19px',
-          marginTop: '19px',
-        }}
-        animate={{
-          scale: hovered ? 0 : 1, // Fades pointer dot out when snapping to buttons
-          backgroundColor: clicked ? '#00f5d4' : '#10b981',
-        }}
-        transition={{ duration: 0.15 }}
-      />
-    </>
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 pointer-events-none"
+      style={{ zIndex: 9999 }}
+    />
   );
 };
 

@@ -520,7 +520,7 @@ const ShowcaseItem = ({ project, index, isDarkMode }) => {
         <div className="flex items-center gap-2">
           <span className="text-emerald-500 font-mono text-sm font-semibold">0{index + 1}</span>
           <span className="w-8 h-[1px] bg-emerald-500/40" />
-          <span className="text-[10px] font-mono tracking-wider uppercase text-cyan-500">Volumetric Preview</span>
+          <span className="text-[10px] font-mono tracking-wider uppercase text-cyan-500 truncate max-w-[180px]">{project.title}</span>
         </div>
         
         <h3 className={`text-2xl sm:text-3xl font-extrabold transition-colors duration-300 ${
