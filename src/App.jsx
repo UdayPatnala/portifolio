@@ -350,6 +350,22 @@ const SKILLS_DATA = [
   }
 ];
 
+const getProjectCountForSkill = (skillName) => {
+  const normalizedSkill = skillName.toLowerCase().trim();
+  return PROJECT_DATA.filter((proj) => 
+    proj.tags.some((tag) => {
+      const normalizedTag = tag.toLowerCase().trim();
+      if (normalizedTag.includes(normalizedSkill) || normalizedSkill.includes(normalizedTag)) return true;
+      if (normalizedSkill === "java" && normalizedTag.includes("java") && !normalizedTag.includes("javascript")) return true;
+      if (normalizedSkill === "git & github" && (normalizedTag.includes("git") || normalizedTag.includes("github"))) return true;
+      if (normalizedSkill === "html5 & css3" && (normalizedTag.includes("html") || normalizedTag.includes("css"))) return true;
+      if (normalizedSkill === "docker & vercel" && (normalizedTag.includes("docker") || normalizedTag.includes("vercel"))) return true;
+      if (normalizedSkill === "node.js & express" && (normalizedTag.includes("node") || normalizedTag.includes("express"))) return true;
+      return false;
+    })
+  ).length;
+};
+
 const TRAINING_DATA = [
   {
     role: "Machine Learning Trainee",
@@ -1087,6 +1103,31 @@ const App = () => {
               Specializing in analytical modeling, machine learning pipelines, and database tuning. Experienced in creating enterprise-grade Spring Boot APIs, structured ETL scripts, and responsive React interfaces.
             </motion.p>
 
+            {/* Quick Stats Grid */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.35 }}
+              className="grid grid-cols-2 sm:grid-cols-4 gap-4 w-full max-w-lg pt-2 pb-4"
+            >
+              {[
+                { value: "12+", label: "Projects Built", color: "text-emerald-500" },
+                { value: "7.70", label: "B.Tech CGPA", color: "text-cyan-500" },
+                { value: "2", label: "Industry Roles", color: "text-purple-500" },
+                { value: "3", label: "Specialist Certs", color: "text-amber-500" }
+              ].map((stat, sidx) => (
+                <div 
+                  key={sidx}
+                  className={`p-3 rounded-xl border glass-panel transition-all duration-300 hover:-translate-y-0.5 ${
+                    isDarkMode ? 'border-white/5 bg-white/[0.01]' : 'border-emerald-500/10 bg-slate-50'
+                  }`}
+                >
+                  <div className={`text-xl font-bold font-mono ${stat.color}`}>{stat.value}</div>
+                  <div className={`text-[10px] uppercase font-mono tracking-wider ${isDarkMode ? 'text-gray-500' : 'text-slate-500'}`}>{stat.label}</div>
+                </div>
+              ))}
+            </motion.div>
+
             {/* Quick Resume & Contact Action Buttons */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -1100,6 +1141,17 @@ const App = () => {
               >
                 Inspect CAPSTONES
               </button>
+              <a 
+                href="/PATNALA UDAY KUMAR.pdf" 
+                download="PATNALA UDAY KUMAR.pdf"
+                className={`px-6 py-3 border rounded-xl font-bold font-mono tracking-wide flex items-center gap-2 transition-all duration-300 cursor-none ${
+                  isDarkMode 
+                    ? 'bg-white/5 border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/5 hover:border-emerald-500/40' 
+                    : 'bg-emerald-50/50 border-emerald-500/20 text-emerald-600 hover:bg-emerald-500/5 hover:border-emerald-500/30'
+                }`}
+              >
+                Download CV <FileText size={14} />
+              </a>
               <button 
                 onClick={() => scrollToSection('connect')}
                 className={`px-6 py-3 border rounded-xl font-bold font-mono tracking-wide transition-all duration-300 cursor-none ${
@@ -1271,9 +1323,16 @@ const App = () => {
                       transition={{ type: "spring", stiffness: 300, damping: 20 }}
                     >
                       <div className="flex justify-between items-center text-sm mb-1.5">
-                        <span className={`font-medium transition-colors duration-300 group-hover/item:text-emerald-500 dark:group-hover/item:text-emerald-400 ${
-                          isDarkMode ? 'text-gray-200' : 'text-slate-700'
-                        }`}>{skill.name}</span>
+                        <div className="flex items-center gap-2">
+                          <span className={`font-medium transition-colors duration-300 group-hover/item:text-emerald-500 dark:group-hover/item:text-emerald-400 ${
+                            isDarkMode ? 'text-gray-200' : 'text-slate-700'
+                          }`}>{skill.name}</span>
+                          {getProjectCountForSkill(skill.name) > 0 && (
+                            <span className="text-[8px] font-mono font-bold px-1.5 py-0.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 rounded-full border border-cyan-500/10 opacity-70 group-hover/item:opacity-100 transition-opacity">
+                              {getProjectCountForSkill(skill.name)} projects
+                            </span>
+                          )}
+                        </div>
                         <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded transition-transform group-hover/item:scale-105">
                           {skill.level}
                         </span>
@@ -1435,27 +1494,44 @@ const App = () => {
                 <div className="h-[2px] w-16 bg-emerald-500 mt-3" />
               </div>
 
-              <div className="space-y-6">
-                {EDUCATION_DATA.map((edu) => (
+              <div className="relative pl-6 sm:pl-8 border-l border-emerald-500/20 space-y-6 ml-2">
+                {EDUCATION_DATA.map((edu, eIdx) => (
                   <motion.div
                     key={edu.degree}
-                    whileHover={{ x: 6, scale: 1.01 }}
-                    className={`p-6 rounded-2xl glass-panel border-l-4 ${edu.color} border-y border-r transition-all duration-300 ${
-                      isDarkMode ? 'border-white/5' : 'border-emerald-500/10'
-                    }`}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: eIdx * 0.1 }}
+                    className="relative"
                   >
-                    <div className="flex justify-between items-start flex-wrap gap-2 mb-2">
-                      <h3 className={`font-bold text-base transition-colors duration-300 ${
-                        isDarkMode ? 'text-white' : 'text-slate-900'
-                      }`}>{edu.degree}</h3>
-                      <span className="text-xs font-mono text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full">
-                        {edu.grade}
-                      </span>
+                    {/* Timeline Dot Node */}
+                    <div className={`absolute -left-[35px] sm:-left-[43px] top-1.5 w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center border transition-all duration-300 shadow-md ${
+                      isDarkMode 
+                        ? 'bg-[#03060a] border-emerald-500/30 text-emerald-400 hover:border-emerald-500' 
+                        : 'bg-white border-emerald-500/40 text-emerald-600 hover:border-emerald-600'
+                    }`}>
+                      <Award size={13} />
                     </div>
-                    <p className={`text-xs mb-3 transition-colors duration-300 ${
-                      isDarkMode ? 'text-gray-300' : 'text-slate-700'
-                    }`}>{edu.institution}</p>
-                    <span className={`text-[10px] font-mono ${isDarkMode ? 'text-gray-500' : 'text-slate-400'}`}>{edu.period}</span>
+
+                    <motion.div
+                      whileHover={{ x: 6, scale: 1.01 }}
+                      className={`p-6 rounded-2xl glass-panel border-l-4 ${edu.color} border-y border-r transition-all duration-300 ${
+                        isDarkMode ? 'border-white/5' : 'border-emerald-500/10'
+                      }`}
+                    >
+                      <div className="flex justify-between items-start flex-wrap gap-2 mb-2">
+                        <h3 className={`font-bold text-base transition-colors duration-300 ${
+                          isDarkMode ? 'text-white' : 'text-slate-900'
+                        }`}>{edu.degree}</h3>
+                        <span className="text-xs font-mono text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full">
+                          {edu.grade}
+                        </span>
+                      </div>
+                      <p className={`text-xs mb-3 transition-colors duration-300 ${
+                        isDarkMode ? 'text-gray-300' : 'text-slate-700'
+                      }`}>{edu.institution}</p>
+                      <span className={`text-[10px] font-mono ${isDarkMode ? 'text-gray-500' : 'text-slate-400'}`}>{edu.period}</span>
+                    </motion.div>
                   </motion.div>
                 ))}
               </div>
@@ -1516,31 +1592,48 @@ const App = () => {
                 <div className="h-[2px] w-16 bg-amber-500 mt-3" />
               </div>
 
-              <div className="space-y-4">
-                {TRAINING_DATA.map((train) => (
+              <div className="relative pl-5 border-l border-amber-500/20 space-y-4 ml-1">
+                {TRAINING_DATA.map((train, tIdx) => (
                   <motion.div
                     key={train.role}
-                    whileHover={{ y: -6, scale: 1.02, borderColor: 'rgba(245, 158, 11, 0.4)' }}
-                    className={`p-4 rounded-xl glass-panel border transition-all duration-300 ${
-                      isDarkMode ? 'border-white/5' : 'border-emerald-500/15'
-                    }`}
+                    initial={{ opacity: 0, x: -15 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: tIdx * 0.1 }}
+                    className="relative"
                   >
-                    <div className="flex justify-between items-start mb-2">
-                      <h4 className={`font-bold text-xs transition-colors duration-300 ${
-                        isDarkMode ? 'text-white' : 'text-slate-800'
-                      }`}>{train.role}</h4>
-                      <span className="text-[9px] font-mono px-1.5 py-0.5 bg-amber-500/10 border border-amber-500/25 text-amber-600 rounded">
-                        {train.period}
-                      </span>
-                    </div>
-                    <span className={`text-[10px] font-mono block ${isDarkMode ? 'text-gray-400' : 'text-slate-500'}`}>
-                      {train.provider}
-                    </span>
-                    <p className={`text-[11px] leading-relaxed mt-2 transition-colors duration-300 ${
-                      isDarkMode ? 'text-gray-400' : 'text-slate-600'
+                    {/* Timeline Dot Node */}
+                    <div className={`absolute -left-[31px] top-1.5 w-5 h-5 rounded-full flex items-center justify-center border transition-all duration-300 shadow-md ${
+                      isDarkMode 
+                        ? 'bg-[#03060a] border-amber-500/30 text-amber-450 hover:border-amber-500' 
+                        : 'bg-white border-amber-500/40 text-amber-600 hover:border-amber-600'
                     }`}>
-                      {train.description}
-                    </p>
+                      <Terminal size={10} />
+                    </div>
+
+                    <motion.div
+                      whileHover={{ y: -6, scale: 1.02, borderColor: 'rgba(245, 158, 11, 0.4)' }}
+                      className={`p-4 rounded-xl glass-panel border transition-all duration-300 ${
+                        isDarkMode ? 'border-white/5' : 'border-emerald-500/15'
+                      }`}
+                    >
+                      <div className="flex justify-between items-start mb-2">
+                        <h4 className={`font-bold text-xs transition-colors duration-300 ${
+                          isDarkMode ? 'text-white' : 'text-slate-800'
+                        }`}>{train.role}</h4>
+                        <span className="text-[9px] font-mono px-1.5 py-0.5 bg-amber-500/10 border border-amber-500/25 text-amber-600 rounded">
+                          {train.period}
+                        </span>
+                      </div>
+                      <span className={`text-[10px] font-mono block ${isDarkMode ? 'text-gray-400' : 'text-slate-500'}`}>
+                        {train.provider}
+                      </span>
+                      <p className={`text-[11px] leading-relaxed mt-2 transition-colors duration-300 ${
+                        isDarkMode ? 'text-gray-400' : 'text-slate-600'
+                      }`}>
+                        {train.description}
+                      </p>
+                    </motion.div>
                   </motion.div>
                 ))}
               </div>
