@@ -32,10 +32,8 @@ class Particle {
 const CustomCursor = () => {
   const canvasRef = useRef(null);
   const dotRef = useRef(null);
-  const ringRef = useRef(null);
   const particlesRef = useRef([]);
   const mouseRef = useRef({ x: -9999, y: -9999 });
-  const ringPosRef = useRef({ x: -9999, y: -9999 });
   const rafRef = useRef(null);
   const [isMobile, setIsMobile] = useState(true);
 
@@ -59,7 +57,6 @@ const CustomCursor = () => {
 
     const canvas = canvasRef.current;
     const dot = dotRef.current;
-    const ring = ringRef.current;
     const ctx = canvas.getContext('2d');
 
     const resize = () => {
@@ -84,42 +81,14 @@ const CustomCursor = () => {
 
     const onMouseLeave = () => {
       if (dot) dot.style.opacity = '0';
-      if (ring) ring.style.opacity = '0';
     };
     const onMouseEnter = () => {
       if (dot) dot.style.opacity = '1';
-      if (ring) ring.style.opacity = '1';
-    };
-
-    const onMouseOver = (e) => {
-      const target = e.target;
-      if (!target) return;
-      const isInteractive = target.closest('a, button, [role="button"], input, select, textarea, .project-card, [onclick]') !== null;
-      if (isInteractive) {
-        if (ring) ring.classList.add('cursor-hovering');
-        if (dot) dot.classList.add('cursor-hovering');
-      } else {
-        if (ring) ring.classList.remove('cursor-hovering');
-        if (dot) dot.classList.remove('cursor-hovering');
-      }
-    };
-
-    const onMouseDown = () => {
-      if (ring) ring.classList.add('cursor-clicking');
-      if (dot) dot.classList.add('cursor-clicking');
-    };
-
-    const onMouseUp = () => {
-      if (ring) ring.classList.remove('cursor-clicking');
-      if (dot) dot.classList.remove('cursor-clicking');
     };
 
     window.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseleave', onMouseLeave);
     document.addEventListener('mouseenter', onMouseEnter);
-    window.addEventListener('mouseover', onMouseOver);
-    window.addEventListener('mousedown', onMouseDown);
-    window.addEventListener('mouseup', onMouseUp);
 
     const draw = () => {
       const w = canvas.width;
@@ -151,21 +120,6 @@ const CustomCursor = () => {
         }
         p.update(w, h);
       });
-
-      // Lerp target ring position
-      if (ring && mx !== -9999) {
-        const rx = ringPosRef.current.x;
-        const ry = ringPosRef.current.y;
-        if (rx === -9999 && ry === -9999) {
-          ringPosRef.current = { x: mx, y: my };
-        } else {
-          const targetRx = rx + (mx - rx) * 0.15;
-          const targetRy = ry + (my - ry) * 0.15;
-          ringPosRef.current = { x: targetRx, y: targetRy };
-          ring.style.transform = `translate(${targetRx - 20}px, ${targetRy - 20}px)`;
-          ring.style.opacity = '1';
-        }
-      }
 
       // Particle-to-particle lines
       const connectSqr = CONNECTION_DIST * CONNECTION_DIST;
@@ -225,9 +179,6 @@ const CustomCursor = () => {
       window.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseleave', onMouseLeave);
       document.removeEventListener('mouseenter', onMouseEnter);
-      window.removeEventListener('mouseover', onMouseOver);
-      window.removeEventListener('mousedown', onMouseDown);
-      window.removeEventListener('mouseup', onMouseUp);
       document.body.classList.remove('custom-cursor-active');
     };
   }, [isMobile]);
@@ -241,18 +192,6 @@ const CustomCursor = () => {
         ref={canvasRef}
         className="fixed inset-0 pointer-events-none"
         style={{ zIndex: 0 }}
-      />
-
-      {/* Trailing target ring */}
-      <div
-        ref={ringRef}
-        className="custom-cursor-ring fixed top-0 left-0 pointer-events-none"
-        style={{
-          zIndex: 9998,
-          width: 40,
-          height: 40,
-          willChange: 'transform',
-        }}
       />
 
       {/* Bright cursor dot — always on top */}
