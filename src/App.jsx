@@ -27,7 +27,6 @@ import { Typewriter } from 'react-simple-typewriter';
 
 import ParticleBackground from './components/ParticleBackground';
 import CustomCursor from './components/CustomCursor';
-import Hero3DCard from './components/Hero3DCard';
 import ProjectCard from './components/ProjectCard';
 import DataScienceVisualizer from './components/DataScienceVisualizer';
 
@@ -132,94 +131,6 @@ const PROJECT_DATA = [
     github: "https://github.com/UdayPatnala/Spedex",
     live: "https://spe-dex.vercel.app",
     image: "/spedex_real.png"
-  },
-  {
-    title: "SkyFlow: Real-Time Weather Pipeline",
-    description: "A professional-grade, end-to-end data pipeline demonstrating stream ingestion, rolling window aggregation, and dashboard analytics.",
-    tags: ["Python", "Pandas", "Streamlit", "Plotly", "Open-Meteo API", "Dotenv"],
-    category: "Data Science & ML",
-    type: "ml",
-    highlights: [
-      "Decoupled producer-consumer setup with structured logging and environment overrides.",
-      "Continuous ingestion daemon polling weather metrics and saving to immutable stores.",
-      "Stream processing engine computing rolling 5-point averages and plotly trend charts."
-    ],
-    github: "https://github.com/UdayPatnala/SkyFlow",
-    live: "https://uday-skyflow.vercel.app",
-    image: "/skyflow_real.png"
-  },
-  {
-    title: "Customer Churn Prediction System",
-    description: "A machine learning pipeline that predicts user churn probability served via a FastAPI REST endpoint and an interactive Streamlit UI.",
-    tags: ["Scikit-learn", "FastAPI", "Streamlit", "Pandas", "Joblib", "Pydantic"],
-    category: "Data Science & ML",
-    type: "ml",
-    highlights: [
-      "Scikit-learn ColumnTransformer pipeline preventing data leakage during inference.",
-      "Hyperparameter optimization via GridSearchCV evaluated with accuracy & ROC-AUC.",
-      "Middleware tracing injecting unique X-Request-ID to FastAPI request headers."
-    ],
-    github: "https://github.com/UdayPatnala/churn-prediction-system",
-    live: "https://churn-prediction-system.vercel.app",
-    image: "/churn_real.png"
-  },
-  {
-    title: "TaskMaster Pro",
-    description: "A high-fidelity task management dashboard with dual access authorizations, real-time analytics, and fluid animations.",
-    tags: ["React.js", "Tailwind CSS", "Radix UI Primitives", "Framer Motion", "date-fns", "Docker"],
-    category: "Full-Stack & Web",
-    type: "web",
-    highlights: [
-      "Passcode authentication unlocking synchronized browser LocalStorage lists.",
-      "Custom circular SVG progress gauge dynamically animating on task status updates.",
-      "Export to Excel utility sheet parsing, date filters, and overdue task alerts."
-    ],
-    github: "https://github.com/UdayPatnala/TaskMaster-Pro",
-    live: "https://uday-taskmaster-pro.vercel.app",
-    image: "/taskmaster_real.png"
-  },
-  {
-    title: "JobFlow Copilot",
-    description: "A compliant, Human-in-the-Loop job application tracker dashboard that bypasses platform scraping blocks.",
-    tags: ["HTML5", "CSS3", "JavaScript", "Gemini API", "PowerShell", "Toast Alerts", "Web Audio API"],
-    category: "Software & Systems",
-    type: "sys",
-    highlights: [
-      "Resume adaptation engine utilizing Gemini 1.5 Flash to fit job keywords factually.",
-      "Startup integration scripting generating local PowerShell tasks for logon launch.",
-      "PowerShell-driven Toast reminders and Synthesized AudioContext dual chime alerts."
-    ],
-    github: "https://github.com/UdayPatnala/JobFlow",
-    live: "https://uday-jobflow-copilot.vercel.app",
-    image: "/jobflow_real.png"
-  },
-  {
-    title: "Smart Parking System",
-    description: "A parking slot allocation system demonstrating OOP structure, priority allocation queues, and clean architecture.",
-    tags: ["Java", "PriorityQueue", "EnumMap", "HashMap", "OOP Design", "Unit Testing"],
-    category: "Software & Systems",
-    type: "sys",
-    highlights: [
-      "Nearest-slot-first allocation engine powered by priority min-heaps.",
-      "Highly immutable domain records (Vehicle, ParkingSlot, Ticket) for thread safety.",
-      "Custom PowerShell compile-and-run harness bypassing external dependency weight."
-    ],
-    github: "https://github.com/UdayPatnala/SmartParking-Java",
-    live: "https://uday-smart-parking.vercel.app"
-  },
-  {
-    title: "ETL Data Pipeline",
-    description: "A production-style ETL utility extracting data from APIs and CSV files, engineering features in Pandas, and loading to PostgreSQL.",
-    tags: ["Python", "Pandas", "SQLAlchemy", "PostgreSQL", "dotenv", "CLI Tools"],
-    category: "Software & Systems",
-    type: "sys",
-    highlights: [
-      "Extracts and sanitizes JSON strings from REST APIs or local data structures.",
-      "Computes custom features (activity band, risk score) via vectorized calculations.",
-      "Loads and upserts records to PostgreSQL using SQLAlchemy connection pools."
-    ],
-    github: "https://github.com/UdayPatnala/Etl-Data-Pipeline",
-    live: "https://uday-etl-pipeline.vercel.app"
   }
 ];
 
@@ -331,29 +242,7 @@ const App = () => {
     }
   });
 
-  // Photo switcher
-  const [profilePhoto, setProfilePhoto] = useState('profile-casual.jpg');
-  const [activePhotoLabel, setActivePhotoLabel] = useState('Casual');
 
-  // Automatic photo switcher cycling effect
-  useEffect(() => {
-    const photos = [
-      { label: 'Casual', file: 'profile-casual.jpg' },
-      { label: 'Corporate Suit', file: 'profile-suit.jpg' },
-      { label: 'In Office', file: 'profile-office.jpg' }
-    ];
-
-    const interval = setInterval(() => {
-      setProfilePhoto((currentPhoto) => {
-        const currentIndex = photos.findIndex(p => p.file === currentPhoto);
-        const nextIndex = (currentIndex + 1) % photos.length;
-        setActivePhotoLabel(photos[nextIndex].label);
-        return photos[nextIndex].file;
-      });
-    }, 6000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   // Filter project cards
   const [selectedFilter, setSelectedFilter] = useState('all');
@@ -702,47 +591,37 @@ const App = () => {
             </motion.div>
           </div>
 
-          {/* Right Profile 3D Card and switcher */}
-          <div className="lg:col-span-5 flex flex-col items-center justify-center space-y-6">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+          {/* Right Profile Photo with Radial Mask */}
+          <div className="lg:col-span-5 relative flex items-center justify-center h-[400px] md:h-[500px]">
+            {/* Soft glowing ambient circle behind the portrait */}
+            <div className="absolute w-72 h-72 md:w-80 md:h-80 bg-gradient-to-tr from-emerald-500/20 to-cyan-500/20 rounded-full blur-[80px] pointer-events-none animate-pulse" />
+            
+            {/* Spinning decorative orbit ring */}
+            <motion.div 
+              animate={{ rotate: 360 }} 
+              transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
+              className="absolute w-80 h-80 md:w-96 md:h-96 border border-emerald-500/10 dark:border-emerald-500/5 rounded-full pointer-events-none flex items-center justify-center"
             >
-              <Hero3DCard imgSrc={profilePhoto} />
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/40 absolute -top-1" />
+              <div className="w-1 h-1 rounded-full bg-cyan-500/40 absolute -bottom-0.5" />
             </motion.div>
 
-            {/* Interactive Photo Swapping panel */}
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-              className={`p-3 border rounded-2xl flex flex-col items-center space-y-2 z-10 transition-colors duration-300 ${
-                isDarkMode ? 'bg-white/5 border-emerald-500/10' : 'bg-white/90 border-emerald-500/20 shadow-md'
-              }`}
+            {/* Profile image with circular fade gradient mask */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
+              className="relative w-72 h-72 md:w-88 md:h-88 rounded-full overflow-hidden border border-emerald-500/10 shadow-2xl bg-black/10 dark:bg-white/[0.02] flex items-center justify-center"
             >
-              <span className="text-[10px] font-mono text-gray-500 uppercase tracking-wider">Change Portrait Style</span>
-              <div className="flex gap-2">
-                {[
-                  { label: 'Casual', file: 'profile-casual.jpg', color: 'hover:text-emerald-500 hover:border-emerald-500/30' },
-                  { label: 'Corporate Suit', file: 'profile-suit.jpg', color: 'hover:text-cyan-500 hover:border-cyan-500/30' },
-                  { label: 'In Office', file: 'profile-office.jpg', color: 'hover:text-amber-500 hover:border-amber-500/30' }
-                ].map((item) => (
-                  <button
-                    key={item.label}
-                    onClick={() => handlePhotoChange(item.file, item.label)}
-                    className={`px-3 py-1.5 text-xs font-mono rounded-lg border transition-all duration-300 cursor-none ${
-                      activePhotoLabel === item.label 
-                        ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-500 font-bold' 
-                        : `bg-transparent border-transparent ${
-                            isDarkMode ? 'text-gray-400' : 'text-slate-500'
-                          } ` + item.color
-                    }`}
-                  >
-                    {item.label}
-                  </button>
-                ))}
-              </div>
+              <img 
+                src="profile.jpg" 
+                alt="Patnala Uday Kumar Profile" 
+                className="w-full h-full object-cover filter grayscale contrast-110 hover:grayscale-0 transition-all duration-750 select-none pointer-events-none"
+                style={{
+                  maskImage: 'radial-gradient(circle, rgba(0,0,0,1) 45%, rgba(0,0,0,0.1) 85%, rgba(0,0,0,0) 100%)',
+                  WebkitMaskImage: 'radial-gradient(circle, rgba(0,0,0,1) 45%, rgba(0,0,0,0.1) 85%, rgba(0,0,0,0) 100%)'
+                }}
+              />
             </motion.div>
           </div>
         </div>
@@ -853,10 +732,9 @@ const App = () => {
             isDarkMode ? 'bg-white/5 border-white/5' : 'bg-slate-100 border-slate-200'
           }`}>
             {[
-              { id: 'all', label: 'All Capstones' },
+              { id: 'all', label: 'All Projects' },
               { id: 'ml', label: 'Data Science & ML' },
-              { id: 'web', label: 'Full-Stack & Web' },
-              { id: 'sys', label: 'Software & Systems' }
+              { id: 'web', label: 'Full-Stack & Web' }
             ].map((tab) => (
               <button
                 key={tab.id}
