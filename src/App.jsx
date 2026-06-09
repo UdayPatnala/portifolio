@@ -20,8 +20,7 @@ import {
   Sun,
   Moon,
   Volume2,
-  VolumeX,
-  SkipForward
+  VolumeX
 } from 'lucide-react';
 import { Typewriter } from 'react-simple-typewriter';
 
@@ -678,42 +677,19 @@ const ViewAllProjectsCard = ({ onClick, remainingCount, isDarkMode }) => {
   );
 };
 
-// --- MUSIC PLAYLIST FOR RANDOM PLAYBACK ---
-const MUSIC_PLAYLIST = [
-  {
-    title: "Synthwave Alpha",
-    subtitle: "Helix Song 8",
-    src: "/bg-music.mp3"
-  },
-  {
-    title: "Synthwave Beta",
-    subtitle: "Helix Song 1",
-    src: "/bg-music-2.mp3"
-  },
-  {
-    title: "Synthwave Gamma",
-    subtitle: "Helix Song 4",
-    src: "/bg-music-3.mp3"
-  }
-];
-
 // --- MAIN PORTFOLIO COMPONENT ---
 
 const App = () => {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
 
-  // Background music states & refs
-  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
-  const [currentTrackIndex, setCurrentTrackIndex] = useState(() => {
-    // Pick a random track index on mount
-    return Math.floor(Math.random() * MUSIC_PLAYLIST.length);
-  });
+  // Background music states & refs (Enabled by default, volume set to 40%)
+  const [isMusicPlaying, setIsMusicPlaying] = useState(true);
   const audioRef = useRef(null);
 
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.volume = 0.15;
+      audioRef.current.volume = 0.4;
     }
   }, []);
 
@@ -721,26 +697,12 @@ const App = () => {
     if (!audioRef.current) return;
     if (isMusicPlaying) {
       audioRef.current.play().catch((err) => {
-        console.warn("Autoplay / playback blocked or failed:", err);
-        setIsMusicPlaying(false);
+        console.warn("Autoplay blocked, waiting for interaction:", err);
       });
     } else {
       audioRef.current.pause();
     }
   }, [isMusicPlaying]);
-
-  // Handle track index change
-  useEffect(() => {
-    if (!audioRef.current) return;
-    audioRef.current.load();
-    if (isMusicPlaying) {
-      audioRef.current.play().catch((err) => {
-        console.warn("Playback failed on track transition:", err);
-        setIsMusicPlaying(false);
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentTrackIndex]);
 
   useEffect(() => {
     const handleFirstInteraction = (e) => {
@@ -750,14 +712,10 @@ const App = () => {
         return;
       }
 
-      if (audioRef.current && !isMusicPlaying) {
-        audioRef.current.play()
-          .then(() => {
-            setIsMusicPlaying(true);
-          })
-          .catch((err) => {
-            console.log("Interaction autoplay blocked or failed:", err);
-          });
+      if (audioRef.current && isMusicPlaying) {
+        audioRef.current.play().catch((err) => {
+          console.log("Interaction autoplay blocked or failed:", err);
+        });
       }
       document.removeEventListener('click', handleFirstInteraction);
       document.removeEventListener('keydown', handleFirstInteraction);
@@ -771,15 +729,6 @@ const App = () => {
       document.removeEventListener('keydown', handleFirstInteraction);
     };
   }, [isMusicPlaying]);
-
-  const handleAudioEnded = () => {
-    setCurrentTrackIndex((prev) => (prev + 1) % MUSIC_PLAYLIST.length);
-  };
-
-  const handleNextTrack = (e) => {
-    e.stopPropagation();
-    setCurrentTrackIndex((prev) => (prev + 1) % MUSIC_PLAYLIST.length);
-  };
 
   // Theme Toggler state
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -1965,88 +1914,31 @@ const App = () => {
       {/* --- AUDIO SYSTEM SOURCE --- */}
       <audio 
         ref={audioRef} 
-        src={MUSIC_PLAYLIST[currentTrackIndex].src} 
-        onEnded={handleAudioEnded}
+        src="/bg-music.mp3" 
+        loop 
         preload="auto"
       />
 
-      {/* --- CYBERNETIC SOUND / EQ CONTROLLER PILL --- */}
-      <div 
-        className={`audio-controller-pill fixed bottom-8 right-8 z-40 flex items-center h-12 rounded-full border transition-all duration-500 group pointer-events-auto shadow-lg px-3 gap-3 ${
+      {/* --- CYBERNETIC SOUND / EQ CONTROLLER PILL (SIMPLIFIED CIRCLE) --- */}
+      <button
+        onClick={() => setIsMusicPlaying(!isMusicPlaying)}
+        className={`audio-controller-pill fixed bottom-8 right-8 z-40 flex items-center justify-center w-11 h-11 rounded-full border transition-all duration-300 pointer-events-auto shadow-lg cursor-none flex-shrink-0 ${
           isDarkMode 
-            ? 'bg-slate-950/65 border-emerald-500/20 shadow-emerald-500/5 hover:border-emerald-500/40 hover:bg-slate-950/85' 
-            : 'bg-white/75 border-emerald-500/20 shadow-emerald-500/5 hover:border-emerald-500/40 hover:bg-white/95'
-        } ${isMusicPlaying ? 'w-56' : 'w-12 hover:w-56'}`}
+            ? 'bg-slate-950/65 shadow-emerald-500/5 hover:bg-slate-950/85' 
+            : 'bg-white/75 shadow-emerald-500/5 hover:bg-white/95'
+        } ${
+          isMusicPlaying 
+            ? 'border-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.3)] text-emerald-400' 
+            : 'border-slate-500/20 text-gray-500'
+        }`}
+        title={isMusicPlaying ? "Mute Background Music" : "Play Background Music"}
       >
-        {/* Toggle Button */}
-        <button
-          onClick={() => setIsMusicPlaying(!isMusicPlaying)}
-          className={`flex items-center justify-center w-7 h-7 rounded-full transition-all duration-300 cursor-none flex-shrink-0 ${
-            isMusicPlaying 
-              ? 'bg-emerald-500 text-black shadow-[0_0_12px_rgba(16,185,129,0.4)]' 
-              : 'bg-slate-500/10 text-gray-400 hover:text-emerald-400 hover:bg-slate-500/20'
-          }`}
-          title={isMusicPlaying ? "Pause Soundtrack" : "Play Ambient Soundtrack"}
-        >
-          {isMusicPlaying ? <Volume2 size={13} /> : <VolumeX size={13} />}
-        </button>
-
-        {/* Skip Next Button (only visible on expand/hover) */}
-        <button
-          onClick={handleNextTrack}
-          className={`flex items-center justify-center w-6 h-6 rounded-full bg-slate-500/5 hover:bg-slate-500/15 text-gray-400 hover:text-cyan-400 transition-all duration-300 cursor-none flex-shrink-0 ${
-            isMusicPlaying ? 'opacity-100' : 'opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto'
-          } transition-opacity duration-300`}
-          title="Skip to Next Track"
-        >
-          <SkipForward size={11} />
-        </button>
-
-        {/* EQ Soundwave Visualizer Bars */}
-        <div className="flex items-end gap-[2px] h-3.5 w-6 pb-[2px] flex-shrink-0">
-          {[
-            { delay: 0.1, duration: 0.8, min: 0.3, max: 1.0 },
-            { delay: 0.3, duration: 0.6, min: 0.4, max: 1.0 },
-            { delay: 0.0, duration: 0.7, min: 0.2, max: 1.0 },
-            { delay: 0.2, duration: 0.5, min: 0.5, max: 1.0 }
-          ].map((bar, idx) => (
-            <motion.div
-              key={idx}
-              className={`w-[3px] rounded-full origin-bottom ${
-                isMusicPlaying ? 'bg-emerald-400' : 'bg-gray-500/40'
-              }`}
-              style={{ height: '100%' }}
-              animate={isMusicPlaying ? {
-                scaleY: [1, bar.min, bar.max, 1]
-              } : {
-                scaleY: 0.2
-              }}
-              transition={isMusicPlaying ? {
-                duration: bar.duration,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: bar.delay
-              } : {
-                duration: 0.3
-              }}
-            />
-          ))}
-        </div>
-
-        {/* Track Title Info */}
-        <div className={`flex flex-col overflow-hidden text-left leading-tight w-20 flex-shrink-0 ${
-          isMusicPlaying ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
-        } transition-opacity duration-300`}>
-          <span className={`text-[8px] font-bold font-mono tracking-wider truncate uppercase transition-colors duration-300 ${
-            isMusicPlaying ? 'text-emerald-400' : 'text-gray-500'
-          }`}>
-            {MUSIC_PLAYLIST[currentTrackIndex].title}
-          </span>
-          <span className="text-[8px] font-mono text-gray-500 truncate">
-            {MUSIC_PLAYLIST[currentTrackIndex].subtitle}
-          </span>
-        </div>
-      </div>
+        {isMusicPlaying ? (
+          <Volume2 size={16} className="animate-pulse" />
+        ) : (
+          <VolumeX size={16} />
+        )}
+      </button>
 
       {/* --- FLOAT BACK TO TOP BUTTON --- */}
       <AnimatePresence>

@@ -55,20 +55,24 @@ This codebase contains advanced visual animations and interactive systems:
 
 ---
 
-## 🎧 Same-Origin Audio Playlist System
+## 🎧 Same-Origin Background Audio System
 
 To make the portfolio immersive, it features a background ambient soundtrack system configured for maximum browser compatibility and user control:
 
-*   **Same-Origin Local Hosting:** Three distinct progressive/ambient synth tracks (`bg-music.mp3`, `bg-music-2.mp3`, and `bg-music-3.mp3`) are hosted locally in the `/public` assets folder. This guarantees same-origin loading, resolving browser CORS blocks, buffering latencies, or third-party server downtime.
-*   **Random Boot Sequence:** A random index selector picks a different track on page initialization, guaranteeing a fresh audio experience on every visit.
-*   **Autoplay Compliance:** The player remains muted initially to comply with browser autoplay blocks, setting up document interaction listeners (click/keypress) to automatically boot up audio as soon as the user starts interacting with the page.
-*   **Double-Trigger Prevention:** The interaction listeners explicitly ignore clicks targeting the player pill itself, ensuring that clicking the Play button toggles audio state correctly without getting cancelled.
-*   **Auto-Advance Playlists:** Built-in `onEnded` sequence trigger automatically loads and plays the next track in the queue once the current track completes.
-*   **Cybernetic Equalizer Pill:** A floating glassmorphic pill located at the bottom-right corner. It features:
-    *   *Volume & Pause Toggle:* Compact play/mute state controller.
-    *   *Skip Forward Controller:* A skip button (`SkipForward` icon) that manually advances the playlist.
-    *   *Framer Motion Soundwave:* An animating 4-bar soundwave equalizer that pulses dynamically when music is active and freezes flat when paused.
-    *   *Auto-Expansion:* Collapses into a small toggle button when paused and expands on hover to show the active track title and playlist coordinates.
+*   **Same-Origin Local Hosting:** A highly smooth and relaxing piano track (*White Petals* by Keys of Moon) is hosted locally at `/public/bg-music.mp3`. This guarantees same-origin loading, resolving browser CORS blocks, buffering latencies, or third-party server downtime.
+*   **Autoplay Compliance & Soft Startup:** The soundtrack starts automatically at a soft, comfortable `0.4` volume (40% sound) upon the user's first document interaction (click or keypress) to comply with modern browser autoplay restrictions.
+*   **Simple On/Off Controller:** A minimal, circular audio toggle button at the bottom-right corner (`fixed bottom-8 right-8 z-40`). It features a pulsing glow when active (`Volume2` icon) and a dim appearance when muted (`VolumeX` icon) for simple muting and unmuting in a single click.
+*   **Double-Trigger Prevention:** The interaction listeners explicitly ignore clicks targeting the player button itself, ensuring that clicking the button toggles audio state correctly without getting cancelled.
+
+---
+
+## 📁 Resume Synchronization Automation
+
+To make updating the resume as simple and error-free as possible, the project includes an automated file synchronization pipeline:
+
+*   **Dedicated `resume/` Directory:** A dedicated folder `resume/` is created at the root of the project to hold the developer's PDF resume file (`PATNALA UDAY KUMAR.pdf`).
+*   **Build & Dev Automation:** A custom Vite plugin (`copyResumePlugin`) automatically monitors the `resume/` directory. Whenever the project builds (`npm run build`) or runs in development (`npm run dev`), the plugin synchronizes the PDF file from the root `resume/` folder to `public/PATNALA UDAY KUMAR.pdf` where the webpage downloads it.
+*   **Hot-Reload Integration:** In development mode, the plugin watches the `resume/` folder and copies updates live as soon as the PDF is saved, ensuring the webpage download link always serves the latest CV.
 
 ---
 
@@ -99,11 +103,11 @@ graph TD
     C --> E[CustomCursor.jsx]
     C --> F[DataScienceVisualizer.jsx]
     C --> G[ProjectCard.jsx]
-    C --> H[MUSIC_PLAYLIST Source]
+    C --> H[bg-music.mp3]
 ```
 
 ### File Map
-- **[App.jsx](file:///d:/PROJECT/Portifolio/src/App.jsx):** Core layout, section triggers, state management, contact submission handler, audio playlist controls, and scroll observer.
+- **[App.jsx](file:///d:/PROJECT/Portifolio/src/App.jsx):** Core layout, section triggers, state management, contact submission handler, audio controls, and scroll observer.
 - **[CustomCursor.jsx](file:///d:/PROJECT/Portifolio/src/components/CustomCursor.jsx):** Canvas-based cursor trailing particle system and glowing pointer dot.
 - **[ParticleBackground.jsx](file:///d:/PROJECT/Portifolio/src/components/ParticleBackground.jsx):** Moving 3D cyberspace grid floor background and floating ambient particle constellation.
 - **[DataScienceVisualizer.jsx](file:///d:/PROJECT/Portifolio/src/components/DataScienceVisualizer.jsx):** Interactive 3D SGD Loss mathematical visualizer.
