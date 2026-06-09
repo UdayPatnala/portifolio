@@ -21,7 +21,7 @@ const Github = ({ size = 18, className = "" }) => (
 );
 
 const ProjectCard = ({ project, isDarkMode }) => {
-  const { title, description, tags, category, highlights, github, live, type } = project;
+  const { title, description, tags, category, highlights, github, live, type, image } = project;
 
   // Icon mapping depending on type
   const getCategoryIcon = () => {
@@ -77,11 +77,23 @@ const ProjectCard = ({ project, isDarkMode }) => {
         z: 15 
       }}
       style={{ transformStyle: 'preserve-3d', perspective: 1000 }}
-      className={`flex flex-col justify-between p-6 rounded-2xl glass-panel border transition-all duration-300 ${
+      className={`group flex flex-col justify-between p-6 rounded-2xl glass-panel border transition-all duration-300 ${
         isDarkMode ? 'border-white/5' : 'border-emerald-500/10'
       } ${getHoverBorderColor()}`}
     >
       <div style={{ transform: 'translateZ(10px)' }}>
+        {/* Project Screenshot */}
+        {image && (
+          <div className="relative w-full h-44 mb-4 overflow-hidden rounded-xl border border-black/10 dark:border-white/5 bg-slate-950/20">
+            <img 
+              src={image} 
+              alt={`${title} Interface`}
+              className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 to-transparent pointer-events-none" />
+          </div>
+        )}
+
         {/* Top Header */}
         <div className="flex justify-between items-center mb-4">
           <span className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-mono border rounded-full ${getBadgeColor()}`}>

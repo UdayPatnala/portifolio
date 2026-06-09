@@ -85,7 +85,23 @@ const PROJECT_DATA = [
       "Stores recent mood history, user profiles, and favorites in browser LocalStorage."
     ],
     github: "https://github.com/UdayPatnala/music-mirror",
-    live: "https://uday-music-mirror.vercel.app"
+    live: "https://music-mirror.vercel.app",
+    image: "/music_mirror_real.png"
+  },
+  {
+    title: "Nebula Cinematic Gallery",
+    description: "An AI-assisted cinematic memory gallery with local image ingestion, Gemini metadata generation, timeline sorting, duplicate detection, and Firebase sync.",
+    tags: ["React.js", "Express", "Node.js", "Firebase", "Gemini API", "Dexie.js", "GSAP"],
+    category: "Full-Stack & Web",
+    type: "web",
+    highlights: [
+      "Processes folder directories locally using Dexie.js browser DB indexed storage.",
+      "Integrates TensorFlow MobileNet & COCO-SSD for client-side object detection.",
+      "Utilizes Gemini 1.5 Flash to automatically curate labels and description captions."
+    ],
+    github: "https://github.com/UdayPatnala/Nebula",
+    live: "https://nebula-nmo.vercel.app",
+    image: "/nebula_real.png"
   },
   {
     title: "JavaPath Pro",
@@ -99,7 +115,8 @@ const PROJECT_DATA = [
       "Secure user profiles, progress logs, and career rank promotion dashboard."
     ],
     github: "https://github.com/UdayPatnala/Java-Path",
-    live: "https://uday-javapath-pro.vercel.app"
+    live: "https://javapath-pro.vercel.app",
+    image: "/javapath_real.png"
   },
   {
     title: "Spedex Fintech Dashboard",
@@ -113,7 +130,8 @@ const PROJECT_DATA = [
       "Feature-rich React web dashboard mapping budgets, vendor insights, and reminders."
     ],
     github: "https://github.com/UdayPatnala/Spedex",
-    live: "https://spe-dex.vercel.app"
+    live: "https://spe-dex.vercel.app",
+    image: "/spedex_real.png"
   },
   {
     title: "SkyFlow: Real-Time Weather Pipeline",
@@ -127,7 +145,8 @@ const PROJECT_DATA = [
       "Stream processing engine computing rolling 5-point averages and plotly trend charts."
     ],
     github: "https://github.com/UdayPatnala/SkyFlow",
-    live: "https://uday-skyflow.vercel.app"
+    live: "https://uday-skyflow.vercel.app",
+    image: "/skyflow_real.png"
   },
   {
     title: "Customer Churn Prediction System",
@@ -141,7 +160,8 @@ const PROJECT_DATA = [
       "Middleware tracing injecting unique X-Request-ID to FastAPI request headers."
     ],
     github: "https://github.com/UdayPatnala/churn-prediction-system",
-    live: "https://churn-prediction-system.vercel.app"
+    live: "https://churn-prediction-system.vercel.app",
+    image: "/churn_real.png"
   },
   {
     title: "TaskMaster Pro",
@@ -155,7 +175,8 @@ const PROJECT_DATA = [
       "Export to Excel utility sheet parsing, date filters, and overdue task alerts."
     ],
     github: "https://github.com/UdayPatnala/TaskMaster-Pro",
-    live: "https://uday-taskmaster-pro.vercel.app"
+    live: "https://uday-taskmaster-pro.vercel.app",
+    image: "/taskmaster_real.png"
   },
   {
     title: "JobFlow Copilot",
@@ -169,7 +190,8 @@ const PROJECT_DATA = [
       "PowerShell-driven Toast reminders and Synthesized AudioContext dual chime alerts."
     ],
     github: "https://github.com/UdayPatnala/JobFlow",
-    live: "https://uday-jobflow-copilot.vercel.app"
+    live: "https://uday-jobflow-copilot.vercel.app",
+    image: "/jobflow_real.png"
   },
   {
     title: "Smart Parking System",
