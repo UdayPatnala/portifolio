@@ -61,7 +61,7 @@ const CommandPalette = ({ isOpen, setIsOpen, isDarkMode }) => {
   const commands = [
     { name: 'Projects', icon: <Folder size={16} />, action: () => { window.location.hash = 'projects'; setIsOpen(false); } },
     { name: 'Contact Me', icon: <Mail size={16} />, action: () => { window.location.hash = 'contact'; setIsOpen(false); } },
-    { name: 'Download Resume', icon: <FileText size={16} />, action: () => { window.open('/resume/PATNALA UDAY KUMAR.pdf'); setIsOpen(false); } },
+    { name: 'Download Resume', icon: <FileText size={16} />, action: () => { window.open('/PATNALA UDAY KUMAR.pdf'); setIsOpen(false); } },
     { name: 'GitHub', icon: <Github size={16} />, action: () => { window.open('https://github.com/UdayPatnala', '_blank'); setIsOpen(false); } },
     { name: 'LinkedIn', icon: <Linkedin size={16} />, action: () => { window.open('https://linkedin.com/in/udaypatnala', '_blank'); setIsOpen(false); } },
   ];

@@ -1149,7 +1149,7 @@ const App = () => {
                 Inspect CAPSTONES
               </button>
               <a 
-                href="/resume/PATNALA UDAY KUMAR.pdf" 
+                href="/PATNALA UDAY KUMAR.pdf" 
                 download="PATNALA UDAY KUMAR.pdf"
                 className={`px-6 py-3 border rounded-xl font-bold font-mono tracking-wide flex items-center gap-2 transition-all duration-300 cursor-none ${
                   isDarkMode 
