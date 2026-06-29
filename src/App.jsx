@@ -18,9 +18,7 @@ import {
   CheckCircle,
   FileText,
   Sun,
-  Moon,
-  Volume2,
-  VolumeX
+  Moon
 } from 'lucide-react';
 import { Typewriter } from 'react-simple-typewriter';
 
@@ -683,52 +681,7 @@ const App = () => {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
 
-  // Background music states & refs (Enabled by default, volume set to 40%)
-  const [isMusicPlaying, setIsMusicPlaying] = useState(true);
-  const audioRef = useRef(null);
-
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = 0.4;
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!audioRef.current) return;
-    if (isMusicPlaying) {
-      audioRef.current.play().catch((err) => {
-        console.warn("Autoplay blocked, waiting for interaction:", err);
-      });
-    } else {
-      audioRef.current.pause();
-    }
-  }, [isMusicPlaying]);
-
-  useEffect(() => {
-    const handleFirstInteraction = (e) => {
-      if (e && e.target && e.target.closest('.audio-controller-pill')) {
-        document.removeEventListener('click', handleFirstInteraction);
-        document.removeEventListener('keydown', handleFirstInteraction);
-        return;
-      }
-
-      if (audioRef.current && isMusicPlaying) {
-        audioRef.current.play().catch((err) => {
-          console.log("Interaction autoplay blocked or failed:", err);
-        });
-      }
-      document.removeEventListener('click', handleFirstInteraction);
-      document.removeEventListener('keydown', handleFirstInteraction);
-    };
-
-    document.addEventListener('click', handleFirstInteraction);
-    document.addEventListener('keydown', handleFirstInteraction);
-
-    return () => {
-      document.removeEventListener('click', handleFirstInteraction);
-      document.removeEventListener('keydown', handleFirstInteraction);
-    };
-  }, [isMusicPlaying]);
+  // Audio removed as requested
 
   // Theme Toggler state
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -1191,7 +1144,7 @@ const App = () => {
                 Inspect CAPSTONES
               </button>
               <a 
-                href="/PATNALA UDAY KUMAR.pdf" 
+                href="/resume/PATNALA UDAY KUMAR.pdf" 
                 download="PATNALA UDAY KUMAR.pdf"
                 className={`px-6 py-3 border rounded-xl font-bold font-mono tracking-wide flex items-center gap-2 transition-all duration-300 cursor-none ${
                   isDarkMode 
@@ -1911,34 +1864,7 @@ const App = () => {
         </div>
       </footer>
 
-      {/* --- AUDIO SYSTEM SOURCE --- */}
-      <audio 
-        ref={audioRef} 
-        src="/bg-music.mp3" 
-        loop 
-        preload="auto"
-      />
-
-      {/* --- CYBERNETIC SOUND / EQ CONTROLLER PILL (SIMPLIFIED CIRCLE) --- */}
-      <button
-        onClick={() => setIsMusicPlaying(!isMusicPlaying)}
-        className={`audio-controller-pill fixed bottom-8 right-8 z-40 flex items-center justify-center w-11 h-11 rounded-full border transition-all duration-300 pointer-events-auto shadow-lg cursor-none flex-shrink-0 ${
-          isDarkMode 
-            ? 'bg-slate-950/65 shadow-emerald-500/5 hover:bg-slate-950/85' 
-            : 'bg-white/75 shadow-emerald-500/5 hover:bg-white/95'
-        } ${
-          isMusicPlaying 
-            ? 'border-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.3)] text-emerald-400' 
-            : 'border-slate-500/20 text-gray-500'
-        }`}
-        title={isMusicPlaying ? "Mute Background Music" : "Play Background Music"}
-      >
-        {isMusicPlaying ? (
-          <Volume2 size={16} className="animate-pulse" />
-        ) : (
-          <VolumeX size={16} />
-        )}
-      </button>
+      {/* Audio Removed */}
 
       {/* --- FLOAT BACK TO TOP BUTTON --- */}
       <AnimatePresence>

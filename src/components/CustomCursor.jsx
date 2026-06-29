@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-const PARTICLE_COUNT = 35;
+const PARTICLE_COUNT = 100;
 const CONNECTION_DIST = 120;
 const CURSOR_ATTRACT_DIST = 140;
 const PARTICLE_SPEED = 0.35;
@@ -204,7 +204,6 @@ const CustomCursor = () => {
           height: 16,
           borderRadius: '50%',
           background: 'radial-gradient(circle, #ffffff 0%, #34d399 45%, rgba(16,185,129,0) 100%)',
-          boxShadow: '0 0 10px 4px rgba(52,211,153,0.7), 0 0 22px 8px rgba(16,185,129,0.35)',
           opacity: 0,
           transition: 'opacity 0.2s ease',
           willChange: 'transform',
