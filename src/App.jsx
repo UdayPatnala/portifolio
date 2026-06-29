@@ -687,6 +687,10 @@ const App = () => {
   // Command Palette State
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
 
+  // Portrait color state (touch/hover with delayed revert)
+  const [portraitColor, setPortraitColor] = useState(false);
+  const portraitTimerRef = useRef(null);
+
   // Theme Toggler state
   const [isDarkMode, setIsDarkMode] = useState(() => {
     try {
@@ -1259,14 +1263,17 @@ const App = () => {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1.2, ease: "easeOut" }}
-              className="hero-portrait-hole relative w-72 h-72 sm:w-80 sm:h-80 md:w-[23rem] md:h-[23rem] rounded-full flex items-center justify-center group"
+              className="hero-portrait-hole relative w-72 h-72 sm:w-80 sm:h-80 md:w-[23rem] md:h-[23rem] rounded-full flex items-center justify-center"
+              onMouseEnter={() => { setPortraitColor(true); clearTimeout(portraitTimerRef.current); }}
+              onMouseLeave={() => { portraitTimerRef.current = setTimeout(() => setPortraitColor(false), 2000); }}
+              onTouchStart={() => { setPortraitColor(true); clearTimeout(portraitTimerRef.current); portraitTimerRef.current = setTimeout(() => setPortraitColor(false), 3000); }}
             >
               {/* Office profile pic — static portrait with 3D tilt */}
               <div className="hero-portrait-window">
                 <img 
                   src="/profile-office.jpg"
                   alt="Patnala Uday Kumar — Office Portrait"
-                  className="hero-portrait-img filter grayscale contrast-115 brightness-95 group-hover:grayscale-0 group-hover:contrast-100 group-hover:brightness-100 transition-all duration-700 select-none pointer-events-none"
+                  className={`hero-portrait-img filter transition-all duration-700 select-none pointer-events-none ${portraitColor ? 'grayscale-0 contrast-100 brightness-100' : 'grayscale contrast-115 brightness-95'}`}
                   style={{ objectPosition: 'center 15%' }}
                 />
               </div>
