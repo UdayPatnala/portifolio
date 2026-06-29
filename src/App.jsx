@@ -310,8 +310,8 @@ const SKILLS_DATA = [
     icon: <Terminal size={24} className="text-emerald-500" />,
     color: "rgba(16, 185, 129, 0.4)",
     items: [
-      { name: "Java", level: "Advanced" },
-      { name: "Python", level: "Advanced" },
+      { name: "Java", level: "Intermediate" },
+      { name: "Python", level: "Intermediate" },
       { name: "C Language", level: "Intermediate" }
     ]
   },
@@ -331,7 +331,7 @@ const SKILLS_DATA = [
     icon: <Database size={24} className="text-amber-500" />,
     color: "rgba(245, 158, 11, 0.4)",
     items: [
-      { name: "SQL", level: "Advanced" },
+      { name: "SQL", level: "Intermediate" },
       { name: "PostgreSQL", level: "Intermediate" },
       { name: "Node.js & Express", level: "Intermediate" },
       { name: "Spring Boot", level: "Intermediate" }
@@ -342,8 +342,8 @@ const SKILLS_DATA = [
     icon: <Award size={24} className="text-emerald-500" />,
     color: "rgba(16, 185, 129, 0.4)",
     items: [
-      { name: "Data Structures & Algorithms", level: "Advanced" },
-      { name: "Object Oriented Programming", level: "Expert" },
+      { name: "Data Structures & Algorithms", level: "Intermediate" },
+      { name: "Object Oriented Programming", level: "Intermediate" },
       { name: "Git & GitHub", level: "Advanced" },
       { name: "Docker & Vercel", level: "Intermediate" },
       { name: "Software Testing", level: "Advanced" }
