@@ -53,17 +53,16 @@ const CustomCursor = () => {
   }, []);
 
   useEffect(() => {
-    if (isMobile) return;
-
     const canvas = canvasRef.current;
     const dot = dotRef.current;
     const ctx = canvas.getContext('2d');
+    const particleCount = isMobile ? 40 : PARTICLE_COUNT;
 
     const resize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       particlesRef.current = Array.from(
-        { length: PARTICLE_COUNT },
+        { length: particleCount },
         () => new Particle(canvas.width, canvas.height)
       );
     };
@@ -72,7 +71,6 @@ const CustomCursor = () => {
 
     const onMouseMove = (e) => {
       mouseRef.current = { x: e.clientX, y: e.clientY };
-      // Move DOM cursor dot instantly
       if (dot) {
         dot.style.transform = `translate(${e.clientX - 8}px, ${e.clientY - 8}px)`;
         dot.style.opacity = '1';
@@ -86,9 +84,32 @@ const CustomCursor = () => {
       if (dot) dot.style.opacity = '1';
     };
 
-    window.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseleave', onMouseLeave);
-    document.addEventListener('mouseenter', onMouseEnter);
+    const onTouchStart = (e) => {
+      if (e.touches && e.touches[0]) {
+        mouseRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      }
+    };
+
+    const onTouchMove = (e) => {
+      if (e.touches && e.touches[0]) {
+        mouseRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      }
+    };
+
+    const onTouchEnd = () => {
+      mouseRef.current = { x: -9999, y: -9999 };
+    };
+
+    if (!isMobile) {
+      window.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseleave', onMouseLeave);
+      document.addEventListener('mouseenter', onMouseEnter);
+    } else {
+      window.addEventListener('touchstart', onTouchStart, { passive: true });
+      window.addEventListener('touchmove', onTouchMove, { passive: true });
+      window.addEventListener('touchend', onTouchEnd, { passive: true });
+      window.addEventListener('touchcancel', onTouchEnd, { passive: true });
+    }
 
     const draw = () => {
       const w = canvas.width;
@@ -173,17 +194,22 @@ const CustomCursor = () => {
 
     rafRef.current = requestAnimationFrame(draw);
 
-    return () => {
-      cancelAnimationFrame(rafRef.current);
-      window.removeEventListener('resize', resize);
-      window.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseleave', onMouseLeave);
-      document.removeEventListener('mouseenter', onMouseEnter);
-      document.body.classList.remove('custom-cursor-active');
-    };
-  }, [isMobile]);
-
-  if (isMobile) return null;
+      return () => {
+        cancelAnimationFrame(rafRef.current);
+        window.removeEventListener('resize', resize);
+        if (!isMobile) {
+          window.removeEventListener('mousemove', onMouseMove);
+          document.removeEventListener('mouseleave', onMouseLeave);
+          document.removeEventListener('mouseenter', onMouseEnter);
+          document.body.classList.remove('custom-cursor-active');
+        } else {
+          window.removeEventListener('touchstart', onTouchStart);
+          window.removeEventListener('touchmove', onTouchMove);
+          window.removeEventListener('touchend', onTouchEnd);
+          window.removeEventListener('touchcancel', onTouchEnd);
+        }
+      };
+    }, [isMobile]);
 
   return (
     <>
@@ -194,21 +220,23 @@ const CustomCursor = () => {
         style={{ zIndex: 0 }}
       />
 
-      {/* Bright cursor dot — always on top */}
-      <div
-        ref={dotRef}
-        className="custom-cursor-dot fixed top-0 left-0 pointer-events-none"
-        style={{
-          zIndex: 9999,
-          width: 16,
-          height: 16,
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, #ffffff 0%, #34d399 45%, rgba(16,185,129,0) 100%)',
-          opacity: 0,
-          transition: 'opacity 0.2s ease',
-          willChange: 'transform',
-        }}
-      />
+      {/* Bright cursor dot — always on top, desktop only */}
+      {!isMobile && (
+        <div
+          ref={dotRef}
+          className="custom-cursor-dot fixed top-0 left-0 pointer-events-none"
+          style={{
+            zIndex: 9999,
+            width: 16,
+            height: 16,
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, #ffffff 0%, #34d399 45%, rgba(16,185,129,0) 100%)',
+            opacity: 0,
+            transition: 'opacity 0.2s ease',
+            willChange: 'transform',
+          }}
+        />
+      )}
     </>
   );
 };
