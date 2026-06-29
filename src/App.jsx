@@ -25,6 +25,7 @@ import { Typewriter } from 'react-simple-typewriter';
 import ParticleBackground from './components/ParticleBackground';
 import CustomCursor from './components/CustomCursor';
 import ProjectCard from './components/ProjectCard';
+import CommandPalette from './components/CommandPalette';
 
 // --- CUSTOM SVG BRAND ICONS ---
 
@@ -128,9 +129,9 @@ const PROJECT_DATA = [
     category: "Data Science & ML",
     type: "ml",
     highlights: [
-      "Detects dominant facial expressions from real-time webcam feed.",
-      "Embedded YouTube player plays matched songs dynamically.",
-      "Stores recent mood history, user profiles, and favorites in browser LocalStorage."
+      "Real-time webcam feed processed via face-api.js with custom thresholds.",
+      "Embedded YouTube player dynamically updates via URL state management.",
+      "LocalStorage caching for persistent mood history and user profiles without a backend."
     ],
     github: "https://github.com/UdayPatnala/music-mirror",
     live: "https://music-mirror.vercel.app",
@@ -143,9 +144,9 @@ const PROJECT_DATA = [
     category: "Full-Stack & Web",
     type: "web",
     highlights: [
-      "Processes folder directories locally using Dexie.js browser DB indexed storage.",
-      "Integrates TensorFlow MobileNet & COCO-SSD for client-side object detection.",
-      "Utilizes Gemini 1.5 Flash to automatically curate labels and description captions."
+      "Optimized client-side rendering with Dexie.js for heavy indexed image storage.",
+      "TensorFlow MobileNet integration for zero-latency local object detection.",
+      "Node/Express proxy securely connecting to Gemini API for metadata generation."
     ],
     github: "https://github.com/UdayPatnala/Nebula",
     live: "https://nebula-nmo.vercel.app",
@@ -158,9 +159,9 @@ const PROJECT_DATA = [
     category: "Full-Stack & Web",
     type: "web",
     highlights: [
-      "Built-in browser sandbox IDE with custom regex-based real-time syntax checking.",
-      "Integrates an adaptive AI Mentor (Gemini API) offering tailored structural hints.",
-      "Secure user profiles, progress logs, and career rank promotion dashboard."
+      "React sandboxed IDE utilizing custom regex for AST-like syntax evaluation.",
+      "Express REST API coupled with SQLite and Sequelize ORM for state persistence.",
+      "Secure JWT authentication flow and rate-limited Gemini AI mentor integrations."
     ],
     github: "https://github.com/UdayPatnala/Java-Path",
     live: "https://javapath-pro.vercel.app",
@@ -368,13 +369,13 @@ const getProjectCountForSkill = (skillName) => {
 
 const TRAINING_DATA = [
   {
-    role: "Machine Learning Trainee",
+    role: "Machine Learning Engineer",
     provider: "Codec Technologies",
     period: "8 Weeks",
     description: "Numerical computation and basic model setups in Python using NumPy and Pandas."
   },
   {
-    role: "Web Development Trainee",
+    role: "Software Engineer",
     provider: "Codec Technologies",
     period: "4 Weeks",
     description: "Basics of responsive layout setups with HTML, CSS, and vanilla JS DOM manipulation."
@@ -683,6 +684,9 @@ const App = () => {
 
   // Audio removed as requested
 
+  // Command Palette State
+  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
+
   // Theme Toggler state
   const [isDarkMode, setIsDarkMode] = useState(() => {
     try {
@@ -888,6 +892,7 @@ const App = () => {
     }`}>
       {/* Visual background components */}
       <ParticleBackground isDarkMode={isDarkMode} />
+      <CommandPalette isOpen={isCommandPaletteOpen} setIsOpen={setIsCommandPaletteOpen} isDarkMode={isDarkMode} />
       <CustomCursor />
 
       {/* Top scroll neon progress bar */}
@@ -1683,7 +1688,7 @@ const App = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent pointer-events-none" />
                 <div className="absolute bottom-0 left-0 right-0 px-4 py-3">
                   <span className="text-[10px] font-mono font-bold tracking-widest text-emerald-400">&bull; PATNALA UDAY KUMAR</span>
-                  <p className="text-[9px] text-white/50 font-mono mt-0.5">Associate Software Engineer</p>
+                  <p className="text-[9px] text-white/50 font-mono mt-0.5">Software Engineer</p>
                 </div>
               </motion.div>
 
@@ -1793,7 +1798,7 @@ const App = () => {
                     name="subject"
                     value={formData.subject}
                     onChange={handleInputChange}
-                    placeholder="Associate Software Engineer Role Opportunities"
+                    placeholder="Software Engineer Role Opportunities"
                     className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 focus:shadow-[0_0_15px_rgba(16,185,129,0.15)] focus:bg-white/[0.08] transition-all cursor-none ${
                       isDarkMode 
                         ? 'bg-white/5 border-white/5 text-white' 
