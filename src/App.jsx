@@ -913,10 +913,7 @@ const App = () => {
             className="flex items-center gap-2 cursor-pointer font-bold tracking-widest text-lg font-mono text-emerald-500 group"
           >
             <Logo size={28} className={isDarkMode ? 'text-emerald-400' : 'text-emerald-600'} isDarkMode={isDarkMode} />
-            <div className="flex flex-col leading-none">
-              <span className={`text-sm tracking-wider font-extrabold ${isDarkMode ? 'text-white group-hover:text-emerald-400 transition-colors' : 'text-slate-900 group-hover:text-emerald-600 transition-colors'}`}>UDAY</span>
-              <span className="text-[10px] text-emerald-500 font-bold tracking-widest group-hover:text-cyan-400 transition-colors">.DS</span>
-            </div>
+            <span className={`text-sm tracking-wider font-extrabold ${isDarkMode ? 'text-white group-hover:text-emerald-400 transition-colors' : 'text-slate-900 group-hover:text-emerald-600 transition-colors'}`}>UDAY</span>
           </div>
 
           {/* Desktop Nav Links */}
