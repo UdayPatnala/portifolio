@@ -691,6 +691,10 @@ const App = () => {
   const [portraitColor, setPortraitColor] = useState(false);
   const portraitTimerRef = useRef(null);
 
+  // Footer portrait color state
+  const [footerPortraitColor, setFooterPortraitColor] = useState(false);
+  const footerPortraitTimerRef = useRef(null);
+
   // Theme Toggler state
   const [isDarkMode, setIsDarkMode] = useState(() => {
     try {
@@ -1678,15 +1682,18 @@ const App = () => {
             <div className="lg:col-span-5 space-y-8">
               {/* Suit/Professional photo card in contact sidebar */}
               <motion.div
-                className="group relative rounded-2xl overflow-hidden border border-emerald-500/20 shadow-2xl mb-2"
+                className="relative rounded-2xl overflow-hidden border border-emerald-500/20 shadow-2xl mb-2"
                 animate={{ y: [0, -7, 0] }}
                 transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
                 whileHover={{ scale: 1.03 }}
+                onMouseEnter={() => { setFooterPortraitColor(true); clearTimeout(footerPortraitTimerRef.current); }}
+                onMouseLeave={() => { footerPortraitTimerRef.current = setTimeout(() => setFooterPortraitColor(false), 2000); }}
+                onTouchStart={() => { setFooterPortraitColor(true); clearTimeout(footerPortraitTimerRef.current); footerPortraitTimerRef.current = setTimeout(() => setFooterPortraitColor(false), 3000); }}
               >
                 <img
                   src="/profile.jpg"
                   alt="Patnala Uday Kumar — Profile"
-                  className="w-full h-56 object-cover filter grayscale group-hover:grayscale-0 transition-all duration-700 select-none"
+                  className={`w-full h-56 object-cover filter transition-all duration-700 select-none ${footerPortraitColor ? 'grayscale-0' : 'grayscale'}`}
                   style={{ objectPosition: 'center 18%' }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent pointer-events-none" />
