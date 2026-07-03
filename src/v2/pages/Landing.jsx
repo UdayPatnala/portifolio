@@ -1,6 +1,6 @@
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Typewriter } from 'react-simple-typewriter';
-import { Sparkles, Terminal, FileText, Send, ArrowRight } from 'lucide-react';
+import { Sparkles, FileText, Send, ArrowRight } from 'lucide-react';
 import { cmsContent } from '../data/content';
 
 const Landing = ({ isDarkMode }) => {
@@ -178,17 +178,6 @@ const Landing = ({ isDarkMode }) => {
                 className="hero-portrait-img filter saturate-[0.85] contrast-[1.05] brightness-95 group-hover:scale-110 transition-all duration-700 pointer-events-none select-none"
               />
             </div>
-            
-            {/* Cyber HUD Terminal box */}
-            <motion.div
-              style={{ transform: "translateZ(50px)" }}
-              className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-xl glass-panel-heavy border border-emerald-500/30 flex items-center gap-2 select-none shadow-2xl"
-            >
-              <Terminal size={14} className="text-emerald-400 animate-pulse" />
-              <span className="text-[10px] font-mono tracking-widest text-emerald-400 font-bold uppercase">
-                SYSTEMS_ONLINE
-              </span>
-            </motion.div>
           </motion.div>
         </div>
 
