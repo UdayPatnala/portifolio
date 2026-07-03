@@ -1,14 +1,25 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AppV1 from './v1/AppV1';
 import AppV2 from './v2/AppV2';
 
 const App = () => {
-  // Randomly select v1 or v2 on every page load/refresh
-  const [version] = useState(() => {
-    return Math.random() < 0.5 ? 'v1' : 'v2';
+  // Determine if viewport matches mobile screens (< 1024px)
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 1024;
+    }
+    return false;
   });
 
-  return version === 'v1' ? <AppV1 /> : <AppV2 />;
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return isMobile ? <AppV1 /> : <AppV2 />;
 };
 
 export default App;
