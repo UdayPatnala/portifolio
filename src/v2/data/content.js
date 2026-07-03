@@ -352,7 +352,7 @@ export const cmsContent = {
       title: "Research Paper Published",
       description: "Published \"Smart Music Recommendation System Based on User Emotions,\" IJARESM, Vol. 14, Issue 3 (Mar 2026).",
       date: "Mar 2026",
-      link: "/ijaresm-certificate.png"
+      link: "/publication-certificate.pdf"
     },
     {
       title: "NPTEL Java Elite + Silver Certification",
@@ -361,10 +361,10 @@ export const cmsContent = {
       link: "https://nptel.ac.in/noc/E_Certificate/NPTEL24CS43S97030107030776012"
     },
     {
-      title: "10/10 Perfect GPA SSC",
-      description: "Earned flawless academic score in Bobbili district school finals.",
-      date: "2020",
-      link: ""
+      title: "Software Testing Master Class",
+      description: "Udemy Professional Certificate covering functional software testing and automation models.",
+      date: "2024",
+      link: "https://ude.my/UC-bd895877-add9-4488-be08-331cd88b2d6a"
     },
     {
       title: "AWS Academy Graduate Badge",
