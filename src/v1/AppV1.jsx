@@ -407,6 +407,11 @@ const EDUCATION_DATA = [
 ];
 
 const CERTIFICATIONS = [
+  {
+    title: "Published Research Paper: Smart Music Recommendation System Based on User Emotions",
+    provider: "IJARESM (Vol. 14, Issue 3)",
+    link: "https://www.ijaresm.com"
+  },
   { 
     title: "Programming in Java", 
     provider: "NPTEL (National Programme on Technology Enhanced Learning)",

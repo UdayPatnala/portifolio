@@ -229,7 +229,7 @@ const AppV2 = () => {
           >
             <Logo size={28} className={isDarkMode ? 'text-emerald-400' : 'text-emerald-600'} />
             <span className={`text-sm tracking-wider font-extrabold ${isDarkMode ? 'text-white group-hover:text-emerald-400 transition-colors' : 'text-slate-900 group-hover:text-emerald-600 transition-colors'}`}>
-              UDAY.V2
+              UDAY
             </span>
           </a>
 

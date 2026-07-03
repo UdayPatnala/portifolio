@@ -351,22 +351,26 @@ export const cmsContent = {
     {
       title: "Research Paper Published",
       description: "Published \"Smart Music Recommendation System Based on User Emotions,\" IJARESM, Vol. 14, Issue 3 (Mar 2026).",
-      date: "Mar 2026"
+      date: "Mar 2026",
+      link: "https://www.ijaresm.com"
     },
     {
       title: "NPTEL Java Elite + Silver Certification",
       description: "Ranked among the top performance bracket in national-level Java compiler examination.",
-      date: "2024"
+      date: "2024",
+      link: "https://nptel.ac.in/noc/E_Certificate/NPTEL24CS43S97030107030776012"
     },
     {
       title: "10/10 Perfect GPA SSC",
       description: "Earned flawless academic score in Bobbili district school finals.",
-      date: "2020"
+      date: "2020",
+      link: ""
     },
     {
       title: "AWS Academy Graduate Badge",
       description: "Successfully finalized official cloud foundation metrics and systems design criteria.",
-      date: "2023"
+      date: "2023",
+      link: "https://www.credly.com/go/nrAdO7j9"
     }
   ],
 

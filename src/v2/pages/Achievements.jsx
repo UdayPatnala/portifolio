@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Trophy, Star, Sparkles } from 'lucide-react';
+import { Trophy, Star, Sparkles, ExternalLink } from 'lucide-react';
 import { cmsContent } from '../data/content';
 
 const Achievements = ({ isDarkMode }) => {
@@ -54,9 +54,22 @@ const Achievements = ({ isDarkMode }) => {
                 </div>
               </div>
 
-              <div className="flex justify-between items-center pt-6 border-t border-emerald-500/5 mt-4">
-                <span className="text-[10px] font-mono text-gray-500 uppercase">ACQUIRED_DATE</span>
-                <span className="text-xs font-mono font-bold text-emerald-400">{ach.date}</span>
+              <div className="flex flex-col gap-3 pt-6 border-t border-emerald-500/5 mt-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-[10px] font-mono text-gray-500 uppercase">ACQUIRED_DATE</span>
+                  <span className="text-xs font-mono font-bold text-emerald-400">{ach.date}</span>
+                </div>
+                {ach.link && (
+                  <a
+                    href={ach.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-emerald-500 hover:text-emerald-400 transition-colors cursor-none mt-1"
+                  >
+                    <span>View Certificate</span>
+                    <ExternalLink size={12} />
+                  </a>
+                )}
               </div>
             </motion.div>
           );
