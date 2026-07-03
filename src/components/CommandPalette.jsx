@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, Folder, Mail, FileText } from 'lucide-react';
 
 const Github = ({ size = 20, className = "" }) => (
@@ -59,8 +59,8 @@ const CommandPalette = ({ isOpen, setIsOpen, isDarkMode }) => {
   if (!isOpen) return null;
 
   const commands = [
-    { name: 'Projects', icon: <Folder size={16} />, action: () => { window.location.hash = 'projects'; setIsOpen(false); } },
-    { name: 'Contact Me', icon: <Mail size={16} />, action: () => { window.location.hash = 'contact'; setIsOpen(false); } },
+    { name: 'Projects', icon: <Folder size={16} />, action: () => { window.location.assign('#/projects'); setIsOpen(false); } },
+    { name: 'Contact Me', icon: <Mail size={16} />, action: () => { window.location.assign('#/contact'); setIsOpen(false); } },
     { name: 'Download Resume', icon: <FileText size={16} />, action: () => { window.open('/PATNALA UDAY KUMAR.pdf'); setIsOpen(false); } },
     { name: 'GitHub', icon: <Github size={16} />, action: () => { window.open('https://github.com/UdayPatnala', '_blank'); setIsOpen(false); } },
     { name: 'LinkedIn', icon: <Linkedin size={16} />, action: () => { window.open('https://linkedin.com/in/udaypatnala', '_blank'); setIsOpen(false); } },
