@@ -678,7 +678,7 @@ const ViewAllProjectsCard = ({ onClick, remainingCount, isDarkMode }) => {
 
 // --- MAIN PORTFOLIO COMPONENT ---
 
-const App = ({ setVersion }) => {
+const App = () => {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
 
@@ -971,15 +971,7 @@ const App = ({ setVersion }) => {
               </AnimatePresence>
             </button>
 
-            <button 
-              onClick={() => {
-                localStorage.setItem('portfolio_version', 'v2');
-                setVersion('v2');
-              }}
-              className="px-4 py-1.5 bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 text-purple-500 dark:text-purple-300 rounded-lg font-bold hover:from-purple-500/30 hover:to-pink-500/30 hover:border-purple-400/50 transition-all duration-300 cursor-none mr-2"
-            >
-              V2 Beta
-            </button>
+
             <button 
               onClick={() => scrollToSection('connect')}
               className="px-4 py-1.5 bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 border border-emerald-500/30 text-emerald-500 dark:text-emerald-300 rounded-lg font-bold hover:from-emerald-500/30 hover:to-cyan-500/30 hover:border-emerald-400/50 transition-all duration-300 cursor-none"
@@ -1033,15 +1025,7 @@ const App = ({ setVersion }) => {
                 {section}
               </button>
             ))}
-            <button
-              onClick={() => {
-                localStorage.setItem('portfolio_version', 'v2');
-                setVersion('v2');
-              }}
-              className="w-full py-2.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-bold font-mono tracking-wide shadow-[0_0_15px_rgba(168,85,247,0.3)]"
-            >
-              Try Portfolio V2
-            </button>
+
             <button
               onClick={() => scrollToSection('connect')}
               className="mt-2 w-full py-2.5 bg-gradient-to-r from-emerald-500 to-cyan-500 text-white rounded-xl font-bold font-mono tracking-wide shadow-[0_0_15px_rgba(16,185,129,0.3)]"

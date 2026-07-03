@@ -349,6 +349,11 @@ export const cmsContent = {
 
   achievements: [
     {
+      title: "Research Paper Published",
+      description: "Published \"Smart Music Recommendation System Based on User Emotions,\" IJARESM, Vol. 14, Issue 3 (Mar 2026).",
+      date: "Mar 2026"
+    },
+    {
       title: "NPTEL Java Elite + Silver Certification",
       description: "Ranked among the top performance bracket in national-level Java compiler examination.",
       date: "2024"

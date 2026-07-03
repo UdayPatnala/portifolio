@@ -79,7 +79,7 @@ const Logo = ({ size = 28, className = "" }) => (
   </motion.svg>
 );
 
-const AppV2 = ({ setVersion }) => {
+const AppV2 = () => {
   // Theme state
   const [isDarkMode, setIsDarkMode] = useState(() => {
     try {
@@ -259,17 +259,7 @@ const AppV2 = ({ setVersion }) => {
               );
             })}
 
-            {/* Version Switcher button */}
-            <button
-              onClick={() => {
-                localStorage.setItem('portfolio_version', 'v1');
-                setVersion('v1');
-              }}
-              className="px-3 py-1.5 bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 border border-emerald-500/30 text-emerald-500 dark:text-emerald-300 rounded-lg font-bold hover:from-emerald-500/30 hover:to-cyan-500/30 hover:border-emerald-400/50 transition-all duration-300 cursor-none mr-2"
-              title="Return to Version 1"
-            >
-              V1 Legacy
-            </button>
+
 
             {/* Dark mode switcher */}
             <button
@@ -342,15 +332,7 @@ const AppV2 = ({ setVersion }) => {
               </a>
             ))}
 
-            <button
-              onClick={() => {
-                localStorage.setItem('portfolio_version', 'v1');
-                setVersion('v1');
-              }}
-              className="w-full mt-2 py-2 bg-gradient-to-r from-teal-500 to-emerald-500 text-black font-bold font-mono tracking-wide rounded-xl shadow-lg text-sm"
-            >
-              Return to V1 Legacy
-            </button>
+
           </motion.div>
         )}
       </AnimatePresence>

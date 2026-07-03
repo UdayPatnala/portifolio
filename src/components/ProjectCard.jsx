@@ -111,7 +111,7 @@ const ProjectCard = ({ project, isDarkMode, isExtra = false }) => {
         perspective: 1000 
       }}
       className={`group flex flex-col justify-between p-6 rounded-2xl glass-panel border transition-all duration-300 relative overflow-hidden ${
-        isDarkMode ? 'border-white/5' : 'border-emerald-500/10'
+        isDarkMode ? 'border-white/10' : 'border-emerald-500/10'
       } ${getHoverBorderColor()}`}
     >
       {/* Dynamic Cursor Spotlight Glow background */}
