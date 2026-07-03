@@ -410,7 +410,7 @@ const CERTIFICATIONS = [
   {
     title: "Published Research Paper: Smart Music Recommendation System Based on User Emotions",
     provider: "IJARESM (Vol. 14, Issue 3)",
-    link: "https://www.ijaresm.com"
+    link: "/ijaresm-certificate.png"
   },
   { 
     title: "Programming in Java", 

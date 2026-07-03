@@ -352,7 +352,7 @@ export const cmsContent = {
       title: "Research Paper Published",
       description: "Published \"Smart Music Recommendation System Based on User Emotions,\" IJARESM, Vol. 14, Issue 3 (Mar 2026).",
       date: "Mar 2026",
-      link: "https://www.ijaresm.com"
+      link: "/ijaresm-certificate.png"
     },
     {
       title: "NPTEL Java Elite + Silver Certification",
