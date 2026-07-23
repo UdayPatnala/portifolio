@@ -30,7 +30,6 @@ export const cmsContent = {
   navigation: {
     links: [
       { label: "Home", hash: "#/" },
-      { label: "About", hash: "#/about" },
       { label: "Skills", hash: "#/skills" },
       { label: "Journey", hash: "#/journey" },
       { label: "Projects", hash: "#/projects" },
@@ -309,7 +308,7 @@ export const cmsContent = {
     {
       degree: "B.Tech in Computer Science Engineering (Data Science)",
       institution: "Raghu Institute of Technology, Andhra Pradesh",
-      period: "2022 - 2026",
+      period: "2022 - 2026 (Graduated)",
       grade: "CGPA: 7.70",
       color: "border-emerald-500"
     },

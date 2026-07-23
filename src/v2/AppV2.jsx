@@ -13,7 +13,6 @@ import { cmsContent } from './data/content';
 
 // Import Pages
 import Landing from './pages/Landing';
-import About from './pages/About';
 import Skills from './pages/Skills';
 import Projects from './pages/Projects';
 import Experience from './pages/Experience';
@@ -174,8 +173,6 @@ const AppV2 = () => {
       case '#/':
       case '#':
         return <Landing isDarkMode={isDarkMode} />;
-      case '#/about':
-        return <About isDarkMode={isDarkMode} />;
       case '#/skills':
         return <Skills isDarkMode={isDarkMode} />;
       case '#/journey':
