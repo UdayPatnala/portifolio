@@ -101,7 +101,7 @@ export const cmsContent = {
         "LocalStorage caching for persistent mood history and user profiles without a backend."
       ],
       github: "https://github.com/UdayPatnala/music-mirror",
-      live: "https://music-mirror.vercel.app",
+      live: "https://github.com/UdayPatnala/music-mirror",
       image: "/music_mirror_real.png"
     },
     {
@@ -117,7 +117,7 @@ export const cmsContent = {
         "Node/Express proxy securely connecting to Gemini API for metadata generation."
       ],
       github: "https://github.com/UdayPatnala/Nebula",
-      live: "https://nebula-nmo.vercel.app",
+      live: "https://github.com/UdayPatnala/Nebula",
       image: "/nebula_real.png"
     },
     {
@@ -133,7 +133,7 @@ export const cmsContent = {
         "Secure JWT authentication flow and rate-limited Gemini AI mentor integrations."
       ],
       github: "https://github.com/UdayPatnala/Java-Path",
-      live: "https://javapath-pro.vercel.app",
+      live: "https://github.com/UdayPatnala/Java-Path",
       image: "/javapath_real.png"
     },
     {
@@ -149,7 +149,7 @@ export const cmsContent = {
         "Feature-rich React web dashboard mapping budgets, vendor insights, and reminders."
       ],
       github: "https://github.com/UdayPatnala/Spedex",
-      live: "https://spe-dex.vercel.app",
+      live: "https://github.com/UdayPatnala/Spedex",
       image: "/spedex_real.png"
     },
     {
@@ -380,7 +380,7 @@ export const cmsContent = {
     keywords: "Patnala Uday Kumar, Portfolio, Software Engineer, Data Science, React, Java, Spring Boot, Visakhapatnam",
     author: "Patnala Uday Kumar",
     ogType: "website",
-    ogUrl: "https://udaypatnala.vercel.app"
+    ogUrl: "https://github.com/UdayPatnala"
   },
 
   featureFlags: {

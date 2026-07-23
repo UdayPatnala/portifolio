@@ -2,6 +2,7 @@ import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Typewriter } from 'react-simple-typewriter';
 import { Sparkles, FileText, Send, ArrowRight } from 'lucide-react';
 import { cmsContent } from '../data/content';
+import NextPageButton from '../../components/NextPageButton';
 
 const Landing = ({ isDarkMode }) => {
   const heroX = useMotionValue(0.5);
@@ -182,6 +183,7 @@ const Landing = ({ isDarkMode }) => {
         </div>
 
       </div>
+      <NextPageButton to="#/about" label="About" isDarkMode={isDarkMode} />
     </div>
   );
 };

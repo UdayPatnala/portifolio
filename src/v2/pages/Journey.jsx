@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Compass, Terminal, Code, Award } from 'lucide-react';
+import NextPageButton from '../../components/NextPageButton';
 
 const Journey = ({ isDarkMode }) => {
   const steps = [
@@ -81,6 +82,7 @@ const Journey = ({ isDarkMode }) => {
           );
         })}
       </div>
+      <NextPageButton to="#/projects" label="Projects" isDarkMode={isDarkMode} />
     </div>
   );
 };

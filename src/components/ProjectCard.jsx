@@ -297,7 +297,7 @@ const ProjectCard = ({ project, isDarkMode, isExtra = false }) => {
               rel="noreferrer"
               className="inline-flex items-center gap-1 text-xs font-bold text-emerald-500 hover:text-emerald-600 transition-colors group/btn"
             >
-              Explore Vercel
+              View Live
               <ExternalLink size={12} className="transition-transform duration-300 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
             </a>
           ) : (

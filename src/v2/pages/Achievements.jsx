@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Trophy, Star, Sparkles, ExternalLink } from 'lucide-react';
 import { cmsContent } from '../data/content';
+import NextPageButton from '../../components/NextPageButton';
 
 const Achievements = ({ isDarkMode }) => {
   return (
@@ -75,6 +76,7 @@ const Achievements = ({ isDarkMode }) => {
           );
         })}
       </div>
+      <NextPageButton to="#/contact" label="Contact" isDarkMode={isDarkMode} />
     </div>
   );
 };

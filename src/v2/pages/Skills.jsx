@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Terminal, Code, Database, Award, Cpu, Sparkles } from 'lucide-react';
 import { cmsContent } from '../data/content';
 import { getProjectCountForSkill } from '../utils/projectCount';
+import NextPageButton from '../../components/NextPageButton';
 
 // Helper to resolve string icons from CMS
 const getCategoryIcon = (iconName) => {
@@ -133,6 +134,7 @@ const Skills = ({ isDarkMode }) => {
           </motion.div>
         ))}
       </motion.div>
+      <NextPageButton to="#/journey" label="Journey" isDarkMode={isDarkMode} />
     </div>
   );
 };

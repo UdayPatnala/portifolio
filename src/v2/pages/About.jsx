@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { User, MapPin, Mail, Award, Cpu, BookOpen } from 'lucide-react';
 import { cmsContent } from '../data/content';
+import NextPageButton from '../../components/NextPageButton';
 
 const About = ({ isDarkMode }) => {
   return (
@@ -130,6 +131,7 @@ const About = ({ isDarkMode }) => {
           </div>
         </motion.div>
       </div>
+      <NextPageButton to="#/skills" label="Skills" isDarkMode={isDarkMode} />
     </div>
   );
 };

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Briefcase, Layers, Terminal, Layout } from 'lucide-react';
 import { cmsContent } from '../data/content';
 import ProjectCard from '../../components/ProjectCard';
+import NextPageButton from '../../components/NextPageButton';
 
 const Projects = ({ isDarkMode }) => {
   const [selectedFilter, setSelectedFilter] = useState('all');
@@ -80,6 +81,7 @@ const Projects = ({ isDarkMode }) => {
           })}
         </AnimatePresence>
       </motion.div>
+      <NextPageButton to="#/experience" label="Experience" isDarkMode={isDarkMode} />
     </div>
   );
 };

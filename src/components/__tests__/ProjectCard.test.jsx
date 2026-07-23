@@ -36,7 +36,7 @@ describe('ProjectCard Component Suite', () => {
     render(<ProjectCard project={sampleProject} isDarkMode={false} />);
 
     const repoLink = screen.getByText('Repository').closest('a');
-    const liveLink = screen.getByText(/Explore Vercel/i).closest('a');
+    const liveLink = screen.getByText(/View Live/i).closest('a');
 
     expect(repoLink).toHaveAttribute('href', 'https://github.com/example/aroh');
     expect(liveLink).toHaveAttribute('href', 'https://aroh.vercel.app');
