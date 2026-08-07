@@ -124,18 +124,48 @@ const Logo = ({ size = 28, className = "" }) => (
 const PROJECT_DATA = [
   {
     title: "Music Mirror",
-    description: "A real-time facial emotion recognition music recommendation system. Reads expressions via webcam to dynamically recommend curated tracks inside an embedded player.",
-    tags: ["React.js", "FastAPI", "face-api.js", "Python", "Webcam API", "LocalStorage"],
+    description: "A real-time facial emotion recognition music recommendation system using React.js and FastAPI that normalizes expressions and dynamically recommends curated tracks inside an embedded player.",
+    tags: ["React.js", "Python", "FastAPI", "face-api.js"],
     category: "Data Science & ML",
     type: "ml",
     highlights: [
-      "Real-time webcam feed processed via face-api.js with custom thresholds.",
-      "Embedded YouTube player dynamically updates via URL state management.",
-      "LocalStorage caching for persistent mood history and user profiles without a backend."
+      "Real-time webcam face-detection pipeline in React.js and face-api.js calling FastAPI POST /recommend endpoint to normalize expressions.",
+      "Integrated embedded YouTube playback and manual mood overrides in a responsive Vercel application.",
+      "LocalStorage-backed user profiles, mood history, and favorites persistence without a heavy backend."
     ],
     github: "https://github.com/UdayPatnala/music-mirror",
-    live: "https://music-mirror.vercel.app",
+    live: "https://music-mirror-aos.vercel.app/",
     image: "/music_mirror_real.png"
+  },
+  {
+    title: "Churn Prediction System",
+    description: "An end-to-end customer churn analysis and real-time prediction model using Scikit-learn, XGBoost, FastAPI, Docker, and Streamlit.",
+    tags: ["Python", "XGBoost", "Scikit-Learn", "FastAPI", "Docker", "Streamlit"],
+    category: "Data Science & ML",
+    type: "ml",
+    highlights: [
+      "Engineered end-to-end ML pipeline with Scikit-learn and XGBoost utilizing GridSearchCV hyperparameter optimization, standard scaling, and one-hot encoding.",
+      "Developed a FastAPI REST API with Pydantic payload validation and an interactive Streamlit analytics dashboard.",
+      "Containerized API and UI microservices using Docker Compose."
+    ],
+    github: "https://github.com/UdayPatnala/Churn-Prediction-System",
+    live: "https://nebula-nmo.vercel.app",
+    image: "/churn_real.png"
+  },
+  {
+    title: "JavaPath Pro",
+    description: "An interactive full-stack Java learning platform with real-time code execution via JDoodle API, syntax diagnostics, and Gemini AI mentor.",
+    tags: ["React.js", "Node.js", "Express.js", "SQLite", "JWT"],
+    category: "Full-Stack & Web",
+    type: "web",
+    highlights: [
+      "Built interactive Java learning platform with Java 17 execution through JDoodle API and Gemini-powered AI mentor.",
+      "Implemented bcrypt password hashing, JWT authentication, and protected REST APIs.",
+      "SQLite and Sequelize ORM persistence for user progress and chat history."
+    ],
+    github: "https://github.com/UdayPatnala/Java-Path",
+    live: "https://javapath-pro-aos.vercel.app/",
+    image: "/javapath_real.png"
   },
   {
     title: "Nebula Cinematic Gallery",
@@ -153,21 +183,6 @@ const PROJECT_DATA = [
     image: "/nebula_real.png"
   },
   {
-    title: "JavaPath Pro",
-    description: "An interactive full-stack learning platform designed to help junior developers master Java syntax, OOP concepts, and design patterns through a simulated corporate ticketing system.",
-    tags: ["React.js", "Vite", "Node.js", "Express", "SQLite", "Sequelize ORM", "Gemini API", "JWT"],
-    category: "Full-Stack & Web",
-    type: "web",
-    highlights: [
-      "React sandboxed IDE utilizing custom regex for AST-like syntax evaluation.",
-      "Express REST API coupled with SQLite and Sequelize ORM for state persistence.",
-      "Secure JWT authentication flow and rate-limited Gemini AI mentor integrations."
-    ],
-    github: "https://github.com/UdayPatnala/Java-Path",
-    live: "https://javapath-pro.vercel.app",
-    image: "/javapath_real.png"
-  },
-  {
     title: "Spedex Fintech Dashboard",
     description: "A comprehensive fintech workspace for tracking spending indexing, transaction velocities, and budgeting aggregates.",
     tags: ["Spring Boot", "Java 17", "React Native", "Expo", "Kotlin", "React.js", "H2 Database", "JWT"],
@@ -181,21 +196,6 @@ const PROJECT_DATA = [
     github: "https://github.com/UdayPatnala/Spedex",
     live: "https://spe-dex.vercel.app",
     image: "/spedex_real.png"
-  },
-  {
-    title: "Churn Prediction System",
-    description: "An end-to-end customer churn analysis and prediction model utilizing machine learning to identify high-risk accounts and analyze churn velocities.",
-    tags: ["Python", "Pandas", "Scikit-Learn", "XGBoost", "Matplotlib"],
-    category: "Data Science & ML",
-    type: "ml",
-    highlights: [
-      "Performs demographic and transaction feature engineering on user datasets.",
-      "Trains random forests and XGBoost classification models.",
-      "Generates detailed feature importances and ROC-AUC evaluation curves."
-    ],
-    github: "https://github.com/UdayPatnala/Churn-Prediction-System",
-    live: "https://github.com/UdayPatnala/Churn-Prediction-System",
-    image: "/churn_real.png"
   },
   {
     title: "Job Finder Portal",
@@ -306,47 +306,47 @@ const PROJECT_DATA = [
 
 const SKILLS_DATA = [
   {
-    category: "Programming",
+    category: "Languages",
     icon: <Terminal size={24} className="text-emerald-500" />,
     color: "rgba(16, 185, 129, 0.4)",
     items: [
-      { name: "Java", level: "Intermediate" },
-      { name: "Python", level: "Intermediate" },
-      { name: "C Language", level: "Intermediate" }
+      { name: "Java", level: "Intermediate (65%)", levelPercent: 65 },
+      { name: "Python", level: "Intermediate (65%)", levelPercent: 65 },
+      { name: "JavaScript", level: "Intermediate (60%)", levelPercent: 60 },
+      { name: "SQL", level: "Working Knowledge (55%)", levelPercent: 55 }
     ]
   },
   {
-    category: "Web & Frontend",
+    category: "Frontend",
     icon: <Code size={24} className="text-cyan-500" />,
     color: "rgba(6, 182, 212, 0.4)",
     items: [
-      { name: "React.js", level: "Advanced" },
-      { name: "Tailwind CSS", level: "Advanced" },
-      { name: "HTML5 & CSS3", level: "Expert" },
-      { name: "JavaScript (ES6+)", level: "Advanced" }
+      { name: "React.js", level: "Proficient (70%)", levelPercent: 70 },
+      { name: "HTML5 & CSS3", level: "Intermediate (65%)", levelPercent: 65 },
+      { name: "Tailwind CSS", level: "Intermediate (60%)", levelPercent: 60 },
+      { name: "Responsive Design", level: "Intermediate (65%)", levelPercent: 65 }
     ]
   },
   {
-    category: "Database & Backend",
+    category: "Backend & APIs",
     icon: <Database size={24} className="text-amber-500" />,
     color: "rgba(245, 158, 11, 0.4)",
     items: [
-      { name: "SQL", level: "Intermediate" },
-      { name: "PostgreSQL", level: "Intermediate" },
-      { name: "Node.js & Express", level: "Intermediate" },
-      { name: "Spring Boot", level: "Intermediate" }
+      { name: "Node.js", level: "Working Knowledge (55%)", levelPercent: 55 },
+      { name: "FastAPI", level: "Intermediate (60%)", levelPercent: 60 },
+      { name: "REST APIs", level: "Intermediate (65%)", levelPercent: 65 },
+      { name: "API Integration", level: "Intermediate (65%)", levelPercent: 65 }
     ]
   },
   {
-    category: "Core CS & Tools",
+    category: "Core & Tools",
     icon: <Award size={24} className="text-emerald-500" />,
     color: "rgba(16, 185, 129, 0.4)",
     items: [
-      { name: "Data Structures & Algorithms", level: "Intermediate" },
-      { name: "Object Oriented Programming", level: "Intermediate" },
-      { name: "Git & GitHub", level: "Advanced" },
-      { name: "Docker & Vercel", level: "Intermediate" },
-      { name: "Software Testing", level: "Advanced" }
+      { name: "Object-Oriented Programming", level: "Intermediate (60%)", levelPercent: 60 },
+      { name: "Data Structures", level: "Working Knowledge (55%)", levelPercent: 55 },
+      { name: "Git & GitHub", level: "Proficient (70%)", levelPercent: 70 },
+      { name: "Vercel", level: "Intermediate (60%)", levelPercent: 60 }
     ]
   }
 ];
@@ -1365,7 +1365,7 @@ const App = () => {
                         <motion.div 
                           initial={{ width: 0 }}
                           whileInView={{ 
-                            width: skill.level === 'Expert' ? '95%' : skill.level === 'Advanced' ? '80%' : '60%' 
+                            width: skill.levelPercent ? `${skill.levelPercent}%` : '60%' 
                           }}
                           viewport={{ once: true }}
                           transition={{ duration: 1, ease: 'easeOut' }}

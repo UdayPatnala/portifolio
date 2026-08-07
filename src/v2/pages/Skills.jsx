@@ -120,8 +120,7 @@ const Skills = ({ isDarkMode }) => {
                       <motion.div 
                         initial={{ width: 0 }}
                         animate={{ 
-                          width: skill.level === 'Expert' ? '95%' : 
-                                 skill.level === 'Advanced' ? '80%' : '60%' 
+                          width: skill.levelPercent ? `${skill.levelPercent}%` : '60%' 
                         }}
                         transition={{ duration: 1, ease: 'easeOut' }}
                         className="h-full bg-gradient-to-r from-emerald-500 to-cyan-500"
