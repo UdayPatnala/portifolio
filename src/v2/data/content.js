@@ -116,7 +116,7 @@ export const cmsContent = {
         "Containerized API and UI microservices using Docker Compose."
       ],
       github: "https://github.com/UdayPatnala/Churn-Prediction-System",
-      live: "https://nebula-nmo.vercel.app",
+      live: "https://github.com/UdayPatnala/Churn-Prediction-System",
       image: "/churn_real.png"
     },
     {
