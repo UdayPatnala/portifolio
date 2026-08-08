@@ -348,6 +348,18 @@ const SKILLS_DATA = [
       { name: "Git & GitHub", level: "Proficient (70%)", levelPercent: 70 },
       { name: "Vercel", level: "Intermediate (60%)", levelPercent: 60 }
     ]
+  },
+  {
+    category: "Testing & QA",
+    icon: <CheckCircle size={24} className="text-purple-500" />,
+    color: "rgba(168, 85, 247, 0.4)",
+    items: [
+      { name: "Software Testing", level: "Intermediate (65%)", levelPercent: 65 },
+      { name: "Quality Assurance (QA)", level: "Intermediate (60%)", levelPercent: 60 },
+      { name: "Jira", level: "Intermediate (60%)", levelPercent: 60 },
+      { name: "Test Case Design & Execution", level: "Intermediate (65%)", levelPercent: 65 },
+      { name: "Bug Tracking", level: "Intermediate (60%)", levelPercent: 60 }
+    ]
   }
 ];
 

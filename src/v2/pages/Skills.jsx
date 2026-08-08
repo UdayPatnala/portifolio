@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Terminal, Code, Database, Award, Cpu, Sparkles } from 'lucide-react';
+import { Terminal, Code, Database, Award, Cpu, Sparkles, CheckCircle } from 'lucide-react';
 import { cmsContent } from '../data/content';
 import { getProjectCountForSkill } from '../utils/projectCount';
 import NextPageButton from '../../components/NextPageButton';
@@ -11,6 +11,7 @@ const getCategoryIcon = (iconName) => {
     case 'Code': return <Code size={24} className="text-cyan-500" />;
     case 'Database': return <Database size={24} className="text-amber-500" />;
     case 'Award': return <Award size={24} className="text-emerald-500" />;
+    case 'CheckCircle': return <CheckCircle size={24} className="text-purple-500" />;
     default: return <Cpu size={24} className="text-emerald-500" />;
   }
 };
