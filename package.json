@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node scripts/sync-resume.js",
     "build": "vite build",
+    "sync-resume": "node scripts/sync-resume.js",
     "lint": "eslint .",
     "test": "vitest run",
     "preview": "vite preview"
