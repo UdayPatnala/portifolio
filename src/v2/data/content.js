@@ -6,8 +6,8 @@ export const cmsContent = {
     name: "Patnala Uday Kumar",
     firstName: "Uday",
     lastName: "Kumar",
-    title: "Associate Software Engineer & Data Science Specialist",
-    subtitle: "Data Science Engineer",
+    title: "Computer Science Graduate | Java-Focused Software Development",
+    subtitle: "Java Backend & Software Developer",
     bio: "A premium, highly-interactive, responsive developer portfolio custom-crafted for recruiters and corporate hiring managers. Designed around a sleek glassmorphism dark theme with cybernetic highlights and advanced mathematical rendering.",
     officePhoto: "/profile-office.jpg",
     profilePhoto: "/profile.jpg",
@@ -41,47 +41,46 @@ export const cmsContent = {
 
   skills: [
     {
-      category: "Core & Backend",
+      category: "Languages",
       icon: "Terminal",
       color: "rgba(16, 185, 129, 0.4)",
       items: [
         { name: "Java", level: "Intermediate (65%)", levelPercent: 65 },
-        { name: "Java Backend", level: "Intermediate (65%)", levelPercent: 65 },
-        { name: "OOP", level: "Intermediate (65%)", levelPercent: 65 },
-        { name: "Data Structures & Algorithms", level: "Working Knowledge (55%)", levelPercent: 55 },
         { name: "SQL", level: "Working Knowledge (55%)", levelPercent: 55 },
-        { name: "DBMS", level: "Working Knowledge (55%)", levelPercent: 55 },
-        { name: "REST APIs", level: "Intermediate (65%)", levelPercent: 65 }
+        { name: "Python", level: "Intermediate (65%)", levelPercent: 65 },
+        { name: "JavaScript", level: "Intermediate (60%)", levelPercent: 60 }
       ]
     },
     {
-      category: "Web & Frontend",
+      category: "Core Computer Science",
       icon: "Code",
       color: "rgba(6, 182, 212, 0.4)",
       items: [
-        { name: "JavaScript", level: "Intermediate (60%)", levelPercent: 60 },
-        { name: "React.js", level: "Proficient (70%)", levelPercent: 70 }
+        { name: "OOP", level: "Intermediate (65%)", levelPercent: 65 },
+        { name: "Data Structures & Algorithms", level: "Working Knowledge (55%)", levelPercent: 55 },
+        { name: "DBMS", level: "Working Knowledge (55%)", levelPercent: 55 }
       ]
     },
     {
-      category: "Data Science & ML",
+      category: "Software & Backend",
+      icon: "Award",
+      color: "rgba(16, 185, 129, 0.4)",
+      items: [
+        { name: "Java Backend", level: "Intermediate (65%)", levelPercent: 65 },
+        { name: "REST APIs", level: "Intermediate (65%)", levelPercent: 65 },
+        { name: "Git", level: "Proficient (70%)", levelPercent: 70 },
+        { name: "Debugging", level: "Intermediate (60%)", levelPercent: 60 }
+      ]
+    },
+    {
+      category: "Data Science (Secondary)",
       icon: "Database",
       color: "rgba(245, 158, 11, 0.4)",
       items: [
-        { name: "Python", level: "Intermediate (65%)", levelPercent: 65 },
         { name: "NumPy", level: "Intermediate (60%)", levelPercent: 60 },
         { name: "Pandas", level: "Intermediate (60%)", levelPercent: 60 },
+        { name: "Scikit-learn", level: "Intermediate (60%)", levelPercent: 60 },
         { name: "Machine Learning", level: "Working Knowledge (55%)", levelPercent: 55 }
-      ]
-    },
-    {
-      category: "Tools & Quality",
-      icon: "Award",
-      color: "rgba(168, 85, 247, 0.4)",
-      items: [
-        { name: "Git / GitHub", level: "Proficient (70%)", levelPercent: 70 },
-        { name: "Software Testing", level: "Intermediate (65%)", levelPercent: 65 },
-        { name: "Debugging", level: "Intermediate (60%)", levelPercent: 60 }
       ]
     }
   ],
