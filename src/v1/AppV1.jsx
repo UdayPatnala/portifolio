@@ -124,12 +124,12 @@ const Logo = ({ size = 28, className = "" }) => (
 const PROJECT_DATA = [
   {
     title: "Music Mirror",
-    description: "A real-time facial emotion recognition music recommendation system using React.js and FastAPI that normalizes expressions and dynamically recommends curated tracks inside an embedded player.",
-    tags: ["React.js", "Python", "FastAPI", "face-api.js"],
+    description: "A real-time facial emotion recognition music recommendation system using React.js and Python API endpoints that normalizes expressions and dynamically recommends curated tracks inside an embedded player.",
+    tags: ["React.js", "Python", "REST APIs", "JavaScript"],
     category: "Data Science & ML",
     type: "ml",
     highlights: [
-      "Real-time webcam face-detection pipeline in React.js and face-api.js calling FastAPI POST /recommend endpoint to normalize expressions.",
+      "Real-time webcam face-detection pipeline in React.js calling Python POST /recommend endpoint to normalize expressions.",
       "Integrated embedded YouTube playback and manual mood overrides in a responsive Vercel application.",
       "LocalStorage-backed user profiles, mood history, and favorites persistence without a heavy backend."
     ],
@@ -139,14 +139,13 @@ const PROJECT_DATA = [
   },
   {
     title: "Churn Prediction System",
-    description: "An end-to-end customer churn analysis and real-time prediction model using Scikit-learn, XGBoost, FastAPI, Docker, and Streamlit.",
-    tags: ["Python", "XGBoost", "Scikit-Learn", "FastAPI", "Docker", "Streamlit"],
+    description: "An end-to-end customer churn analysis and real-time prediction model using Scikit-learn, Machine Learning, Pandas, Python, and Streamlit.",
+    tags: ["Python", "Machine Learning", "Pandas", "Scikit-Learn", "Streamlit"],
     category: "Data Science & ML",
     type: "ml",
     highlights: [
-      "Engineered end-to-end ML pipeline with Scikit-learn and XGBoost utilizing GridSearchCV hyperparameter optimization, standard scaling, and one-hot encoding.",
-      "Developed a FastAPI REST API with Pydantic payload validation and an interactive Streamlit analytics dashboard.",
-      "Containerized API and UI microservices using Docker Compose."
+      "Engineered end-to-end ML pipeline with Scikit-learn utilizing hyperparameter optimization, standard scaling, and one-hot encoding for customer churn prediction.",
+      "Developed a REST API with payload validation and an interactive Streamlit analytics dashboard."
     ],
     github: "https://github.com/UdayPatnala/Churn-Prediction-System",
     live: "https://github.com/UdayPatnala/Churn-Prediction-System",
@@ -154,14 +153,14 @@ const PROJECT_DATA = [
   },
   {
     title: "JavaPath Pro",
-    description: "An interactive full-stack Java learning platform with real-time code execution via JDoodle API, syntax diagnostics, and Gemini AI mentor.",
-    tags: ["React.js", "Node.js", "Express.js", "SQLite", "JWT"],
+    description: "An interactive full-stack Java learning platform with real-time code execution, syntax diagnostics, and AI mentor.",
+    tags: ["React.js", "Java", "SQL", "DBMS", "REST APIs"],
     category: "Full-Stack & Web",
     type: "web",
     highlights: [
-      "Built interactive Java learning platform with Java 17 execution through JDoodle API and Gemini-powered AI mentor.",
-      "Implemented bcrypt password hashing, JWT authentication, and protected REST APIs.",
-      "SQLite and Sequelize ORM persistence for user progress and chat history."
+      "Built interactive Java learning platform with Java 17 execution through execution APIs and AI mentor.",
+      "Implemented password hashing, JWT authentication, and protected REST APIs.",
+      "Database persistence for user progress and chat history."
     ],
     github: "https://github.com/UdayPatnala/Java-Path",
     live: "https://javapath-pro-aos.vercel.app/",
@@ -169,14 +168,14 @@ const PROJECT_DATA = [
   },
   {
     title: "Nebula Cinematic Gallery",
-    description: "An AI-assisted cinematic memory gallery with local image ingestion, Gemini metadata generation, timeline sorting, duplicate detection, and Firebase sync.",
-    tags: ["React.js", "Express", "Node.js", "Firebase", "Gemini API", "Dexie.js", "GSAP"],
+    description: "An AI-assisted cinematic memory gallery with local image ingestion, metadata generation, timeline sorting, and duplicate detection.",
+    tags: ["React.js", "JavaScript", "REST APIs"],
     category: "Full-Stack & Web",
     type: "web",
     highlights: [
-      "Optimized client-side rendering with Dexie.js for heavy indexed image storage.",
-      "TensorFlow MobileNet integration for zero-latency local object detection.",
-      "Node/Express proxy securely connecting to Gemini API for metadata generation."
+      "Optimized client-side rendering for heavy indexed image storage.",
+      "Local object detection and image timeline sorting.",
+      "API integration connecting to metadata generation services."
     ],
     github: "https://github.com/UdayPatnala/Nebula",
     live: "https://nebula-nmo.vercel.app",
@@ -185,12 +184,11 @@ const PROJECT_DATA = [
   {
     title: "Spedex Fintech Dashboard",
     description: "A comprehensive fintech workspace for tracking spending indexing, transaction velocities, and budgeting aggregates.",
-    tags: ["Spring Boot", "Java 17", "React Native", "Expo", "Kotlin", "React.js", "H2 Database", "JWT"],
+    tags: ["Java Backend", "Spring Boot", "React.js", "REST APIs"],
     category: "Full-Stack & Web",
     type: "web",
     highlights: [
-      "Robust Spring Boot backend serving JWT-authenticated endpoints.",
-      "Expo React Native mobile app with a transient Android/Kotlin module integration.",
+      "Robust Java Spring Boot backend serving authenticated endpoints.",
       "Feature-rich React web dashboard mapping budgets, vendor insights, and reminders."
     ],
     github: "https://github.com/UdayPatnala/Spedex",
@@ -200,7 +198,7 @@ const PROJECT_DATA = [
   {
     title: "Job Finder Portal",
     description: "A job portal search aggregator, application tracker, and resume match diagnostic dashboard for junior developers.",
-    tags: ["React.js", "Express", "Node.js", "MongoDB", "Tailwind CSS"],
+    tags: ["React.js", "JavaScript", "REST APIs"],
     category: "Full-Stack & Web",
     type: "web",
     highlights: [
@@ -215,12 +213,12 @@ const PROJECT_DATA = [
   {
     title: "SkyFlow Sales Dashboard",
     description: "An interactive business analytics sales dashboard visualizing transaction velocities, regional metrics, and revenue targets.",
-    tags: ["React.js", "Chart.js", "Express", "Tailwind CSS", "Node.js"],
+    tags: ["React.js", "JavaScript", "Chart.js"],
     category: "Full-Stack & Web",
     type: "web",
     highlights: [
       "Renders dynamic charts mapping sales performance by region.",
-      "Simulates real-time transaction ingestion using socket updates.",
+      "Simulates real-time transaction ingestion using updates.",
       "Exportable data sheets and metrics summaries."
     ],
     github: "https://github.com/UdayPatnala/Sales-Dashboard",
@@ -230,12 +228,12 @@ const PROJECT_DATA = [
   {
     title: "Smart Parking System",
     description: "A Java-based smart parking space booking and tracking system mapping real-time slot occupancy and reservations.",
-    tags: ["Java", "Swing", "JDBC", "MySQL", "Socket Programming"],
+    tags: ["Java", "Swing", "DBMS", "SQL"],
     category: "Full-Stack & Web",
     type: "web",
     highlights: [
       "Interactive Java Swing desktop client displaying slot diagrams.",
-      "Tracks reservations and real-time occupancy updates in MySQL DB.",
+      "Tracks reservations and real-time occupancy updates in SQL database.",
       "Features simulated ticket printouts and check-in/check-out logs."
     ],
     github: "https://github.com/UdayPatnala/Smart-Parking-Java",
@@ -245,13 +243,13 @@ const PROJECT_DATA = [
   {
     title: "ETL Data Pipeline",
     description: "An automated data pipeline extracting logs, transforming schemas, and loading processed records into an analytics data warehouse.",
-    tags: ["Python", "Apache Airflow", "PostgreSQL", "SQL", "Pandas"],
+    tags: ["Python", "Pandas", "SQL", "DBMS"],
     category: "Data Science & ML",
     type: "ml",
     highlights: [
       "Extracts unstructured log records from simulated files.",
       "Performs schema cleanups and date indexing transformations using Pandas.",
-      "Loads cleaned tables into PostgreSQL for analysis."
+      "Loads cleaned tables into DBMS for analysis."
     ],
     github: "https://github.com/UdayPatnala/Etl-Data-Pipeline",
     live: "https://github.com/UdayPatnala/Etl-Data-Pipeline",
@@ -260,7 +258,7 @@ const PROJECT_DATA = [
   {
     title: "LRU Cache Java Utility",
     description: "A custom thread-safe implementation of a Least Recently Used (LRU) cache in Java with generic key-value mappings.",
-    tags: ["Java", "Data Structures", "Generics", "Concurrency", "JUnit"],
+    tags: ["Java", "Data Structures & Algorithms", "OOP"],
     category: "Full-Stack & Web",
     type: "web",
     highlights: [
@@ -274,8 +272,8 @@ const PROJECT_DATA = [
   },
   {
     title: "Online Bookstore Backend",
-    description: "A robust Spring Boot REST API backend managing user catalog carts, orders, and payment integrations.",
-    tags: ["Spring Boot", "Java 17", "Hibernate", "Spring Security", "MySQL"],
+    description: "A robust Java Spring Boot REST API backend managing user catalog carts, orders, and payment integrations.",
+    tags: ["Java", "Spring Boot", "SQL", "DBMS", "REST APIs"],
     category: "Full-Stack & Web",
     type: "web",
     highlights: [
@@ -286,79 +284,52 @@ const PROJECT_DATA = [
     github: "https://github.com/UdayPatnala/Online-Bookstore-Backend",
     live: "https://github.com/UdayPatnala/Online-Bookstore-Backend",
     image: "/taskmaster_real.png"
-  },
-  {
-    title: "GitHub Profile Upgrader",
-    description: "A utility script and dashboard to automatically update developer profiles with dynamic readmes and workflow statistics.",
-    tags: ["JavaScript", "Node.js", "GitHub Actions", "Markdown"],
-    category: "Full-Stack & Web",
-    type: "web",
-    highlights: [
-      "Fetches repository metadata and contributions via GitHub APIs.",
-      "Generates customized markdown badges and profiles readmes.",
-      "Automates updates on cron schedule triggers."
-    ],
-    github: "https://github.com/UdayPatnala/github-profile-upgrader",
-    live: "https://github.com/UdayPatnala/github-profile-upgrader",
-    image: "/skyflow_real.png"
   }
 ];
 
 const SKILLS_DATA = [
   {
-    category: "Languages",
+    category: "Core & Backend",
     icon: <Terminal size={24} className="text-emerald-500" />,
     color: "rgba(16, 185, 129, 0.4)",
     items: [
       { name: "Java", level: "Intermediate (65%)", levelPercent: 65 },
-      { name: "Python", level: "Intermediate (65%)", levelPercent: 65 },
-      { name: "JavaScript", level: "Intermediate (60%)", levelPercent: 60 },
-      { name: "SQL", level: "Working Knowledge (55%)", levelPercent: 55 }
+      { name: "Java Backend", level: "Intermediate (65%)", levelPercent: 65 },
+      { name: "OOP", level: "Intermediate (65%)", levelPercent: 65 },
+      { name: "Data Structures & Algorithms", level: "Working Knowledge (55%)", levelPercent: 55 },
+      { name: "SQL", level: "Working Knowledge (55%)", levelPercent: 55 },
+      { name: "DBMS", level: "Working Knowledge (55%)", levelPercent: 55 },
+      { name: "REST APIs", level: "Intermediate (65%)", levelPercent: 65 }
     ]
   },
   {
-    category: "Frontend",
+    category: "Web & Frontend",
     icon: <Code size={24} className="text-cyan-500" />,
     color: "rgba(6, 182, 212, 0.4)",
     items: [
-      { name: "React.js", level: "Proficient (70%)", levelPercent: 70 },
-      { name: "HTML5 & CSS3", level: "Intermediate (65%)", levelPercent: 65 },
-      { name: "Tailwind CSS", level: "Intermediate (60%)", levelPercent: 60 },
-      { name: "Responsive Design", level: "Intermediate (65%)", levelPercent: 65 }
+      { name: "JavaScript", level: "Intermediate (60%)", levelPercent: 60 },
+      { name: "React.js", level: "Proficient (70%)", levelPercent: 70 }
     ]
   },
   {
-    category: "Backend & APIs",
+    category: "Data Science & ML",
     icon: <Database size={24} className="text-amber-500" />,
     color: "rgba(245, 158, 11, 0.4)",
     items: [
-      { name: "Node.js", level: "Working Knowledge (55%)", levelPercent: 55 },
-      { name: "FastAPI", level: "Intermediate (60%)", levelPercent: 60 },
-      { name: "REST APIs", level: "Intermediate (65%)", levelPercent: 65 },
-      { name: "API Integration", level: "Intermediate (65%)", levelPercent: 65 }
+      { name: "Python", level: "Intermediate (65%)", levelPercent: 65 },
+      { name: "NumPy", level: "Intermediate (60%)", levelPercent: 60 },
+      { name: "Pandas", level: "Intermediate (60%)", levelPercent: 60 },
+      { name: "Machine Learning", level: "Working Knowledge (55%)", levelPercent: 55 }
     ]
   },
   {
-    category: "Core & Tools",
-    icon: <Award size={24} className="text-emerald-500" />,
-    color: "rgba(16, 185, 129, 0.4)",
-    items: [
-      { name: "Object-Oriented Programming", level: "Intermediate (60%)", levelPercent: 60 },
-      { name: "Data Structures", level: "Working Knowledge (55%)", levelPercent: 55 },
-      { name: "Git & GitHub", level: "Proficient (70%)", levelPercent: 70 },
-      { name: "Vercel", level: "Intermediate (60%)", levelPercent: 60 }
-    ]
-  },
-  {
-    category: "Testing & QA",
-    icon: <CheckCircle size={24} className="text-purple-500" />,
+    category: "Tools & Quality",
+    icon: <Award size={24} className="text-purple-500" />,
     color: "rgba(168, 85, 247, 0.4)",
     items: [
+      { name: "Git / GitHub", level: "Proficient (70%)", levelPercent: 70 },
       { name: "Software Testing", level: "Intermediate (65%)", levelPercent: 65 },
-      { name: "Quality Assurance (QA)", level: "Intermediate (60%)", levelPercent: 60 },
-      { name: "Jira", level: "Intermediate (60%)", levelPercent: 60 },
-      { name: "Test Case Design & Execution", level: "Intermediate (65%)", levelPercent: 65 },
-      { name: "Bug Tracking", level: "Intermediate (60%)", levelPercent: 60 }
+      { name: "Debugging", level: "Intermediate (60%)", levelPercent: 60 }
     ]
   }
 ];
