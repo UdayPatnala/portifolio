@@ -1,0 +1,181 @@
+# Patnala Uday Kumar - Software Engineer Portfolio
+
+> Developer portfolio of Patnala Uday Kumar: Computer Science Engineering graduate specializing in Java backend development, Spring Boot, React.js web applications, and Data Science.
+
+## Personal Information
+- Full Name: Patnala Uday Kumar
+- Professional Title: Computer Science Graduate | Java-Focused Software Development
+- Location: Visakhapatnam, Andhra Pradesh, India
+- Email: udaypatnala5@gmail.com
+- Portfolio URL: https://udaypatnala.github.io/portifolio/
+- GitHub: https://github.com/UdayPatnala
+- LinkedIn: https://linkedin.com/in/patnala-uday-kumar
+
+## Summary
+Patnala Uday Kumar is a Computer Science Engineering graduate from Raghu Institute of Technology specializing in Data Science. His core engineering focus is bridging data-intensive machine learning systems with scalable full-stack web applications. His technical expertise includes Java backend architectures (Spring Boot, JDBC, multi-threading), relational databases (PostgreSQL, MySQL), modern frontend engineering (React.js, Tailwind CSS), and machine learning pipelines (Python, Scikit-learn, Pandas, NumPy).
+
+## Technical Skills
+- Programming Languages:
+  - Java: Intermediate (Core Java, OOP, Collections, Multi-threading, JDBC)
+  - Python: Intermediate (NumPy, Pandas, Scikit-learn, Streamlit, REST APIs)
+  - JavaScript: Intermediate (ES6+, DOM Manipulation, Modern Frontend)
+  - SQL: Working Knowledge (Queries, Schema Design, Relational Modeling)
+- Backend & Software Engineering:
+  - Frameworks: Spring Boot, REST APIs
+  - Database Management: DBMS, MySQL, PostgreSQL
+  - Core Computer Science: Object-Oriented Programming (OOP), Data Structures & Algorithms (DSA), System Design Foundations
+  - Tooling & Version Control: Git, GitHub, Maven, Vite, Linux CLI
+- Data Science & Machine Learning:
+  - Libraries: Pandas, NumPy, Scikit-learn, Streamlit
+  - Competencies: Data Preprocessing, Feature Engineering, Model Evaluation, Predictive Analytics
+
+## Featured Projects
+
+### 1. Music Mirror
+- Description: Real-time facial emotion recognition music recommendation system using React.js and Python API endpoints. Normalizes user facial expressions and dynamically recommends curated music tracks inside an embedded player.
+- Tech Stack: React.js, Python, REST APIs, JavaScript
+- Highlights:
+  - Real-time webcam face-detection pipeline in React.js calling Python POST /recommend endpoint.
+  - Integrated embedded YouTube playback and manual mood overrides in a responsive application.
+  - LocalStorage-backed user profiles, mood history, and favorites persistence without an external database.
+- GitHub: https://github.com/UdayPatnala/music-mirror
+- Live Demo: https://music-mirror-aos.vercel.app/
+
+### 2. Churn Prediction System
+- Description: End-to-end customer churn analysis and real-time prediction system utilizing Machine Learning pipelines and interactive dashboard analytics.
+- Tech Stack: Python, Machine Learning, Pandas, Scikit-Learn, Streamlit
+- Highlights:
+  - Engineered ML pipeline with Scikit-learn using hyperparameter optimization, standard scaling, and one-hot encoding for customer churn prediction.
+  - Developed REST API with payload validation and an interactive Streamlit analytics dashboard.
+- GitHub: https://github.com/UdayPatnala/Churn-Prediction-System
+
+### 3. JavaPath Pro
+- Description: Interactive full-stack Java learning platform with real-time code execution, syntax diagnostics, and AI mentorship.
+- Tech Stack: React.js, Java, SQL, DBMS, REST APIs
+- Highlights:
+  - Built interactive Java learning platform with Java 17 execution through execution APIs and AI mentor.
+  - Implemented password hashing, JWT authentication, and protected REST APIs.
+  - Database persistence for user progress tracking and chat history.
+- GitHub: https://github.com/UdayPatnala/Java-Path
+- Live Demo: https://javapath-pro-aos.vercel.app/
+
+### 4. Nebula Cinematic Gallery
+- Description: AI-assisted cinematic memory gallery with local image ingestion, metadata generation, timeline sorting, and duplicate detection.
+- Tech Stack: React.js, JavaScript, REST APIs
+- Highlights:
+  - Optimized client-side rendering for heavy indexed image storage.
+  - Local object detection and image timeline sorting.
+  - API integration connecting to metadata generation services.
+- GitHub: https://github.com/UdayPatnala/Nebula
+- Live Demo: https://nebula-nmo.vercel.app
+
+### 5. Spedex Fintech Dashboard
+- Description: Comprehensive fintech workspace for tracking spending indexing, transaction velocities, and budgeting aggregates.
+- Tech Stack: Java Backend, Spring Boot, React.js, REST APIs
+- Highlights:
+  - Robust Java Spring Boot backend serving authenticated endpoints.
+  - Feature-rich React web dashboard mapping budgets, vendor insights, and reminders.
+- GitHub: https://github.com/UdayPatnala/Spedex
+- Live Demo: https://spe-dex.vercel.app
+
+### 6. Job Finder Portal
+- Description: Job search aggregator, application tracker, and resume match diagnostic dashboard for junior developers.
+- Tech Stack: React.js, JavaScript, REST APIs
+- Highlights:
+  - Aggregates job listings via custom search endpoints.
+  - Matches resume skills against posting requirements using regex comparison.
+  - Tracks application status pipelines with progress alerts.
+- GitHub: https://github.com/UdayPatnala/Job-Finder
+
+### 7. SkyFlow Sales Dashboard
+- Description: Interactive business analytics sales dashboard visualizing transaction velocities, regional metrics, and revenue targets.
+- Tech Stack: React.js, JavaScript, Chart.js
+- Highlights:
+  - Dynamic charts mapping sales performance by region.
+  - Real-time transaction ingestion simulation with metrics summaries.
+- GitHub: https://github.com/UdayPatnala/Sales-Dashboard
+
+### 8. Smart Parking System
+- Description: Java-based smart parking space booking and tracking desktop application mapping real-time slot occupancy and reservations.
+- Tech Stack: Java, Swing, DBMS, SQL
+- Highlights:
+  - Interactive Java Swing desktop client displaying slot diagrams.
+  - Tracks reservations and real-time occupancy updates in SQL database.
+  - Features simulated ticket printouts and check-in/check-out logs.
+- GitHub: https://github.com/UdayPatnala/Smart-Parking-Java
+
+### 9. ETL Data Pipeline
+- Description: Automated data pipeline extracting unstructured logs, transforming schemas with Pandas, and loading into an analytics data warehouse.
+- Tech Stack: Python, Pandas, SQL, DBMS
+- Highlights:
+  - Extracts log records, performs schema cleanups and date indexing transformations.
+  - Loads cleaned relational tables into DBMS for querying.
+- GitHub: https://github.com/UdayPatnala/Etl-Data-Pipeline
+
+### 10. LRU Cache Java Utility
+- Description: Custom thread-safe implementation of a Least Recently Used (LRU) cache in Java with generic key-value mappings.
+- Tech Stack: Java, Data Structures & Algorithms, OOP
+- Highlights:
+  - Custom doubly linked list and hash map implementation.
+  - Thread-safe synchronization locks for concurrent access.
+  - Unit tests validating evictions and cache hit ratios.
+- GitHub: https://github.com/UdayPatnala/Iru-Cache-Java
+
+### 11. Online Bookstore Backend
+- Description: Java Spring Boot REST API backend managing user catalog carts, orders, and payment integrations.
+- Tech Stack: Java, Spring Boot, SQL, DBMS, REST APIs
+- Highlights:
+  - Repository layers with JPA/Hibernate query bindings.
+  - Secure user profile registration and token validation.
+- GitHub: https://github.com/UdayPatnala/Online-Bookstore-Backend
+
+### 12. GitHub Profile Upgrader
+- Description: Utility script and dashboard to automatically update developer profiles with dynamic README badges and workflow statistics.
+- Tech Stack: JavaScript, Node.js, GitHub Actions, Markdown
+- GitHub: https://github.com/UdayPatnala/github-profile-upgrader
+
+## Education
+- Bachelor of Technology (B.Tech) in Computer Science Engineering (Data Science)
+  - Institution: Raghu Institute of Technology, Andhra Pradesh
+  - Duration: 2022 - 2026 (Graduated)
+  - CGPA: 7.70
+- Intermediate Education (MPC)
+  - Institution: Narayana Junior College, Visakhapatnam
+  - Duration: 2020 - 2022
+  - Score: 910 / 1000
+- Secondary School Certificate (SSC)
+  - Institution: Abhyudaya High School, Bobbili
+  - Duration: 2019 - 2020
+  - GPA: 10 / 10
+
+## Certifications & Badges
+- Programming in Java - NPTEL (Elite + Silver Certification) (2024)
+- AWS Cloud Foundations Training Badge - Amazon Web Services (Credly verified) (2023)
+- Software Testing Master Class - Udemy Professional Certificate (2024)
+
+## Publications
+- Research Paper: "Smart Music Recommendation System Based on User Emotions"
+  - Published in: International Journal of All Research Education and Scientific Methods (IJARESM), Volume 14, Issue 3, March 2026.
+  - Verification: /publication-certificate.pdf
+
+## Work & Training Experience
+- Machine Learning Engineer (Training) | Codec Technologies (8 Weeks)
+  - Applied linear regression and classification algorithms to feature matrices.
+  - Manipulated dataset feature tables and cleaned records using Pandas and NumPy.
+- Software Engineer (Training) | Codec Technologies (4 Weeks)
+  - Built responsive grid layouts with modern CSS parameters.
+  - Developed form validation and interactive state management in Vanilla JavaScript.
+
+## Public Navigation URLs
+- Home: https://udaypatnala.github.io/portifolio/#/
+- Skills: https://udaypatnala.github.io/portifolio/#/skills
+- Projects: https://udaypatnala.github.io/portifolio/#/projects
+- Journey: https://udaypatnala.github.io/portifolio/#/journey
+- Experience: https://udaypatnala.github.io/portifolio/#/experience
+- Education: https://udaypatnala.github.io/portifolio/#/education
+- Certifications: https://udaypatnala.github.io/portifolio/#/certifications
+- Achievements: https://udaypatnala.github.io/portifolio/#/achievements
+- Resume: https://udaypatnala.github.io/portifolio/#/resume
+- Visualizer Lab: https://udaypatnala.github.io/portifolio/#/gallery
+- Contact: https://udaypatnala.github.io/portifolio/#/contact
+- Privacy Policy: https://udaypatnala.github.io/portifolio/#/privacy

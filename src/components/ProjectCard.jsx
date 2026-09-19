@@ -290,18 +290,23 @@ const ProjectCard = ({ project, isDarkMode, isExtra = false }) => {
             <span className={`text-[10px] font-mono ${isDarkMode ? 'text-gray-650' : 'text-slate-400'}`}>Local Workspace</span>
           )}
 
-          {live && live !== '#' ? (
+          {live && live !== '#' && live !== github ? (
             <a
               href={live}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-1 text-xs font-bold text-emerald-500 hover:text-emerald-600 transition-colors group/btn"
+              aria-label={`View live application for ${title}`}
+              className="inline-flex items-center gap-1 text-xs font-bold text-emerald-500 hover:text-emerald-400 dark:hover:text-emerald-300 transition-colors group/btn"
             >
               View Live
               <ExternalLink size={12} className="transition-transform duration-300 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
             </a>
           ) : (
-            <span className={`text-[10px] font-mono ${isDarkMode ? 'text-gray-650' : 'text-slate-400'}`}>In Development</span>
+            <span className={`text-[10px] font-mono px-2 py-0.5 rounded border ${
+              isDarkMode ? 'border-white/5 bg-white/[0.02] text-gray-400' : 'border-slate-200 bg-slate-50 text-slate-500'
+            }`}>
+              {type === 'ml' ? 'ML Model / Pipeline' : 'Source Architecture'}
+            </span>
           )}
         </div>
       </div>

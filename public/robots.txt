@@ -1,0 +1,15 @@
+# robots.txt for Patnala Uday Kumar Portfolio
+# Website: https://udaypatnala.github.io/portifolio/
+
+User-agent: *
+Allow: /
+
+# Disallow build and dependency directories
+Disallow: /dist/
+Disallow: /node_modules/
+
+# Disallow non-canonical query strings
+Disallow: /*?*
+
+# Sitemap Location
+Sitemap: https://udaypatnala.github.io/portifolio/sitemap.xml

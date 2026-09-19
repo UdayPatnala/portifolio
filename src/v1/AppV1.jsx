@@ -18,7 +18,9 @@ import {
   CheckCircle,
   FileText,
   Sun,
-  Moon
+  Moon,
+  Shield,
+  AlertCircle
 } from 'lucide-react';
 import { Typewriter } from 'react-simple-typewriter';
 
@@ -26,6 +28,7 @@ import ParticleBackground from '../components/ParticleBackground';
 import CustomCursor from '../components/CustomCursor';
 import ProjectCard from '../components/ProjectCard';
 import CommandPalette from '../components/CommandPalette';
+import { useTheme } from '../hooks/useTheme';
 
 // --- CUSTOM SVG BRAND ICONS ---
 
@@ -682,15 +685,13 @@ const App = () => {
   const [footerPortraitColor, setFooterPortraitColor] = useState(false);
   const footerPortraitTimerRef = useRef(null);
 
-  // Theme Toggler state
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    try {
-      const saved = localStorage.getItem('portfolio_theme');
-      return saved !== null ? JSON.parse(saved) : true;
-    } catch {
-      return true;
-    }
-  });
+  // Theme management with System, Light, and Dark support
+  const {
+    themePreference,
+    isDarkMode,
+    cycleTheme,
+    setThemePreference
+  } = useTheme();
 
 
 
@@ -709,9 +710,11 @@ const App = () => {
   // Active section for sliding nav underline indicator
   const [activeSection, setActiveSection] = useState('hero');
 
-  // Contact form submission state
-  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
+  // Contact form submission state (minimized data collection)
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [consentGiven, setConsentGiven] = useState(false);
   const [formStatus, setFormStatus] = useState('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
   // State to control expansion of Featured Projects grid
   const [showAll, setShowAll] = useState(false);
@@ -761,23 +764,7 @@ const App = () => {
     };
   }, []);
 
-  // Synchronize layout theme body class
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.remove('light');
-      document.documentElement.classList.add('dark');
-      document.body.classList.remove('light-theme');
-    } else {
-      document.documentElement.classList.remove('dark');
-      document.documentElement.classList.add('light');
-      document.body.classList.add('light-theme');
-    }
-    try {
-      localStorage.setItem('portfolio_theme', JSON.stringify(isDarkMode));
-    } catch (e) {
-      console.warn("Theme storage failed:", e);
-    }
-  }, [isDarkMode]);
+
 
 
 
@@ -798,11 +785,46 @@ const App = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    if (formStatus === 'validation_error') {
+      setFormStatus('idle');
+      setErrorMessage('');
+    }
+  };
+
+  const validateEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) return;
+
+    const trimmedName = formData.name.trim();
+    const trimmedEmail = formData.email.trim();
+    const trimmedMessage = formData.message.trim();
+
+    if (!trimmedName || trimmedName.length < 2 || trimmedName.length > 100) {
+      setFormStatus('validation_error');
+      setErrorMessage('Please enter a valid name (2 to 100 characters).');
+      return;
+    }
+
+    if (!trimmedEmail || !validateEmail(trimmedEmail) || trimmedEmail.length > 150) {
+      setFormStatus('validation_error');
+      setErrorMessage('Please enter a valid email address.');
+      return;
+    }
+
+    if (!trimmedMessage || trimmedMessage.length < 5 || trimmedMessage.length > 3000) {
+      setFormStatus('validation_error');
+      setErrorMessage('Please enter a message between 5 and 3000 characters.');
+      return;
+    }
+
+    if (!consentGiven) {
+      setFormStatus('consent_required');
+      setErrorMessage('Consent required: Please check the consent box below before transmitting.');
+      return;
+    }
 
     setFormStatus('submitting');
 
@@ -814,28 +836,31 @@ const App = () => {
             'Accept': 'application/json'
         },
         body: JSON.stringify({
-            name: formData.name,
-            email: formData.email,
-            subject: formData.subject || "New Message from Portfolio",
-            message: formData.message,
-            _captcha: "false" // Disable captcha for seamless AJAX submission
+            name: trimmedName,
+            email: trimmedEmail,
+            message: trimmedMessage,
+            _subject: `Portfolio Mobile Enquiry from ${trimmedName}`,
+            _captcha: "false"
         })
       });
 
       if (response.ok) {
         setFormStatus('success');
-        setFormData({ name: '', email: '', subject: '', message: '' });
+        setFormData({ name: '', email: '', message: '' });
+        setConsentGiven(false);
+        setErrorMessage('');
       } else {
         setFormStatus('error');
+        setErrorMessage('Failed to transmit message. Please email directly.');
       }
-    } catch (error) {
-      console.error("Form submission error:", error);
+    } catch {
       setFormStatus('error');
+      setErrorMessage('Network transmission error. Please email directly.');
     }
 
     setTimeout(() => {
-      setFormStatus('idle');
-    }, 5000);
+      setFormStatus((prev) => (prev === 'submitting' ? prev : 'idle'));
+    }, 7000);
   };
 
   const scrollToSection = (id) => {
@@ -887,7 +912,13 @@ const App = () => {
     }`}>
       {/* Visual background components */}
       <ParticleBackground isDarkMode={isDarkMode} />
-      <CommandPalette isOpen={isCommandPaletteOpen} setIsOpen={setIsCommandPaletteOpen} isDarkMode={isDarkMode} />
+      <CommandPalette 
+        isOpen={isCommandPaletteOpen} 
+        setIsOpen={setIsCommandPaletteOpen} 
+        isDarkMode={isDarkMode} 
+        themePreference={themePreference} 
+        setThemePreference={setThemePreference} 
+      />
       <CustomCursor />
 
       {/* Top scroll neon progress bar */}
@@ -934,15 +965,16 @@ const App = () => {
               );
             })}
 
-            {/* Light/Dark Toggle Icon Button */}
+            {/* Theme switcher */}
             <button
-              onClick={() => setIsDarkMode(!isDarkMode)}
+              onClick={cycleTheme}
               className={`p-2 rounded-lg border transition-all duration-300 cursor-none overflow-hidden ${
                 isDarkMode 
                   ? 'bg-white/5 border-white/5 text-emerald-400 hover:bg-white/10 hover:border-emerald-500/30' 
                   : 'bg-slate-100 border-slate-200 text-emerald-700 hover:bg-slate-200 hover:border-emerald-500/30'
               }`}
-              title={isDarkMode ? "Switch to Light Blueprint" : "Switch to Dark Terminal"}
+              title={`Theme: ${themePreference === 'system' ? `System (${isDarkMode ? 'Dark' : 'Light'})` : isDarkMode ? 'Dark' : 'Light'} (Click to cycle)`}
+              aria-label={`Theme: ${themePreference === 'system' ? `System (${isDarkMode ? 'Dark' : 'Light'})` : isDarkMode ? 'Dark' : 'Light'}`}
             >
               <AnimatePresence mode="wait">
                 <motion.div
@@ -953,7 +985,7 @@ const App = () => {
                   transition={{ duration: 0.2 }}
                   className="flex items-center justify-center"
                 >
-                  {isDarkMode ? <Sun size={16} /> : <Moon size={16} />}
+                  {isDarkMode ? <Moon size={16} /> : <Sun size={16} />}
                 </motion.div>
               </AnimatePresence>
             </button>
@@ -969,14 +1001,16 @@ const App = () => {
 
           {/* Mobile hamburger menu */}
           <div className="flex items-center gap-3 lg:hidden">
-            {/* Mobile Light/Dark Toggle */}
+            {/* Mobile Theme switcher */}
             <button
-              onClick={() => setIsDarkMode(!isDarkMode)}
+              onClick={cycleTheme}
               className={`p-2 rounded-lg border transition-all duration-300 cursor-none ${
                 isDarkMode ? 'bg-white/5 border-white/10 text-emerald-400' : 'bg-slate-100 border-slate-200 text-emerald-600'
               }`}
+              title={`Theme: ${themePreference === 'system' ? `System (${isDarkMode ? 'Dark' : 'Light'})` : isDarkMode ? 'Dark' : 'Light'}`}
+              aria-label={`Theme: ${themePreference === 'system' ? `System (${isDarkMode ? 'Dark' : 'Light'})` : isDarkMode ? 'Dark' : 'Light'}`}
             >
-              {isDarkMode ? <Sun size={16} /> : <Moon size={16} />}
+              {isDarkMode ? <Moon size={16} /> : <Sun size={16} />}
             </button>
             <button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)} 
@@ -1750,12 +1784,14 @@ const App = () => {
 
             {/* Interactive Form panel */}
             <div className="lg:col-span-7">
-              <form onSubmit={handleFormSubmit} className={`p-8 rounded-2xl glass-panel border space-y-6 ${
+              <form onSubmit={handleFormSubmit} className={`p-6 sm:p-8 rounded-2xl glass-panel border space-y-5 ${
                 isDarkMode ? 'border-white/5' : 'border-emerald-500/10'
-              }`}>
-                <div className="grid md:grid-cols-2 gap-6">
+              }`} noValidate>
+                <div className="grid md:grid-cols-2 gap-5">
                   <div>
-                    <label htmlFor="form-name" className="block text-xs font-mono text-gray-500 mb-2">YOUR NAME</label>
+                    <label htmlFor="form-name" className="block text-xs font-mono text-gray-500 mb-2">
+                      YOUR NAME <span className="text-emerald-500">*</span>
+                    </label>
                     <input
                       type="text"
                       id="form-name"
@@ -1763,16 +1799,19 @@ const App = () => {
                       value={formData.name}
                       onChange={handleInputChange}
                       required
-                      placeholder="Uday Kumar"
+                      maxLength={100}
+                      placeholder="Your Name"
                       className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 focus:shadow-[0_0_15px_rgba(16,185,129,0.15)] focus:bg-white/[0.08] transition-all cursor-none ${
                         isDarkMode 
-                          ? 'bg-white/5 border-white/5 text-white' 
-                          : 'bg-slate-100 border-slate-200 text-slate-800 focus:bg-slate-50'
+                          ? 'bg-white/5 border-white/5 text-white placeholder:text-gray-600' 
+                          : 'bg-slate-100 border-slate-200 text-slate-800 focus:bg-slate-50 placeholder:text-slate-400'
                       }`}
                     />
                   </div>
                   <div>
-                    <label htmlFor="form-email" className="block text-xs font-mono text-gray-500 mb-2">EMAIL ADDRESS</label>
+                    <label htmlFor="form-email" className="block text-xs font-mono text-gray-500 mb-2">
+                      EMAIL ADDRESS <span className="text-emerald-500">*</span>
+                    </label>
                     <input
                       type="email"
                       id="form-email"
@@ -1780,50 +1819,104 @@ const App = () => {
                       value={formData.email}
                       onChange={handleInputChange}
                       required
-                      placeholder="udaypatnala5@gmail.com"
+                      maxLength={150}
+                      placeholder="your.email@example.com"
                       className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 focus:shadow-[0_0_15px_rgba(16,185,129,0.15)] focus:bg-white/[0.08] transition-all cursor-none ${
                         isDarkMode 
-                          ? 'bg-white/5 border-white/5 text-white' 
-                          : 'bg-slate-100 border-slate-200 text-slate-800 focus:bg-slate-50'
+                          ? 'bg-white/5 border-white/5 text-white placeholder:text-gray-600' 
+                          : 'bg-slate-100 border-slate-200 text-slate-800 focus:bg-slate-50 placeholder:text-slate-400'
                       }`}
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label htmlFor="form-subject" className="block text-xs font-mono text-gray-500 mb-2">SUBJECT</label>
-                  <input
-                    type="text"
-                    id="form-subject"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleInputChange}
-                    placeholder="Software Engineer Role Opportunities"
-                    className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 focus:shadow-[0_0_15px_rgba(16,185,129,0.15)] focus:bg-white/[0.08] transition-all cursor-none ${
-                      isDarkMode 
-                        ? 'bg-white/5 border-white/5 text-white' 
-                        : 'bg-slate-100 border-slate-200 text-slate-800 focus:bg-slate-50'
-                    }`}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="form-message" className="block text-xs font-mono text-gray-500 mb-2">MESSAGE CONTENT</label>
+                  <label htmlFor="form-message" className="block text-xs font-mono text-gray-500 mb-2">
+                    MESSAGE CONTENT <span className="text-emerald-500">*</span>
+                  </label>
                   <textarea
                     id="form-message"
                     name="message"
                     value={formData.message}
                     onChange={handleInputChange}
                     required
-                    rows="5"
-                    placeholder="Let's build something amazing together..."
-                    className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 focus:shadow-[0_0_15px_rgba(16,185,129,0.15)] focus:bg-white/[0.08] transition-all cursor-none ${
+                    rows={5}
+                    maxLength={3000}
+                    placeholder="Write your message or project enquiry here..."
+                    className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 focus:shadow-[0_0_15px_rgba(16,185,129,0.15)] focus:bg-white/[0.08] transition-all cursor-none resize-none ${
                       isDarkMode 
-                        ? 'bg-white/5 border-white/5 text-white' 
-                        : 'bg-slate-100 border-slate-200 text-slate-800 focus:bg-slate-50'
+                        ? 'bg-white/5 border-white/5 text-white placeholder:text-gray-600' 
+                        : 'bg-slate-100 border-slate-200 text-slate-800 focus:bg-slate-50 placeholder:text-slate-400'
                     }`}
                   />
                 </div>
+
+                {/* Pre-Submission Privacy Notice */}
+                <div className={`p-4 rounded-xl border text-xs font-sans space-y-1.5 transition-colors ${
+                  isDarkMode ? 'bg-white/[0.02] border-white/10 text-gray-400' : 'bg-slate-50 border-slate-200 text-slate-600'
+                }`}>
+                  <div className="flex items-center gap-2 font-mono font-bold text-[11px] text-emerald-500 uppercase tracking-wider">
+                    <Shield size={13} />
+                    <span>Privacy Notice (DPDP Act 2023)</span>
+                  </div>
+                  <p className="leading-relaxed">
+                    Name and email are processed strictly to respond to your enquiry via encrypted FormSubmit.co relay. Data is retained for up to 90 days and never shared for marketing. You may withdraw consent or request erasure anytime by emailing udaypatnala5@gmail.com.
+                  </p>
+                </div>
+
+                {/* Unchecked Explicit Consent Checkbox */}
+                <div>
+                  <label htmlFor="form-consent" className="flex items-start gap-3 cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      id="form-consent"
+                      checked={consentGiven}
+                      onChange={(e) => {
+                        setConsentGiven(e.target.checked);
+                        if (formStatus === 'consent_required') {
+                          setFormStatus('idle');
+                          setErrorMessage('');
+                        }
+                      }}
+                      className="mt-0.5 h-4 w-4 rounded border-gray-400 text-emerald-500 focus:ring-emerald-500/30 accent-emerald-500 cursor-pointer"
+                    />
+                    <span className={`text-xs leading-relaxed transition-colors ${
+                      isDarkMode ? 'text-gray-300' : 'text-slate-700'
+                    }`}>
+                      I consent to the processing of the personal data provided in this form for the purpose of responding to my enquiry, as described in the{' '}
+                      <a href="#/privacy" className="text-emerald-500 underline font-semibold hover:text-emerald-400">
+                        Privacy Policy
+                      </a>.
+                    </span>
+                  </label>
+                </div>
+
+                {/* Status Messages */}
+                <AnimatePresence>
+                  {(formStatus === 'consent_required' || formStatus === 'validation_error' || formStatus === 'error') && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      className="flex items-center gap-2 p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 font-mono text-xs"
+                    >
+                      <AlertCircle size={14} className="shrink-0" />
+                      <span>{errorMessage || 'Please complete all required fields.'}</span>
+                    </motion.div>
+                  )}
+
+                  {formStatus === 'success' && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      className="flex items-center gap-2 p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-emerald-400 font-mono text-xs"
+                    >
+                      <CheckCircle size={14} className="shrink-0" />
+                      <span>Message successfully transmitted to Patnala Uday Kumar!</span>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
                 <div className="flex items-center justify-between flex-wrap gap-4 pt-2">
                   <button
@@ -1835,20 +1928,11 @@ const App = () => {
                     <Send size={14} className={formStatus === 'submitting' ? 'animate-ping' : ''} />
                   </button>
 
-                  {/* Toast Success Message */}
-                  <AnimatePresence>
-                    {formStatus === 'success' && (
-                      <motion.div
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0 }}
-                        className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-mono text-xs py-2 px-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl"
-                      >
-                        <CheckCircle size={14} />
-                        <span>Message successfully sent to Uday Kumar!</span>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                  <div className="text-[11px] font-mono text-gray-500 flex items-center gap-2">
+                    <span>TLS 1.3 Encrypted</span>
+                    <span>•</span>
+                    <a href="#/privacy" className="hover:text-emerald-400 transition-colors">Privacy Policy</a>
+                  </div>
                 </div>
               </form>
             </div>
@@ -1862,9 +1946,19 @@ const App = () => {
         isDarkMode ? 'bg-[#020306] border-white/5' : 'bg-slate-100 border-emerald-500/10'
       }`}>
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-mono text-gray-500">
-          <p>© 2026 Patnala Uday Kumar. All Rights Reserved.</p>
+          <div className="flex flex-col items-center md:items-start gap-1">
+            <p>© 2026 Patnala Uday Kumar. All Rights Reserved.</p>
+            <div className="flex items-center gap-2 text-[10px] uppercase text-gray-500 mt-0.5 flex-wrap justify-center md:justify-start">
+              <span className="text-emerald-500/70 font-bold">Privacy &amp; Data Protection:</span>
+              <a href="#/privacy" className="hover:text-emerald-400 transition-colors">Privacy Policy</a>
+              <span>•</span>
+              <a href="#/privacy#rights" className="hover:text-emerald-400 transition-colors">Data Rights</a>
+              <span>•</span>
+              <a href="#connect" className="hover:text-emerald-400 transition-colors">Contact / Privacy Request</a>
+            </div>
+          </div>
           <div className="flex gap-4">
-            <span className="text-[10px] text-emerald-500/40 tracking-wider">BUILT WITH REACT, TAILWIND V4 & FRAMER MOTION</span>
+            <span className="text-[10px] text-emerald-500/40 tracking-wider">BUILT WITH REACT, TAILWIND V4 &amp; FRAMER MOTION</span>
           </div>
         </div>
       </footer>

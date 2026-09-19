@@ -1,25 +1,27 @@
-import { useState, useEffect } from 'react';
-import AppV1 from './v1/AppV1';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import AppV2 from './v2/AppV2';
 
+const AppV1 = lazy(() => import('./v1/AppV1'));
+
 const App = () => {
-  // Determine if viewport matches mobile screens (< 1024px)
-  const [isMobile, setIsMobile] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return window.innerWidth < 1024;
-    }
-    return false;
-  });
+  const [route, setRoute] = useState(() => (typeof window !== 'undefined' ? window.location.hash : ''));
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 1024);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    const handleHashChange = () => setRoute(window.location.hash);
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
-  return isMobile ? <AppV1 /> : <AppV2 />;
+  if (route === '#/v1') {
+    return (
+      <Suspense fallback={<div className="min-h-screen bg-slate-950 text-emerald-400 p-8 font-mono text-sm flex items-center justify-center">Loading legacy view...</div>}>
+        <AppV1 />
+      </Suspense>
+    );
+  }
+
+  return <AppV2 />;
 };
 
 export default App;
+

@@ -13,7 +13,7 @@ const Projects = ({ isDarkMode }) => {
     : cmsContent.projects.filter(p => p.type === selectedFilter);
 
   const filterButtons = [
-    { label: 'All Systems', value: 'all', icon: <Layers size={14} /> },
+    { label: 'All Projects', value: 'all', icon: <Layers size={14} /> },
     { label: 'Full-Stack & Web', value: 'web', icon: <Layout size={14} /> },
     { label: 'Data Science & ML', value: 'ml', icon: <Terminal size={14} /> }
   ];
@@ -24,7 +24,7 @@ const Projects = ({ isDarkMode }) => {
       <div className="flex flex-col items-center text-center space-y-3 mb-12">
         <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded-full text-xs font-mono">
           <Briefcase size={12} />
-          <span>PRODUCTION MATRIX</span>
+          <span>ENGINEERING DIRECTORY</span>
         </div>
         <h2 className={`text-3xl sm:text-5xl font-extrabold tracking-tight transition-colors duration-300 ${
           isDarkMode ? 'text-white' : 'text-slate-900'
@@ -35,13 +35,14 @@ const Projects = ({ isDarkMode }) => {
       </div>
 
       {/* Filter Toolbar */}
-      <div className="flex justify-center items-center gap-3 flex-wrap mb-12 text-sm font-mono">
+      <div className="flex justify-center items-center gap-3 flex-wrap mb-12 text-sm font-mono" role="toolbar" aria-label="Project category filters">
         {filterButtons.map(btn => {
           const isActive = selectedFilter === btn.value;
           return (
             <button
               key={btn.value}
               onClick={() => setSelectedFilter(btn.value)}
+              aria-pressed={isActive}
               className={`px-4 py-2 rounded-xl border font-bold flex items-center gap-2 transition-all duration-300 cursor-none ${
                 isActive 
                   ? 'bg-emerald-500 text-black border-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.3)]'
@@ -58,29 +59,41 @@ const Projects = ({ isDarkMode }) => {
       </div>
 
       {/* Projects Grid */}
-      <motion.div 
-        layout
-        className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
-      >
-        <AnimatePresence mode="popLayout">
-          {filteredProjects.map((project, index) => {
-            // Determine if this project is not in the top 3 featured to use compact "extra" styling
-            const isExtra = index >= 3;
-            return (
-              <motion.div
-                key={project.id}
-                layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.4 }}
-              >
-                <ProjectCard project={project} isDarkMode={isDarkMode} isExtra={isExtra} />
-              </motion.div>
-            );
-          })}
-        </AnimatePresence>
-      </motion.div>
+      {filteredProjects.length === 0 ? (
+        <div className="py-16 text-center space-y-3">
+          <p className="font-mono text-sm text-gray-500">No projects found for the selected filter.</p>
+          <button
+            onClick={() => setSelectedFilter('all')}
+            className="px-4 py-2 rounded-xl text-xs font-mono font-bold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all cursor-none"
+          >
+            Reset Filters
+          </button>
+        </div>
+      ) : (
+        <motion.div 
+          layout
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          <AnimatePresence mode="popLayout">
+            {filteredProjects.map((project, index) => {
+              // Determine if this project is not in the top 3 featured to use compact "extra" styling
+              const isExtra = index >= 3;
+              return (
+                <motion.div
+                  key={project.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  <ProjectCard project={project} isDarkMode={isDarkMode} isExtra={isExtra} />
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
+        </motion.div>
+      )}
       <NextPageButton to="#/experience" label="Experience" isDarkMode={isDarkMode} />
     </div>
   );

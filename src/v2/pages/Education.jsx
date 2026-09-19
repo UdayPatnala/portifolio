@@ -67,7 +67,7 @@ const Education = ({ isDarkMode }) => {
                 </div>
 
                 <div className="flex items-center gap-2 mt-4 pt-4 border-t border-emerald-500/10">
-                  <span className="text-xs font-mono text-gray-500 uppercase tracking-widest">RECORD_GRADE:</span>
+                  <span className="text-xs font-mono text-gray-500 uppercase tracking-widest">Grade / Score:</span>
                   <span className="text-sm font-mono font-bold text-emerald-400">{edu.grade}</span>
                 </div>
               </div>

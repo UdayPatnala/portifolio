@@ -8,7 +8,7 @@ export const cmsContent = {
     lastName: "Kumar",
     title: "Computer Science Graduate | Java-Focused Software Development",
     subtitle: "Java Backend & Software Developer",
-    bio: "A premium, highly-interactive, responsive developer portfolio custom-crafted for recruiters and corporate hiring managers. Designed around a sleek glassmorphism dark theme with cybernetic highlights and advanced mathematical rendering.",
+    bio: "Computer Science graduate focused on Java backend engineering, Spring Boot REST services, and applied machine learning. Builder of real-time web applications, database architectures, and production-ready systems.",
     officePhoto: "/profile-office.jpg",
     profilePhoto: "/profile.jpg",
     location: "Andhra Pradesh, India"
@@ -114,7 +114,7 @@ export const cmsContent = {
         "Developed a REST API with payload validation and an interactive Streamlit analytics dashboard."
       ],
       github: "https://github.com/UdayPatnala/Churn-Prediction-System",
-      live: "https://github.com/UdayPatnala/Churn-Prediction-System",
+      live: null,
       image: "/churn_real.png"
     },
     {
@@ -177,7 +177,7 @@ export const cmsContent = {
         "Tracks application status pipelines with progress alerts."
       ],
       github: "https://github.com/UdayPatnala/Job-Finder",
-      live: "https://github.com/UdayPatnala/Job-Finder",
+      live: null,
       image: "/jobflow_real.png"
     },
     {
@@ -193,7 +193,7 @@ export const cmsContent = {
         "Exportable data sheets and metrics summaries."
       ],
       github: "https://github.com/UdayPatnala/Sales-Dashboard",
-      live: "https://github.com/UdayPatnala/Sales-Dashboard",
+      live: null,
       image: "/skyflow_real.png"
     },
     {
@@ -209,7 +209,7 @@ export const cmsContent = {
         "Features simulated ticket printouts and check-in/check-out logs."
       ],
       github: "https://github.com/UdayPatnala/Smart-Parking-Java",
-      live: "https://github.com/UdayPatnala/Smart-Parking-Java",
+      live: null,
       image: "/taskmaster_real.png"
     },
     {
@@ -225,7 +225,7 @@ export const cmsContent = {
         "Loads cleaned tables into DBMS for analysis."
       ],
       github: "https://github.com/UdayPatnala/Etl-Data-Pipeline",
-      live: "https://github.com/UdayPatnala/Etl-Data-Pipeline",
+      live: null,
       image: "/churn_real.png"
     },
     {
@@ -241,7 +241,7 @@ export const cmsContent = {
         "Unit tested coverage validating evictions and cache hits."
       ],
       github: "https://github.com/UdayPatnala/Iru-Cache-Java",
-      live: "https://github.com/UdayPatnala/Iru-Cache-Java",
+      live: null,
       image: "/taskmaster_real.png"
     },
     {
@@ -257,7 +257,7 @@ export const cmsContent = {
         "Structured payment checkouts flow simulation."
       ],
       github: "https://github.com/UdayPatnala/Online-Bookstore-Backend",
-      live: "https://github.com/UdayPatnala/Online-Bookstore-Backend",
+      live: null,
       image: "/taskmaster_real.png"
     },
     {
@@ -273,7 +273,7 @@ export const cmsContent = {
         "Automates updates on cron schedule triggers."
       ],
       github: "https://github.com/UdayPatnala/github-profile-upgrader",
-      live: "https://github.com/UdayPatnala/github-profile-upgrader",
+      live: null,
       image: "/skyflow_real.png"
     }
   ],
@@ -371,12 +371,12 @@ export const cmsContent = {
   ],
 
   seo: {
-    title: "Patnala Uday Kumar | Premium Portfolio V2",
-    description: "Portfolio of Patnala Uday Kumar - Associate Software Engineer & Data Science Specialist. Expert in React, Spring Boot, Python, and Machine Learning.",
-    keywords: "Patnala Uday Kumar, Portfolio, Software Engineer, Data Science, React, Java, Spring Boot, Visakhapatnam",
+    title: "Patnala Uday Kumar | Software Engineer Portfolio",
+    description: "Portfolio of Patnala Uday Kumar - Software Engineer specializing in Java, Spring Boot, React, and applied machine learning.",
+    keywords: "Patnala Uday Kumar, Portfolio, Software Engineer, Java Developer, Spring Boot, React, Visakhapatnam",
     author: "Patnala Uday Kumar",
     ogType: "website",
-    ogUrl: "https://github.com/UdayPatnala"
+    ogUrl: "https://udaypatnala.github.io/portifolio/"
   },
 
   featureFlags: {

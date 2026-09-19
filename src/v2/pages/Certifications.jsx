@@ -9,7 +9,7 @@ const Certifications = ({ isDarkMode }) => {
       <div className="flex flex-col items-center text-center space-y-3 mb-16">
         <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded-full text-xs font-mono">
           <ShieldCheck size={12} />
-          <span>CREDENTIAL PORTAL</span>
+          <span>VERIFIED CREDENTIALS</span>
         </div>
         <h2 className={`text-3xl sm:text-5xl font-extrabold tracking-tight transition-colors duration-300 ${
           isDarkMode ? 'text-white' : 'text-slate-900'

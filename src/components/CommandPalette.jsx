@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Search, Folder, Mail, FileText } from 'lucide-react';
+import { Search, Folder, Mail, FileText, Sun, Moon, Monitor } from 'lucide-react';
 
 const Github = ({ size = 20, className = "" }) => (
   <svg 
@@ -39,7 +39,7 @@ const Linkedin = ({ size = 20, className = "" }) => (
 );
 import { motion, AnimatePresence } from 'framer-motion';
 
-const CommandPalette = ({ isOpen, setIsOpen, isDarkMode }) => {
+const CommandPalette = ({ isOpen, setIsOpen, isDarkMode, themePreference, setThemePreference }) => {
   const [search, setSearch] = useState('');
 
   useEffect(() => {
@@ -64,6 +64,11 @@ const CommandPalette = ({ isOpen, setIsOpen, isDarkMode }) => {
     { name: 'Download Resume', icon: <FileText size={16} />, action: () => { window.open('/PATNALA UDAY KUMAR.pdf'); setIsOpen(false); } },
     { name: 'GitHub', icon: <Github size={16} />, action: () => { window.open('https://github.com/UdayPatnala', '_blank'); setIsOpen(false); } },
     { name: 'LinkedIn', icon: <Linkedin size={16} />, action: () => { window.open('https://linkedin.com/in/udaypatnala', '_blank'); setIsOpen(false); } },
+    ...(setThemePreference ? [
+      { name: `Theme: System ${themePreference === 'system' ? '(Active)' : ''}`, icon: <Monitor size={16} />, action: () => { setThemePreference('system'); setIsOpen(false); } },
+      { name: `Theme: Light ${themePreference === 'light' ? '(Active)' : ''}`, icon: <Sun size={16} />, action: () => { setThemePreference('light'); setIsOpen(false); } },
+      { name: `Theme: Dark ${themePreference === 'dark' ? '(Active)' : ''}`, icon: <Moon size={16} />, action: () => { setThemePreference('dark'); setIsOpen(false); } },
+    ] : []),
   ];
 
   const filteredCommands = commands.filter(c => c.name.toLowerCase().includes(search.toLowerCase()));

@@ -2,42 +2,198 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="apple-touch-icon" href="./favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#03060a" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    
+    <!-- Anti-Flash Theme Initializer -->
+    <script>
+      (function() {
+        try {
+          var saved = localStorage.getItem('portfolio_theme');
+          var pref = saved;
+          if (pref === 'true' || pref === '"true"') pref = 'dark';
+          if (pref === 'false' || pref === '"false"') pref = 'light';
+          if (pref !== 'light' && pref !== 'dark' && pref !== 'system') {
+            pref = 'system';
+          }
+          var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var isDark = pref === 'system' ? prefersDark : (pref === 'dark');
+          var root = document.documentElement;
+          if (isDark) {
+            root.classList.remove('light');
+            root.classList.add('dark');
+          } else {
+            root.classList.remove('dark');
+            root.classList.add('light');
+            if (document.body) {
+              document.body.classList.add('light-theme');
+            } else {
+              document.addEventListener('DOMContentLoaded', function() {
+                document.body.classList.add('light-theme');
+              }, { once: true });
+            }
+          }
+        } catch (e) {}
+      })();
+    </script>
     
     <!-- Primary Meta Tags -->
     <title>Patnala Uday Kumar | Software Engineer</title>
     <meta name="title" content="Patnala Uday Kumar | Software Engineer" />
-    <meta name="description" content="Professional portfolio of Patnala Uday Kumar, a Software Engineer specializing in scalable full-stack web applications, AI integration, and robust backend architectures." />
+    <meta name="description" content="Professional portfolio of Patnala Uday Kumar, a Software Engineer specializing in scalable full-stack web applications, Java backend systems, and Data Science." />
     <meta name="author" content="Patnala Uday Kumar" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://udaypatnala.github.io/portifolio/" />
+
+    <!-- Webmaster Verification Readiness -->
+    <!-- Ready for Google Search Console and Bing Webmaster Tools token input -->
+    <meta name="google-site-verification" content="GSC_VERIFICATION_TOKEN" />
+    <meta name="msvalidate.01" content="BING_VERIFICATION_TOKEN" />
     
-    <!-- Open Graph / Facebook -->
+    <!-- Open Graph / Facebook / LinkedIn -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://udaypatnala.github.io/portifolio" />
+    <meta property="og:site_name" content="Patnala Uday Kumar Portfolio" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="https://udaypatnala.github.io/portifolio/" />
     <meta property="og:title" content="Patnala Uday Kumar | Software Engineer" />
-    <meta property="og:description" content="Professional portfolio of Patnala Uday Kumar, a Software Engineer specializing in scalable full-stack web applications, AI integration, and robust backend architectures." />
-    <meta property="og:image" content="/profile-office.jpg" />
+    <meta property="og:description" content="Professional portfolio of Patnala Uday Kumar, a Software Engineer specializing in scalable full-stack web applications, Java backend systems, and Data Science." />
+    <meta property="og:image" content="https://udaypatnala.github.io/portifolio/profile-office.jpg" />
+    <meta property="og:image:secure_url" content="https://udaypatnala.github.io/portifolio/profile-office.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Patnala Uday Kumar - Software Engineer" />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://udaypatnala.github.io/portifolio" />
+    <meta property="twitter:url" content="https://udaypatnala.github.io/portifolio/" />
     <meta property="twitter:title" content="Patnala Uday Kumar | Software Engineer" />
-    <meta property="twitter:description" content="Professional portfolio of Patnala Uday Kumar, a Software Engineer specializing in scalable full-stack web applications, AI integration, and robust backend architectures." />
-    <meta property="twitter:image" content="/profile-office.jpg" />
+    <meta property="twitter:description" content="Professional portfolio of Patnala Uday Kumar, a Software Engineer specializing in scalable full-stack web applications, Java backend systems, and Data Science." />
+    <meta property="twitter:image" content="https://udaypatnala.github.io/portifolio/profile-office.jpg" />
+    <meta property="twitter:image:alt" content="Patnala Uday Kumar - Software Engineer" />
 
-    <!-- Schema.org Markup -->
+    <!-- Schema.org Graph Markup -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Patnala Uday Kumar",
-      "jobTitle": "Software Engineer",
-      "url": "https://udaypatnala.github.io/portifolio",
-      "image": "/profile-office.jpg",
-      "sameAs": [
-        "https://github.com/UdayPatnala"
-      ],
-      "knowsAbout": ["Full Stack Development", "React.js", "Java", "Python", "Node.js", "Machine Learning"]
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://udaypatnala.github.io/portifolio/#website",
+          "url": "https://udaypatnala.github.io/portifolio/",
+          "name": "Patnala Uday Kumar Portfolio",
+          "description": "Professional portfolio of Patnala Uday Kumar, a Software Engineer specializing in Java backend architectures, React applications, and Data Science.",
+          "inLanguage": "en-US"
+        },
+        {
+          "@type": "ProfilePage",
+          "@id": "https://udaypatnala.github.io/portifolio/#webpage",
+          "url": "https://udaypatnala.github.io/portifolio/",
+          "name": "Patnala Uday Kumar | Software Engineer",
+          "isPartOf": {
+            "@id": "https://udaypatnala.github.io/portifolio/#website"
+          },
+          "mainEntity": {
+            "@id": "https://udaypatnala.github.io/portifolio/#person"
+          }
+        },
+        {
+          "@type": "Person",
+          "@id": "https://udaypatnala.github.io/portifolio/#person",
+          "name": "Patnala Uday Kumar",
+          "alternateName": ["Uday Kumar", "Uday Patnala"],
+          "jobTitle": "Software Engineer",
+          "url": "https://udaypatnala.github.io/portifolio/",
+          "image": "https://udaypatnala.github.io/portifolio/profile-office.jpg",
+          "email": "mailto:udaypatnala5@gmail.com",
+          "alumniOf": {
+            "@type": "CollegeOrUniversity",
+            "name": "Raghu Institute of Technology"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Visakhapatnam",
+            "addressRegion": "Andhra Pradesh",
+            "addressCountry": "IN"
+          },
+          "sameAs": [
+            "https://github.com/UdayPatnala",
+            "https://linkedin.com/in/patnala-uday-kumar"
+          ],
+          "knowsAbout": [
+            "Java",
+            "Spring Boot",
+            "React.js",
+            "Python",
+            "SQL",
+            "DBMS",
+            "REST APIs",
+            "Data Structures & Algorithms",
+            "Object-Oriented Programming",
+            "Machine Learning"
+          ]
+        },
+        {
+          "@type": "ItemList",
+          "@id": "https://udaypatnala.github.io/portifolio/#projects",
+          "name": "Featured Software & Engineering Projects",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "item": {
+                "@type": "SoftwareApplication",
+                "name": "Music Mirror",
+                "description": "Real-time facial emotion recognition music recommendation system using React.js and Python API endpoints.",
+                "applicationCategory": "MultimediaApplication",
+                "operatingSystem": "Web",
+                "url": "https://music-mirror-aos.vercel.app/",
+                "codeRepository": "https://github.com/UdayPatnala/music-mirror"
+              }
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "item": {
+                "@type": "SoftwareApplication",
+                "name": "JavaPath Pro",
+                "description": "Interactive full-stack Java learning platform with real-time code execution, syntax diagnostics, and AI mentor.",
+                "applicationCategory": "EducationalApplication",
+                "operatingSystem": "Web",
+                "url": "https://javapath-pro-aos.vercel.app/",
+                "codeRepository": "https://github.com/UdayPatnala/Java-Path"
+              }
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "item": {
+                "@type": "SoftwareApplication",
+                "name": "Spedex Fintech Dashboard",
+                "description": "Fintech workspace for tracking spending indexing, transaction velocities, and budgeting aggregates with Java Spring Boot backend and React.",
+                "applicationCategory": "FinanceApplication",
+                "operatingSystem": "Web",
+                "url": "https://spe-dex.vercel.app",
+                "codeRepository": "https://github.com/UdayPatnala/Spedex"
+              }
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "item": {
+                "@type": "SoftwareSourceCode",
+                "name": "Churn Prediction System",
+                "description": "End-to-end customer churn analysis and real-time prediction model using Scikit-learn, Pandas, Python, and Streamlit.",
+                "codeRepository": "https://github.com/UdayPatnala/Churn-Prediction-System",
+                "programmingLanguage": "Python"
+              }
+            }
+          ]
+        }
+      ]
     }
     </script>
   </head>

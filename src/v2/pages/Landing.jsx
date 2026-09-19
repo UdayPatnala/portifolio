@@ -80,10 +80,10 @@ const Landing = ({ isDarkMode }) => {
             <span className="text-emerald-500 mr-2">&gt; </span>
             <Typewriter
               words={[
-                'Data Science Specialist', 
-                'Java Backend Architect', 
-                'Optimization Systems Designer', 
-                'Full-Stack Developer'
+                'Java Backend Developer', 
+                'Full-Stack Web Engineer', 
+                'Applied Machine Learning', 
+                'Spring Boot & REST APIs'
               ]}
               loop={0}
               cursor

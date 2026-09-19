@@ -61,21 +61,21 @@ const Resume = ({ isDarkMode }) => {
               <span>EDUCATION</span>
             </div>
             <ul className={`space-y-2 text-xs leading-relaxed ${isDarkMode ? 'text-gray-400' : 'text-slate-600'}`}>
-              <li>• B.Tech in CSE (Data Science) @ RIT</li>
-              <li>• Intermediatenarayana College</li>
-              <li>• Flawless 10/10 SSC GPA</li>
+              <li>• B.Tech in CSE (Data Science) @ RIT (CGPA: 7.70)</li>
+              <li>• Intermediate: Narayana Junior College (910/1000)</li>
+              <li>• SSC: 10/10 GPA (Secondary Education)</li>
             </ul>
           </div>
 
           <div className="space-y-3">
             <div className="flex items-center gap-2 text-amber-500 font-mono font-bold">
               <Code size={16} />
-              <span>CORE ARSENAL</span>
+              <span>TECHNICAL SKILLS</span>
             </div>
             <ul className={`space-y-2 text-xs leading-relaxed ${isDarkMode ? 'text-gray-400' : 'text-slate-600'}`}>
-              <li>• Java, Python, SQL, C Language</li>
-              <li>• React.js, Tailwind, HTML5/CSS3</li>
-              <li>• Spring Boot, Postgres, Git/GitHub</li>
+              <li>• Java, Python, SQL, JavaScript</li>
+              <li>• React.js, Tailwind CSS, HTML5/CSS3</li>
+              <li>• Spring Boot, DBMS, Git & GitHub</li>
             </ul>
           </div>
         </div>

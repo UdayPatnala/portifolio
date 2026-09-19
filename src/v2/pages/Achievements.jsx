@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+﻿import { motion } from 'framer-motion';
 import { Trophy, Star, Sparkles, ExternalLink } from 'lucide-react';
 import { cmsContent } from '../data/content';
 import NextPageButton from '../../components/NextPageButton';
@@ -10,7 +10,7 @@ const Achievements = ({ isDarkMode }) => {
       <div className="flex flex-col items-center text-center space-y-3 mb-16">
         <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded-full text-xs font-mono">
           <Trophy size={12} />
-          <span>ACADEMIC HONORS</span>
+          <span>HONORS &amp; RECOGNITION</span>
         </div>
         <h2 className={`text-3xl sm:text-5xl font-extrabold tracking-tight transition-colors duration-300 ${
           isDarkMode ? 'text-white' : 'text-slate-900'
@@ -41,7 +41,7 @@ const Achievements = ({ isDarkMode }) => {
                 </div>
 
                 <div className="space-y-1">
-                  <span className="text-[9px] font-mono text-gray-500 uppercase tracking-widest">HONOR_RECORD</span>
+                  <span className="text-[9px] font-mono text-gray-500 uppercase tracking-widest">RECOGNITION</span>
                   <h3 className={`text-base font-bold font-mono leading-snug ${
                     isDarkMode ? 'text-white' : 'text-slate-800'
                   }`}>
@@ -57,7 +57,7 @@ const Achievements = ({ isDarkMode }) => {
 
               <div className="flex flex-col gap-3 pt-6 border-t border-emerald-500/5 mt-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-[10px] font-mono text-gray-500 uppercase">ACQUIRED_DATE</span>
+                  <span className="text-[10px] font-mono text-gray-500 uppercase">DATE AWARDED</span>
                   <span className="text-xs font-mono font-bold text-emerald-400">{ach.date}</span>
                 </div>
                 {ach.link && (

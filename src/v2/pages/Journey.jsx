@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+﻿import { motion } from 'framer-motion';
 import { Compass, Terminal, Code, Award } from 'lucide-react';
 import NextPageButton from '../../components/NextPageButton';
 
@@ -6,26 +6,26 @@ const Journey = ({ isDarkMode }) => {
   const steps = [
     {
       year: "2019 - 2020",
-      title: "Flawless Beginnings",
-      description: "Achieved a perfect 10/10 GPA in Bobbili district school finals, establishing a strong foundation in analytical and logical reasoning.",
+      title: "Foundational Excellence",
+      description: "Achieved a 10/10 GPA in secondary school finals, establishing a disciplined foundation in analytical and logical reasoning.",
       icon: <Award size={16} className="text-amber-500" />
     },
     {
       year: "2020 - 2022",
       title: "Mathematical Foundations",
-      description: "Excelled in Narayana Junior College (Score: 910/1000) focusing heavily on mathematics, physics, and computational thinking.",
+      description: "Completed Intermediate Education at Narayana Junior College (Score: 910/1000), focusing heavily on mathematics, physics, and computational thinking.",
       icon: <Compass size={16} className="text-cyan-500" />
     },
     {
-      year: "2022 - Present",
-      title: "Computer Science & Data Science Major",
-      description: "Joined Raghu Institute of Technology to study B.Tech in CSE (Data Science). Immersed myself in data structures, algorithms, SQL databases, and machine learning models.",
+      year: "2022 - 2026",
+      title: "B.Tech in Computer Science (Data Science)",
+      description: "Graduated from Raghu Institute of Technology with 7.70 CGPA. Immersed in data structures, algorithms, Java backend architectures, SQL databases, and applied machine learning models.",
       icon: <Terminal size={16} className="text-emerald-500" />
     },
     {
-      year: "2024",
-      title: "Full-Stack System Engineering",
-      description: "Advanced into building complete, production-grade applications. Created systems like Music Mirror and Nebula Gallery, integrating React, Node proxies, APIs, and persistent databases.",
+      year: "2024 - Present",
+      title: "Full-Stack Software Engineering",
+      description: "Building production-grade applications including Music Mirror, JavaPath Pro, and Spedex, integrating React, Spring Boot REST APIs, and database persistence.",
       icon: <Code size={16} className="text-purple-400" />
     }
   ];
@@ -36,7 +36,7 @@ const Journey = ({ isDarkMode }) => {
       <div className="flex flex-col items-center text-center space-y-3 mb-16">
         <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded-full text-xs font-mono">
           <Compass size={12} />
-          <span>NARRATIVE PROTOCOL</span>
+          <span>MILESTONES &amp; GROWTH</span>
         </div>
         <h2 className={`text-3xl sm:text-5xl font-extrabold tracking-tight transition-colors duration-300 ${
           isDarkMode ? 'text-white' : 'text-slate-900'
@@ -73,7 +73,7 @@ const Journey = ({ isDarkMode }) => {
                   </h3>
                 </div>
                 <p className={`text-xs sm:text-sm leading-relaxed transition-colors duration-300 ${
-                  isDarkMode ? 'text-gray-400' : 'text-slate-655'
+                  isDarkMode ? 'text-gray-400' : 'text-slate-600'
                 }`}>
                   {step.description}
                 </p>

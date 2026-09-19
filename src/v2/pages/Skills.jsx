@@ -38,12 +38,12 @@ const Skills = ({ isDarkMode }) => {
       <div className="flex flex-col items-center text-center space-y-3 mb-16">
         <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded-full text-xs font-mono">
           <Terminal size={12} />
-          <span>TECHNICAL ARSENAL</span>
+          <span>TECHNICAL COMPETENCIES</span>
         </div>
         <h2 className={`text-3xl sm:text-5xl font-extrabold tracking-tight transition-colors duration-300 ${
           isDarkMode ? 'text-white' : 'text-slate-900'
         }`}>
-          Skill <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-cyan-500">Inventory</span>
+          Skill <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-cyan-500">Proficiencies</span>
         </h2>
         <div className="w-24 h-1 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-full" />
       </div>
@@ -79,7 +79,7 @@ const Skills = ({ isDarkMode }) => {
                 }`}>
                   {category.category}
                 </h3>
-                <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest">Verified Arsenal Component</span>
+                <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest">Verified Domain Skills</span>
               </div>
             </div>
 
